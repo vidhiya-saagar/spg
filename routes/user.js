@@ -10,27 +10,27 @@ router.get('/:id', (req, res) => {
         delete user.password;
         res.json(user);
       } else {
-        resError(res, 404, "User Not Found");
+        resError(res, 404, 'User Not Found');
       }
     });
   } else {
-    resError(res, 500, "Invalid ID");
+    resError(res, 500, 'Invalid ID');
   }
 });
 
-router.get('/:id/sticker', (req,res)=>{
+router.get('/:id/sticker', (req, res) => {
   if (!isNaN(req.params.id)) {
     Sticker.getByUser(req.params.id).then(stickers => {
       res.json(stickers);
     });
   } else {
-    resError(res, 500, "Invalid ID");
+    resError(res, 500, 'Invalid ID');
   }
-})
+});
 
 function resError(res, statusCode, message) {
   res.status(statusCode);
-  res.json({message});
+  res.json({ message });
 }
 
 module.exports = router;
