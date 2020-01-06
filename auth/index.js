@@ -13,7 +13,6 @@ router.get('/', (req, res) => {
 // Users cannot login to the app with a blank or missing email
 // Users cannot login to the app with a blank or incorrect password
 
-// @params: req.body from /signup
 function validateUser(user) {
   const validEmail = typeof user.email === 'string' && user.email.trim() != '';
   const validPassword =
@@ -23,16 +22,27 @@ function validateUser(user) {
   return validEmail && validPassword;
 }
 
+// @params: req.body from /signup
 router.post('/signup', (req, res, next) => {
   if (validateUser(req.body)) {
     User.getOneByEmail(req.body.email).then(user => {
-      console.log('User:', user);
       // This is a Unique email
       if (!user) {
-        // Put res.json inside of the async function, because we want to wait until we found the one with the email
-        res.json({
-          user,
-          message: '✅',
+        // Hash the pass!
+        bcrypt.hash(req.body.password, 10).then(hash => {
+          // Insert User into DB
+          const user = {
+            email: req.body.email,
+            password: hash,
+            created_at: new Date(),
+          };
+          User.create(user).then(id => {
+            // Put res.json inside of the async function, because we want to wait until we found the one with the email
+            res.json({
+              id,
+              message: '✅',
+            });
+          });
         });
       }
       // Email in use

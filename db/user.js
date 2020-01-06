@@ -11,4 +11,12 @@ module.exports = {
       .where('email', email)
       .first();
   },
+  create: function(user) {
+    return knex('user')
+      .insert(user, 'id')
+      .then(ids => {
+        // ids is going to be an array, because .insert returns array []
+        return ids[0];
+      });
+  },
 };
