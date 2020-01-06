@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const User = require('../db/user');
 // Route paths are prepended with '/auth'
 router.get('/', (req, res) => {
@@ -26,12 +27,18 @@ router.post('/signup', (req, res, next) => {
   if (validateUser(req.body)) {
     User.getOneByEmail(req.body.email).then(user => {
       console.log('User:', user);
-
-      // Put res.json inside of the async function, because we want to wait until we found the one with the email
-      res.json({
-        user,
-        message: '✅',
-      });
+      // This is a Unique email
+      if (!user) {
+        // Put res.json inside of the async function, because we want to wait until we found the one with the email
+        res.json({
+          user,
+          message: '✅',
+        });
+      }
+      // Email in use
+      else {
+        next(new Error('Email in use'));
+      }
     });
   } else {
     next(new Error('Invalid user'));
