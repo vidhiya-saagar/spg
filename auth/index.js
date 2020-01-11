@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../db/user');
 
+// ENV File
+require('dotenv').config();
+
 // Route paths are prepended with '/auth'
 router.get('/', (req, res) => {
   res.json({
@@ -74,12 +77,17 @@ router.post('/login', (req, res, next) => {
         // Compare input password with hashed password
         bcrypt.compare(req.body.password, user.password).then(result => {
           if (result) {
-            // Setting the 'set-cookie' header
-            res.cookie('user_id', user.id);
-            res.json({
-              result,
-              message: 'Logged in! 🔐',
-            });
+            const token = jwt.sign(
+              {
+                user_id: user.id,
+              },
+              process.env.AUTH_TOKEN_SECRET
+            );
+            res.header('auth-token', token).send(token);
+            // res.json({
+            //   result,
+            //   message: 'Logged in! 🔐',
+            // });
           } else {
             next(new Error('Invalid login'));
           }
