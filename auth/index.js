@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../db/user');
 
 // Route paths are prepended with '/auth'
@@ -71,7 +72,20 @@ router.post('/login', (req, res, next) => {
     User.getOneByEmail(req.body.email).then(user => {
       if (user) {
         // Compare input password with hashed password
-        res.json(user);
+        bcrypt.compare(req.body.password, user.password).then(result => {
+          if (result) {
+            // Setting the 'set-cookie' header
+            res.cookie('user_id', user.id);
+            res.json({
+              result,
+              message: 'Logged in! 🔐',
+            });
+          } else {
+            next(new Error('Invalid login'));
+          }
+        });
+      } else {
+        next(new Error('Invalid login'));
       }
     });
   } else {
