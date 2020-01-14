@@ -19,6 +19,11 @@ export class UserResolver {
     return 'hi';
   }
 
+  @Query(() => [User])
+  users() {
+    return User.find();
+  }
+
   // POSTing
   @Mutation(() => Boolean)
   async register(
