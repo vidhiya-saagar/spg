@@ -1,25 +1,21 @@
 import 'reflect-metadata';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-
-// Lambda Function - Calling Itselff
+import { buildSchema } from 'type-graphql';
+import { UserResolver } from './UserResolver';
+import { createConnection } from 'typeorm';
+// Lambda Function - Calling Itself
 (async () => {
   const app = express();
   app.get('/', (_req, res) => res.send('Say Hello'));
 
+  await createConnection();
+
   // GraphQL Schema
   const apolloServer = new ApolloServer({
-    // This looks mad ugly tbh
-    typeDefs: `
-      type Query {
-        hello: String!,
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello: () => 'hello world',
-      },
-    },
+    schema: await buildSchema({
+      resolvers: [UserResolver],
+    }),
   });
 
   apolloServer.applyMiddleware({ app });
