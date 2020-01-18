@@ -1,9 +1,9 @@
-import { Context } from './Context';
 import {
   Resolver,
   Query,
   Mutation,
   Arg,
+  Ctx,
   ObjectType,
   Field,
 } from 'type-graphql';
@@ -12,6 +12,7 @@ import { User } from './entity/User';
 import dotenv from 'dotenv';
 dotenv.config();
 import { sign } from 'jsonwebtoken';
+import { Context } from './Context';
 
 @ObjectType()
 class LoginResponse {
@@ -61,11 +62,16 @@ export class UserResolver {
 
     // Login was successful
 
+    // Refresh Token
     res.cookie(
-      'jid',
-      sign({ user_id: user.id }, 'process.env.AUTH_TOKEN_SECRET', {
-        expiresIn: '15m',
-      })
+      'jot',
+      sign({ user_id: user.id }, 'process.env.REFRESH_TOKEN_SECRET', {
+        expiresIn: '7d',
+      }),
+      {
+        // Other Options when creating cookie...
+        httpOnly: true,
+      }
     );
 
     // Give them token so they can stay login
