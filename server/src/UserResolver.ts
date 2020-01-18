@@ -1,4 +1,4 @@
-import { sign } from 'jsonwebtoken';
+import { Context } from './Context';
 import {
   Resolver,
   Query,
@@ -10,8 +10,8 @@ import {
 import bcrypt from 'bcrypt';
 import { User } from './entity/User';
 import dotenv from 'dotenv';
-
 dotenv.config();
+import { sign } from 'jsonwebtoken';
 
 @ObjectType()
 class LoginResponse {
@@ -44,7 +44,8 @@ export class UserResolver {
   @Mutation(() => LoginResponse)
   async login(
     @Arg('email') email: string,
-    @Arg('password') password: string
+    @Arg('password') password: string,
+    @Ctx() { res }: Context
   ): Promise<LoginResponse> {
     const user = await User.findOne({ where: { email } });
 
@@ -59,8 +60,18 @@ export class UserResolver {
     }
 
     // Login was successful
+
+    res.cookie(
+      'jid',
+      sign({ user_id: user.id }, 'process.env.AUTH_TOKEN_SECRET', {
+        expiresIn: '15m',
+      })
+    );
+
+    // Give them token so they can stay login
+    // Also, use token to access other parts of application
     return {
-      accessToken: sign({ user_id: user.id }, 'klnbkoy8hkhgk', {
+      accessToken: sign({ user_id: user.id }, 'process.env.AUTH_TOKEN_SECRET', {
         expiresIn: '15m',
       }),
     };
