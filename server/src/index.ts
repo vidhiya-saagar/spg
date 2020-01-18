@@ -16,6 +16,8 @@ import { createConnection } from 'typeorm';
     schema: await buildSchema({
       resolvers: [UserResolver],
     }),
+    // Access these in GraphQL
+    context: ({ req, res }) => ({ req, res }),
   });
 
   apolloServer.applyMiddleware({ app });
