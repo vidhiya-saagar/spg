@@ -1,3 +1,5 @@
+import { isAuth } from './isAuth';
+import { createRefreshToken, createAccessToken } from './auth';
 import {
   Resolver,
   Query,
@@ -6,12 +8,12 @@ import {
   Ctx,
   ObjectType,
   Field,
+  UseMiddleware,
 } from 'type-graphql';
 import bcrypt from 'bcrypt';
 import { User } from './entity/User';
 import dotenv from 'dotenv';
 dotenv.config();
-import { sign } from 'jsonwebtoken';
 import { Context } from './Context';
 
 @ObjectType()
@@ -35,6 +37,12 @@ export class UserResolver {
   @Query(() => String)
   hello() {
     return 'hi';
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  bye(@Ctx() { payload }: Context) {
+    return `Hello ${payload}`;
   }
 
   @Query(() => [User])
@@ -63,23 +71,12 @@ export class UserResolver {
     // Login was successful
 
     // Refresh Token
-    res.cookie(
-      'jot',
-      sign({ user_id: user.id }, 'process.env.REFRESH_TOKEN_SECRET', {
-        expiresIn: '7d',
-      }),
-      {
-        // Other Options when creating cookie...
-        httpOnly: true,
-      }
-    );
+    res.cookie('jot', createRefreshToken(user), {
+      httpOnly: true,
+    });
 
-    // Give them token so they can stay login
-    // Also, use token to access other parts of application
     return {
-      accessToken: sign({ user_id: user.id }, 'process.env.AUTH_TOKEN_SECRET', {
-        expiresIn: '15m',
-      }),
+      accessToken: createAccessToken(user),
     };
   }
 
