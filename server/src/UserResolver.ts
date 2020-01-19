@@ -1,17 +1,20 @@
-import { sign } from 'jsonwebtoken';
+import { isAuth } from './isAuth';
+import { createRefreshToken, createAccessToken } from './auth';
 import {
   Resolver,
   Query,
   Mutation,
   Arg,
+  Ctx,
   ObjectType,
   Field,
+  UseMiddleware,
 } from 'type-graphql';
 import bcrypt from 'bcrypt';
 import { User } from './entity/User';
 import dotenv from 'dotenv';
-
 dotenv.config();
+import { Context } from './Context';
 
 @ObjectType()
 class LoginResponse {
@@ -36,6 +39,13 @@ export class UserResolver {
     return 'hi';
   }
 
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  bye(@Ctx() { payload }: Context) {
+    console.log(payload);
+    return `Hello ${payload!.user_id}`;
+  }
+
   @Query(() => [User])
   users() {
     return User.find();
@@ -44,7 +54,8 @@ export class UserResolver {
   @Mutation(() => LoginResponse)
   async login(
     @Arg('email') email: string,
-    @Arg('password') password: string
+    @Arg('password') password: string,
+    @Ctx() { res }: Context
   ): Promise<LoginResponse> {
     const user = await User.findOne({ where: { email } });
 
@@ -59,10 +70,14 @@ export class UserResolver {
     }
 
     // Login was successful
+
+    // Refresh Token
+    res.cookie('jot', createRefreshToken(user), {
+      httpOnly: true,
+    });
+
     return {
-      accessToken: sign({ user_id: user.id }, 'klnbkoy8hkhgk', {
-        expiresIn: '15m',
-      }),
+      accessToken: createAccessToken(user),
     };
   }
 
@@ -87,3 +102,7 @@ export class UserResolver {
     return true;
   }
 }
+
+// GraphQL
+// ONLY POST REQUESTS
+// POST /graphql { query: '...'}
