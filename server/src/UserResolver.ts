@@ -42,7 +42,8 @@ export class UserResolver {
   @Query(() => String)
   @UseMiddleware(isAuth)
   bye(@Ctx() { payload }: Context) {
-    return `Hello ${payload}`;
+    console.log(payload);
+    return `Hello ${payload!.user_id}`;
   }
 
   @Query(() => [User])
@@ -101,3 +102,7 @@ export class UserResolver {
     return true;
   }
 }
+
+// GraphQL
+// ONLY POST REQUESTS
+// POST /graphql { query: '...'}
