@@ -8,6 +8,10 @@
   "license": "MIT",
   "dependencies": {
     "anvaad-js": "^1.4.2",
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "knex": "^0.21.5-next2",
+    "mysql": "^2.18.1",
+    "pg": "^8.3.0"
   }
 }
