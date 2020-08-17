@@ -12,7 +12,7 @@ exports.seed = async function createChapterOne(knex) {
         'ma(n)galaa charana, naam mahimaa baranana, naam prathamo dhayai',
       order_number: 1,
       description_english:
-        'Kavi Santokh Singh masterpiece begins with some of the most profolific Mangals of all time.',
+        "Kavi Santokh Singh's masterpiece begins with some of the most profolific Mangals of all time.",
     },
   ]);
 };
