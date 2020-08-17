@@ -8,6 +8,7 @@ exports.up = async function startMigration(knex) {
     t.string('title_gs');
     t.string('title_transliteration_english');
     t.text('description_english', 'mediumtext');
+    t.timestamps().defaultTo(knex.fn.now());
   });
 };
 
