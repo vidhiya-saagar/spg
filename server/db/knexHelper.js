@@ -15,4 +15,14 @@ const references = (
   return definition;
 };
 
-module.exports = { references };
+const addTimestamps = (table, knex) => {
+  table
+    .dateTime('created_at')
+    .notNullable()
+    .defaultTo(knex.raw('CURRENT_TIMESTAMP'));
+  table
+    .dateTime('updated_at')
+    .defaultTo(knex.raw('NULL ON UPDATE CURRENT_TIMESTAMP'));
+};
+
+module.exports = { references, addTimestamps };
