@@ -1,0 +1,13 @@
+{
+  "name": "spg",
+  "version": "1.0.0",
+  "description": "SPG",
+  "main": "index.js",
+  "repository": "git@github.com:dsomel21/spg.git",
+  "author": "Dilraj <dsomel21@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "anvaad-js": "^1.4.2",
+    "express": "^4.17.1"
+  }
+}
