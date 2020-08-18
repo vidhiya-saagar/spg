@@ -21,5 +21,5 @@ to the knowledge of our Gurus and ancestors_ ( - Manglacharan 2017).
 Kavi Ji has contributed his life to poetically documenting the life of the Sikh Guru's. This project strives to create a central database for Kavi Ji's *Gurprataap Sooraj Granth* (also known as *Sooraj Prakash Granth*)
 
 Important Links: 
-* [Rara Sahib - ik13.com]https://www.ik13.com/bhai-daya-singh-ji-online-library/ - Essentially the only copy/pastable PDF of *SPG*
+* [Rara Sahib - ik13.com](https://www.ik13.com/bhai-daya-singh-ji-online-library/) - Essentially the only copy/pastable PDF of *SPG*
 * [Anvaad JS](https://github.com/KhalisFoundation/anvaad-js) - Very useful tool to for when dealing with transliteration/ASCII/unicode converting in the context of the Gurmukhi language.
