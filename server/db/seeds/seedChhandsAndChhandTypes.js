@@ -18,6 +18,7 @@ exports.seed = async function runChhandSeeds(knex) {
         order_number: 1,
         chhand_name_english: 'Dohra',
         chhand_type_id: 4,
+        chapter_id: 1,
       },
     ]);
   }
