@@ -16,6 +16,7 @@ exports.up = async function startMigration(knex) {
     t.integer('order_number').notNullable();
     t.string('chhand_name_english'); // Really... not necessary but will be easier on dev side
     references(t, 'chhand_type');
+    references(t, 'chapter');
     addTimestamps(t, knex);
   });
 };
