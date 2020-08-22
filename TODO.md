@@ -19,3 +19,11 @@
 * [] Auto populating `transliteration` when pasting the unicode 
 * [] Auto populating `gurmukhi_script` when pasting the unicode 
 * [] Preview of the `gurmukhi_script` (with correct fonts)
+
+## Perhaps this visualization will help:
+
+### Adding Chhands - Quick Sketch
+![Adding Chhands](https://i.imgur.com/hzuuxQo.png "Adding Chhands")
+
+### Adding Pauris (Multi-line verse) - Quick Sketch
+![Adding Verses](https://i.imgur.com/3CREpkI.png "Adding Verses")
