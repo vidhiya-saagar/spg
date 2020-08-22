@@ -1,8 +1,9 @@
 const fetch = require('node-fetch');
+const baseUrl = 'http://localhost:1469';
 
 const fetchPost = async (url = '', data = {}) => {
   console.log('POST', url);
-  const response = await fetch(url, {
+  const response = await fetch(baseUrl + url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -14,7 +15,7 @@ const fetchPost = async (url = '', data = {}) => {
 
 const fetchGet = async (url = '', data = {}) => {
   console.log('GET', url);
-  const response = await fetch(url, {
+  const response = await fetch(baseUrl + url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

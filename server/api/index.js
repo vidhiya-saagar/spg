@@ -1,13 +1,29 @@
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const cors = require('cors');
 const db = require('./db');
+
+// CORS
+var whitelist = ['http://localhost:8080', 'http://localhost:3000'];
+var corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log(origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
 
 const app = express();
 
+// Middleware
 app.use(morgan('tiny'));
 app.use(helmet());
 app.use(express.json());
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.json({
@@ -22,6 +38,7 @@ app.get('/', (req, res) => {
 
 app.get('/chapters', async (req, res) => {
   const chapters = await db.select('*').from('chapters');
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
   res.json({ chapters });
 });
 
