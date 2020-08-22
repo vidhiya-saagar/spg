@@ -2,7 +2,7 @@ import React from 'react';
 import './stylesheets/App.css';
 import Header from './components/Header';
 import Menu from './components/Menu';
-import ChaptersScreen from './screens/ChaptersScreen';
+import ChaptersIndexScreen from './screens/ChaptersIndexScreen';
 import HomeScreen from './screens/HomeScreen';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const App = () => {
           <HomeScreen />
         </Route>
         <Route path='/chapters'>
-          <ChaptersScreen />
+          <ChaptersIndexScreen />
         </Route>
       </Switch>
     </Router>
