@@ -1,0 +1,11 @@
+.Menu {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  list-style-type: none;
+}
+
+.MenuItem {
+  color: palevioletred;
+  margin: 0 2em;
+}
