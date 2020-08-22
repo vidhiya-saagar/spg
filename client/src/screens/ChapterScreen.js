@@ -9,24 +9,21 @@ const ChapterScreen = () => {
   const [chapter, setChapter] = useState(null);
   const [chhands, setChhands] = useState([]);
 
-  const fetchCurrentChapter = async () => {
-    const res = await fetchGet(`/chapter/${id}`);
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-    console.log(res);
-    setChapter(res.chapters);
-  };
-
-  const fetchAllChhands = async () => {
-    const res = await fetchGet(`/chapter/${id}/chhands`);
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-    console.log(res);
-    setChhands(res.chhands);
-  };
-
+  // // !prettier-ignore
   useEffect(() => {
+    const fetchCurrentChapter = async () => {
+      const res = await fetchGet(`/chapters/${id}`);
+      setChapter(res.chapter);
+    };
+
+    const fetchAllChhands = async () => {
+      const res = await fetchGet(`/chapters/${id}/chhands`);
+      setChhands(res.chhands);
+    };
+
     fetchCurrentChapter();
     fetchAllChhands();
-  });
+  }, [id]);
 
   return (
     <>

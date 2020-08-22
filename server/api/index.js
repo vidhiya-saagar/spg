@@ -2,20 +2,21 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const db = require('./db');
 
 // CORS
-var whitelist = ['http://localhost:8080', 'http://localhost:3000'];
-var corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log(origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
+// var whitelist = ['http://localhost:8080', 'http://localhost:3000'];
+// var corsOptions = {
+//   origin: (origin, callback) => {
+//     if (whitelist.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       console.log(origin);
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+// };
 
 const app = express();
 
@@ -23,7 +24,8 @@ const app = express();
 app.use(morgan('tiny'));
 app.use(helmet());
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.json({
@@ -38,8 +40,24 @@ app.get('/', (req, res) => {
 
 app.get('/chapters', async (req, res) => {
   const chapters = await db.select('*').from('chapters');
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
   res.json({ chapters });
+});
+
+// Doing query params might get messy
+app.get('/chapters/:id', async (req, res) => {
+  const id = req.params.id;
+  const chapter = await db.select('*').from('chapters').where('id', id).first();
+  res.json({ chapter });
+});
+
+app.get('/chapters/:id/chhands', async (req, res) => {
+  const chapterId = req.params.id;
+  console.log(chapterId);
+  const chhands = await db
+    .select('*')
+    .from('chhands')
+    .where('chapter_id', chapterId);
+  res.json({ chhands });
 });
 
 app.get('/chhands', async (req, res) => {
@@ -105,7 +123,6 @@ app.post('/chhands', async (req, res) => {
       .whereRaw('chhand_name_english = ?', chhand_name_english)
       .first().id;
 
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
     console.log(chhand_type_id);
     // const chhand = await db('chhands').insert({
     //   order_number,

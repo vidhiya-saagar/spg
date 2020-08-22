@@ -17,9 +17,7 @@ const Chapter = (props) => {
     <Router>
       <Grid sm={12}>
         <h1 className={ChapterStyles.ChapterTitle}>
-          <Link exact to={`/chapters/${id}`}>
-            Chapter {number}:
-          </Link>
+          <Link to={`/chapters/${id}`}>Chapter {number}: </Link>
           {title_unicode}
         </h1>
       </Grid>
