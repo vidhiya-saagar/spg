@@ -18,7 +18,7 @@ const App = () => {
         <Route exact path='/'>
           <HomeScreen />
         </Route>
-        <Route path='/chapters'>
+        <Route exact path='/chapters'>
           <ChaptersIndexScreen />
         </Route>
         <Route path='/chapters/:id'>

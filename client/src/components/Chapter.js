@@ -29,9 +29,12 @@ const Chapter = (props) => {
           {title_transliteration_english}
         </h4>
       </Grid>
+      {/* Uncommenting the line below will cause infinite loop */}
+      {/* 
       <Switch>
         <Route path='/chapters/:id' children={<ChapterScreen />} />
       </Switch>
+      */}
     </Router>
   );
 };

@@ -38,6 +38,22 @@
   align-items: center;
 }
 
+.align-baseline {
+  align-items: baseline;
+}
+
+.align-flex-end {
+  align-items: flex-end;
+}
+
+.align-flex-start {
+  align-items: flex-start;
+}
+
+.align-stretch {
+  align-items: stretch;
+}
+
 .column {
   flex: 1 1 0px;
   padding-left: 0.9375rem;
