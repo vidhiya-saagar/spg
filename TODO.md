@@ -15,6 +15,7 @@
  * [X] Setup basic client side project structure (src, helpers, config)
  * [X] Mockup some quick designs for admin client side
  * [ ] Create an admin form that allows to add new:
+  * [ ] Visually see the chapter content (so far...) 
   * [ ] Chhand Types
   * [ ] New Chhands
   * [ ] New lines into a pauri of chhands
