@@ -6,6 +6,7 @@ import Grid from '../components/Grid';
 import ChapterScreenStyles from '../stylesheets/screens/ChapterScreenStyles.module.css';
 import Chapter from '../components/Chapter';
 import Chhand from '../components/Chhand';
+import AddPauri from '../components/AddPauri';
 
 const ChapterScreen = () => {
   const { id } = useParams();
@@ -28,7 +29,9 @@ const ChapterScreen = () => {
     <>
       <Grid alignItems='flex-end' justify='center'>
         <Grid column={true} sm={12} md={8} lg={4}>
-          <div className={ChapterScreenStyles.ContentContainer}></div>
+          <div className={ChapterScreenStyles.ContentContainer}>
+            <AddPauri />
+          </div>
         </Grid>
         <Grid column={true} sm={12} md={8} lg={8}>
           <div className={ChapterScreenStyles.PauriContainer}>
