@@ -5,7 +5,7 @@ const references = (
   foreignKey = ''
 ) => {
   const definition = currentTable
-    .integer(`${tableToReference}_id`)
+    .integer(`${foreignKey || tableToReference}_id`)
     .unsigned()
     .references('id')
     .inTable(`${tableToReference}s`)
