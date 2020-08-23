@@ -1,11 +1,17 @@
 .Menu {
   display: flex;
   justify-content: center;
-  flex-direction: row;
+  flex-direction: column;
   list-style-type: none;
 }
 
 .MenuItem {
   color: palevioletred;
   margin: 0 2em;
+}
+
+@media only screen and (min-width : 480px) {
+  .Menu {
+    flex-direction: row;
+  }
 }

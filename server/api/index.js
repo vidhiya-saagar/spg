@@ -74,6 +74,12 @@ app.get('/chapters/:id/tuks', async (req, res) => {
     .where('chapter_id', chapterId);
 
   for (let chhand of chhands) {
+    let chhandType = await db
+      .select('*')
+      .from('chhand_types')
+      .where('id', chhand.chhand_type_id)
+      .first();
+
     let pauris =
       (await db.select('*').from('pauris').where('chhand_id', chhand.id)) || [];
     for (let pauri of pauris) {
@@ -82,6 +88,7 @@ app.get('/chapters/:id/tuks', async (req, res) => {
       pauri.tuks = tuks;
     }
     chhand.pauris = pauris;
+    chhand.chhand_type = chhandType;
   }
 
   res.json({ chapter, chhands });
@@ -107,4 +114,9 @@ app.post('/chhand_types', async (req, res) => {
       message: 'This already an existing chhang_type in the database.',
     });
   }
+});
+
+const port = process.env.PORT || 1469;
+app.listen(port, () => {
+  console.log(`Listening @ http://localhost:${port}/`);
 });
