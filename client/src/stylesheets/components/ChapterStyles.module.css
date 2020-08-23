@@ -1,0 +1,20 @@
+.ChapterRow {
+  background: bisque;
+  display: flex;
+  flex-direction: column;
+}
+
+.ChapterTitle {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 32px;
+}
+
+.GurAkhar {
+  font-family: 'GurAkhar';
+}
+
+.EnglishTranslit {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}

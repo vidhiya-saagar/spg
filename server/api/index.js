@@ -2,20 +2,21 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const db = require('./db');
 
 // CORS
-var whitelist = ['http://localhost:8080', 'http://localhost:3000'];
-var corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log(origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
+// var whitelist = ['http://localhost:8080', 'http://localhost:3000'];
+// var corsOptions = {
+//   origin: (origin, callback) => {
+//     if (whitelist.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       console.log(origin);
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+// };
 
 const app = express();
 
@@ -23,7 +24,8 @@ const app = express();
 app.use(morgan('tiny'));
 app.use(helmet());
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.json({
@@ -38,8 +40,58 @@ app.get('/', (req, res) => {
 
 app.get('/chapters', async (req, res) => {
   const chapters = await db.select('*').from('chapters');
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
   res.json({ chapters });
+});
+
+// Doing query params might get messy
+app.get('/chapters/:id', async (req, res) => {
+  const id = req.params.id;
+  const chapter = await db.select('*').from('chapters').where('id', id).first();
+  res.json({ chapter });
+});
+
+app.get('/chapters/:id/chhands', async (req, res) => {
+  const chapterId = req.params.id;
+  const chhands = await db
+    .select('*')
+    .from('chhands')
+    .where('chapter_id', chapterId);
+  res.json({ chhands });
+});
+
+// NOTE: This will never be public facing...
+app.get('/chapters/:id/tuks', async (req, res) => {
+  const chapterId = req.params.id;
+  const chapter = await db
+    .select('*')
+    .from('chapters')
+    .where('id', chapterId)
+    .first();
+
+  let chhands = await db
+    .select('*')
+    .from('chhands')
+    .where('chapter_id', chapterId);
+
+  for (let chhand of chhands) {
+    let chhandType = await db
+      .select('*')
+      .from('chhand_types')
+      .where('id', chhand.chhand_type_id)
+      .first();
+
+    let pauris =
+      (await db.select('*').from('pauris').where('chhand_id', chhand.id)) || [];
+    for (let pauri of pauris) {
+      let tuks =
+        (await db.select('*').from('tuks').where('pauri_id', pauri.id)) || [];
+      pauri.tuks = tuks;
+    }
+    chhand.pauris = pauris;
+    chhand.chhand_type = chhandType;
+  }
+
+  res.json({ chapter, chhands });
 });
 
 app.get('/chhands', async (req, res) => {
@@ -64,64 +116,7 @@ app.post('/chhand_types', async (req, res) => {
   }
 });
 
-app.get('/tuks', async (req, res) => {
-  const tuks = await db.select('*').from('tuks');
-  res.json({ tuks });
-});
-
-// @brief - A chapter should not have the same "order" of chhands
-const chhandExistsInChapter = async (orderNumber, chapterId) => {
-  const existingChhand = await db('chhands')
-    .whereRaw('order_number = ?', orderNumber)
-    .whereRaw('chapter_id = ?', chapterId);
-
-  console.log(existingChhand);
-  console.log(existingChhand.length > 0);
-
-  return existingChhand.length > 0;
-};
-
-const isNewChhandType = async (chhandName) => {
-  const existingChhandType = await db('chhand_types').whereRaw(
-    'chhand_name_english = ?',
-    chhandName
-  );
-  return existingChhandType.length === 0;
-};
-
-app.post('/chhands', async (req, res) => {
-  const { order_number, chhand_name_english, chapter_id } = req.body;
-
-  console.log(order_number);
-  console.log(chhand_name_english);
-  console.log(chapter_id);
-  console.log('----------------------------------');
-
-  if (chhand_name_english.length > 0) {
-    if (isNewChhandType(chhand_name_english)) {
-      db('chhand_types').insert({ chapter_id, chhand_name_english });
-    }
-    const chhand_type_id = await db('chhand_types')
-      .whereRaw('chhand_name_english = ?', chhand_name_english)
-      .first().id;
-
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-    console.log(chhand_type_id);
-    // const chhand = await db('chhands').insert({
-    //   order_number,
-    //   chhand_name_english,
-    //   chhand_type_id,
-    //   chapter_id,
-    // });
-    let chhand = { id: 123, message: 'this is temp' };
-
-    res.json({ chhand });
-  }
-});
-
-app.post('/chhands/tuks', (req, res) => {});
-
 const port = process.env.PORT || 1469;
 app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
+  console.log(`Listening @ http://localhost:${port}/`);
 });

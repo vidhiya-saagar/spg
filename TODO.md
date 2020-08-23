@@ -10,15 +10,18 @@
   * [ ] Relationshipify them in order to easily to CRUD
  
 
- * [] Create a client side where we can do CRUD
- * [] Find an efficient way to CRUD
- * [] Create an admin form that allows to add new:
-  * [] Chhand Types
-  * [] New Chhands
-  * [] New lines into a pauri of chhands
-* [] Auto populating `transliteration` when pasting the unicode 
-* [] Auto populating `gurmukhi_script` when pasting the unicode 
-* [] Preview of the `gurmukhi_script` (with correct fonts)
+ * [ ] Create a client side where we can do CRUD
+ * [X] Create a directory/repo to handle client side
+ * [X] Setup basic client side project structure (src, helpers, config)
+ * [X] Mockup some quick designs for admin client side
+ * [ ] Create an admin form that allows to add new:
+  * [ ] Visually see the chapter content (so far...) 
+  * [ ] Chhand Types
+  * [ ] New Chhands
+  * [ ] New lines into a pauri of chhands
+* [ ] Auto populating `transliteration` when pasting the unicode 
+* [ ] Auto populating `gurmukhi_script` when pasting the unicode 
+* [ ] Preview of the `gurmukhi_script` (with correct fonts)
 
 ## Perhaps this visualization will help:
 
