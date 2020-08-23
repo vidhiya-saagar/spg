@@ -17,20 +17,12 @@ const ChapterScreen = () => {
   useEffect(() => {
     const fetchAllChhands = async () => {
       const res = await fetchGet(`/chapters/${id}/tuks`);
-      console.log('just did the fetch', res);
       setChapter(res.chapter);
       setChhands(res.chhands);
     };
 
     fetchAllChhands();
   }, [id]);
-
-  if (chhands) {
-    console.log(chhands);
-    console.log(chhands[0].pauris);
-    console.log(chhands[0].pauris[0]);
-    console.log(chhands[0].pauris[0].tuks);
-  }
 
   return (
     <>

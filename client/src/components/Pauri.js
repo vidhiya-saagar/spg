@@ -1,9 +1,6 @@
 import React from 'react';
 
 const Pauri = (props) => {
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  console.log(props);
-  // const tuks = [{ id: 34, content_unicode: 'hey' }];
   const { tuks } = props;
   return (
     <>
