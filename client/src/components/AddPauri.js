@@ -8,23 +8,27 @@ import { useFormik, Field } from 'formik';
 import * as anvaad from 'anvaad-js';
 // const anvaad = require('anvaad-js');
 
-console.log(anvaad);
+const regex = /[\u0A00-\u0A7F]/;
+const isGurmukhi = (s) => regex.test(s);
+
+const validate = (values) => {
+  const errors = {};
+
+  for (let key in values) {
+    if (values[key] === '') errors[key] = 'Required';
+    if (!isGurmukhi(values.unicode)) errors.unicode = 'Must be Gurmukhi';
+    if (!isGurmukhi(values.firstLetters))
+      errors.firstLetters = 'Must be Gurmukhi';
+  }
+  // TODO: Validate that unicode is the Gurmukhi
+  // TODO: Validate that unicode is the Gurmukhi
+  return errors;
+};
 
 const AddPauri = () => {
   const [currentPauri, setCurrentPauri] = useState(2);
   const [currentChhandName, setCurrentChhandName] = useState('Kabitt');
   const [currentChhandNumber, setCurrentChhandNumber] = useState(2);
-
-  const validate = (values) => {
-    const errors = {};
-
-    for (let key in values) {
-      if (values[key] === '') errors[key] = 'Required';
-    }
-    // TODO: Validate that unicode is the Gurmukhi
-    // TODO: Validate that unicode is the Gurmukhi
-    return errors;
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -42,8 +46,7 @@ const AddPauri = () => {
 
   const updateTextFields = (e) => {
     formik.handleChange(e);
-    const val = e.target.value;
-    let x = { ...anvaad };
+    const val = e.target.value.trim();
     let _gurmukhiScript = anvaad.unicode(val, true);
     let _englishTranslit = anvaad.translit(_gurmukhiScript);
     let _firstLetters = anvaad.firstLetters(val);
@@ -97,73 +100,67 @@ const AddPauri = () => {
         <Grid alignItems='flex-end' justify='center'>
           <Grid column={true} sm={12} md={12} lg={12}>
             <form onSubmit={formik.handleSubmit}>
-              <label htmlFor='unicode'>Gurmukhi Unicode</label>
-              <input
-                id='unicode'
-                name='unicode'
-                type='text'
-                onChange={(e) => {
-                  updateTextFields(e);
-                }}
-                onBlur={formik.handleBlur}
-                value={formik.values.unicode}
-              />
-              {console.log('formikkkkzzz', formik)}
-              {formik.touched.unicode && formik.errors.unicode ? (
-                <div>{formik.errors.unicode}</div>
-              ) : null}
+              <div className='form-input-container'>
+                <label htmlFor='unicode'>Gurmukhi Unicode</label>
+                <input
+                  id='unicode'
+                  name='unicode'
+                  type='text'
+                  onChange={(e) => {
+                    updateTextFields(e);
+                  }}
+                  value={formik.values.unicode}
+                />
+                <p className='form-error'>{formik.errors.unicode}</p>
+              </div>
 
-              <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
-              <input
-                id='gurmukhiScript'
-                name='gurmukhiScript'
-                type='text'
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.gurmukhiScript}
-              />
-              {formik.touched.gurmukhiScript && formik.errors.gurmukhiScript ? (
-                <div>{formik.errors.gurmukhiScript}</div>
-              ) : null}
+              <div className='form-input-container'>
+                <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
+                <input
+                  id='gurmukhiScript'
+                  name='gurmukhiScript'
+                  type='text'
+                  onChange={formik.handleChange}
+                  value={formik.values.gurmukhiScript}
+                />
+                <p className='form-error'>{formik.errors.gurmukhiScript}</p>
+              </div>
 
-              <label htmlFor='englishTranslit'>English Transliteration</label>
-              <input
-                id='englishTranslit'
-                name='englishTranslit'
-                type='text'
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.englishTranslit}
-              />
-              {formik.touched.englishTranslit &&
-              formik.errors.englishTranslit ? (
-                <div>{formik.errors.englishTranslit}</div>
-              ) : null}
+              <div className='form-input-container'>
+                <label htmlFor='englishTranslit'>English Transliteration</label>
+                <input
+                  id='englishTranslit'
+                  name='englishTranslit'
+                  type='text'
+                  onChange={formik.handleChange}
+                  value={formik.values.englishTranslit}
+                />
+                <p className='form-error'>{formik.errors.englishTranslit}</p>
+              </div>
 
-              <label htmlFor='firstLetters'>First Letters</label>
-              <input
-                id='firstLetters'
-                name='firstLetters'
-                type='text'
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.firstLetters}
-              />
-              {formik.touched.firstLetters && formik.errors.firstLetters ? (
-                <div>{formik.errors.firstLetters}</div>
-              ) : null}
+              <div className='form-input-container'>
+                <label htmlFor='firstLetters'>First Letters</label>
+                <input
+                  id='firstLetters'
+                  name='firstLetters'
+                  type='text'
+                  onChange={formik.handleChange}
+                  value={formik.values.firstLetters}
+                />
+                <p className='form-error'>{formik.errors.firstLetters}</p>
+              </div>
 
-              <label htmlFor='number'>Tuk Number</label>
-              <input
-                disabled
-                id='number'
-                name='number'
-                type='number'
-                value={formik.values.number}
-              />
-              {formik.touched.number && formik.errors.number ? (
-                <div>{formik.errors.number}</div>
-              ) : null}
+              <div className='form-input-container'>
+                <label htmlFor='number'>Tuk Number</label>
+                <input
+                  disabled
+                  id='number'
+                  name='number'
+                  type='number'
+                  value={formik.values.number}
+                />
+                <p className='form-error'>{formik.errors.number}</p>
+              </div>
 
               <button type='submit'>Submit</button>
             </form>
