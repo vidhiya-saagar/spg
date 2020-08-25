@@ -11,17 +11,27 @@ import * as anvaad from 'anvaad-js';
 const regex = /[\u0A00-\u0A7F]/;
 const isGurmukhi = (s) => regex.test(s);
 
+// Formik is kinda stupid... I'll look into it tomorrow
 const validate = (values) => {
   const errors = {};
 
   for (let key in values) {
     if (values[key] === '') errors[key] = 'Required';
     if (!isGurmukhi(values.unicode)) errors.unicode = 'Must be Gurmukhi';
-    if (!isGurmukhi(values.firstLetters))
+    if (!isGurmukhi(values.firstLetters)) {
       errors.firstLetters = 'Must be Gurmukhi';
+    }
+    if (values.unicode.slice(-1) === ' ') {
+      errors.unicode = 'Cannot end in a space';
+    }
+
+    // If it ends in a ।, there needs to be a space before it
+    if (values.unicode.slice(-1) === '।') {
+      if (values.unicode.slice(-2) !== ' ।') {
+        errors.unicode = "Space issues with the '।' ";
+      }
+    }
   }
-  // TODO: Validate that unicode is the Gurmukhi
-  // TODO: Validate that unicode is the Gurmukhi
   return errors;
 };
 

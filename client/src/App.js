@@ -2,9 +2,10 @@ import React from 'react';
 import './stylesheets/App.css';
 import Header from './components/Header';
 import Menu from './components/Menu';
-import ChapterScreen from './screens/ChapterScreen';
-import ChaptersIndexScreen from './screens/ChaptersIndexScreen';
 import HomeScreen from './screens/HomeScreen';
+import ChaptersIndexScreen from './screens/ChaptersIndexScreen';
+import ChapterScreen from './screens/ChapterScreen';
+import NewChapterScreen from './screens/NewChapterScreen';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const App = () => {
@@ -20,6 +21,9 @@ const App = () => {
         </Route>
         <Route exact path='/chapters'>
           <ChaptersIndexScreen />
+        </Route>
+        <Route exact path='/chapters/new'>
+          <NewChapterScreen />
         </Route>
         <Route path='/chapters/:id'>
           <ChapterScreen />
