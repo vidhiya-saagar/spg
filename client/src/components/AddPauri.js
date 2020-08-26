@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TukStyles from '../stylesheets/TukStyles.module.css';
 import AddPauriStyles from '../stylesheets/components/AddPauriStyles.module.css';
 import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
-import { useFormik, Field } from 'formik';
 // import * as anv from 'anvaad-js';
 import * as anvaad from 'anvaad-js';
 // const anvaad = require('anvaad-js');
@@ -11,7 +10,6 @@ import * as anvaad from 'anvaad-js';
 const regex = /[\u0A00-\u0A7F]/;
 const isGurmukhi = (s) => regex.test(s);
 
-// Formik is kinda stupid... I'll look into it tomorrow
 const validate = (values) => {
   const errors = {};
 
@@ -40,31 +38,31 @@ const AddPauri = () => {
   const [currentChhandName, setCurrentChhandName] = useState('Kabitt');
   const [currentChhandNumber, setCurrentChhandNumber] = useState(2);
 
-  const formik = useFormik({
-    initialValues: {
-      unicode: '',
-      gurmukhiScript: '',
-      englishTranslit: '',
-      firstLetters: '',
-      number: currentChhandNumber,
-    },
-    validate,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+  const [unicodeRaw, setUnicodeRaw] = useState('');
+  const [unicode, setUnicode] = useState('');
+  const [thamki, setThamki] = useState([]);
+  const [vishraam, setVishraam] = useState([]);
+  const [gurmukhiScript, setGurmukhiScript] = useState('');
+  const [englishTranslit, setEnglishTranslit] = useState('');
+  const [firstLetters, setFirstLetters] = useState('');
+  const [number, setNumber] = useState(currentChhandNumber);
+
+  const updateTextFields = useCallback(() => {
+    let _gurmukhiScript = anvaad.unicode(unicode, true);
+    let _englishTranslit = anvaad.translit(_gurmukhiScript);
+    let _firstLetters = anvaad.firstLetters(unicode);
+
+    setGurmukhiScript(_gurmukhiScript);
+    setEnglishTranslit(_englishTranslit);
+    setFirstLetters(_firstLetters);
   });
 
-  const updateTextFields = (e) => {
-    formik.handleChange(e);
-    const val = e.target.value.trim();
-    let _gurmukhiScript = anvaad.unicode(val, true);
-    let _englishTranslit = anvaad.translit(_gurmukhiScript);
-    let _firstLetters = anvaad.firstLetters(val);
-
-    formik.setFieldValue('gurmukhiScript', _gurmukhiScript);
-    formik.setFieldValue('englishTranslit', _englishTranslit);
-    formik.setFieldValue('firstLetters', _firstLetters);
-  };
+  useEffect(() => {
+    setUnicode(unicodeRaw.replace(/[,.']/g, ''));
+    (() => {
+      updateTextFields();
+    })();
+  }, [unicodeRaw, updateTextFields]);
 
   return (
     <>
@@ -109,7 +107,22 @@ const AddPauri = () => {
       <div className={AddPauriStyles.Form}>
         <Grid alignItems='flex-end' justify='center'>
           <Grid column={true} sm={12} md={12} lg={12}>
-            <form onSubmit={formik.handleSubmit}>
+            <form>
+              <div className='form-input-container'>
+                <label htmlFor='unicode_raw'>Gurmukhi Unicode (Raw)</label>
+
+                <input
+                  id='unicode_raw'
+                  name='unicode_raw'
+                  type='text'
+                  onChange={(e) => {
+                    setUnicodeRaw(e.target.value);
+                  }}
+                  value={unicodeRaw}
+                />
+                {/* <p className='form-error'>{formik.errors.unicode}</p> */}
+              </div>
+
               <div className='form-input-container'>
                 <label htmlFor='unicode'>Gurmukhi Unicode</label>
                 <input
@@ -117,11 +130,12 @@ const AddPauri = () => {
                   name='unicode'
                   type='text'
                   onChange={(e) => {
-                    updateTextFields(e);
+                    setUnicodeRaw(e.target.value);
+                    updateTextFields();
                   }}
-                  value={formik.values.unicode}
+                  value={unicode}
                 />
-                <p className='form-error'>{formik.errors.unicode}</p>
+                {/* <p className='form-error'>{formik.errors.unicode}</p> */}
               </div>
 
               <div className='form-input-container'>
@@ -130,10 +144,10 @@ const AddPauri = () => {
                   id='gurmukhiScript'
                   name='gurmukhiScript'
                   type='text'
-                  onChange={formik.handleChange}
-                  value={formik.values.gurmukhiScript}
+                  onChange={(e) => setGurmukhiScript(e.target.value)}
+                  value={gurmukhiScript}
                 />
-                <p className='form-error'>{formik.errors.gurmukhiScript}</p>
+                {/* <p className='form-error'>{formik.errors.gurmukhiScript}</p> */}
               </div>
 
               <div className='form-input-container'>
@@ -142,10 +156,10 @@ const AddPauri = () => {
                   id='englishTranslit'
                   name='englishTranslit'
                   type='text'
-                  onChange={formik.handleChange}
-                  value={formik.values.englishTranslit}
+                  onChange={(e) => setEnglishTranslit(e.target.value)}
+                  value={englishTranslit}
                 />
-                <p className='form-error'>{formik.errors.englishTranslit}</p>
+                {/* <p className='form-error'>{formik.errors.englishTranslit}</p> */}
               </div>
 
               <div className='form-input-container'>
@@ -154,10 +168,10 @@ const AddPauri = () => {
                   id='firstLetters'
                   name='firstLetters'
                   type='text'
-                  onChange={formik.handleChange}
-                  value={formik.values.firstLetters}
+                  onChange={(e) => setFirstLetters(e.target.value)}
+                  value={firstLetters}
                 />
-                <p className='form-error'>{formik.errors.firstLetters}</p>
+                {/* <p className='form-error'>{formik.errors.firstLetters}</p> */}
               </div>
 
               <div className='form-input-container'>
@@ -167,9 +181,9 @@ const AddPauri = () => {
                   id='number'
                   name='number'
                   type='number'
-                  value={formik.values.number}
+                  value={number}
                 />
-                <p className='form-error'>{formik.errors.number}</p>
+                {/* <p className='form-error'>{formik.errors.number}</p> */}
               </div>
 
               <button type='submit'>Submit</button>
