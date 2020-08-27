@@ -8,14 +8,17 @@ import ChapterScreen from './screens/ChapterScreen';
 import NewChapterScreen from './screens/NewChapterScreen';
 import NewChhandScreen from './screens/NewChhandScreen';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Provider as FormContext } from './context/FormContext';
 
 const App = () => {
   return (
     <Router>
-      <div className='App'>
-        <Header />
-        <Menu />
-      </div>
+      <FormContext>
+        <div className='App'>
+          <Header />
+          <Menu />
+        </div>
+      </FormContext>
       <Switch>
         <Route exact path='/'>
           <HomeScreen />
