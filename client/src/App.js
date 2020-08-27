@@ -12,31 +12,31 @@ import { Provider as FormContext } from './context/FormContext';
 
 const App = () => {
   return (
-    <Router>
-      <FormContext>
+    <FormContext>
+      <Router>
         <div className='App'>
           <Header />
           <Menu />
         </div>
-      </FormContext>
-      <Switch>
-        <Route exact path='/'>
-          <HomeScreen />
-        </Route>
-        <Route exact path='/chapters'>
-          <ChaptersIndexScreen />
-        </Route>
-        <Route exact path='/chapters/new'>
-          <NewChapterScreen />
-        </Route>
-        <Route exact path='/chhands/new'>
-          <NewChhandScreen />
-        </Route>
-        <Route path='/chapters/:id'>
-          <ChapterScreen />
-        </Route>
-      </Switch>
-    </Router>
+        <Switch>
+          <Route exact path='/'>
+            <HomeScreen />
+          </Route>
+          <Route exact path='/chapters'>
+            <ChaptersIndexScreen />
+          </Route>
+          <Route exact path='/chapters/new'>
+            <NewChapterScreen />
+          </Route>
+          <Route exact path='/chhands/new'>
+            <NewChhandScreen />
+          </Route>
+          <Route path='/chapters/:id'>
+            <ChapterScreen />
+          </Route>
+        </Switch>
+      </Router>
+    </FormContext>
   );
 };
 

@@ -7,23 +7,23 @@ const formReducer = (state, action) => {
       console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
       return {
         ...state,
-        gurmukhiScript,
-        englishTranslit,
-        firstLetters,
-        thamki,
-        vishraam,
+        gurmukhiScript: action.payload.gurmukhiScript,
+        englishTranslit: action.payload.englishTranslit,
+        firstLetters: action.payload.firstLetters,
+        thamki: action.payload.thamki,
+        vishraam: action.payload.vishraam,
       };
-    case 'ADD_FORM_ITEM':
+    case 'UPDATE_FORM_ITEM':
       console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
       return {
         ...state,
-        unicodeRaw,
-        unicode,
-        gurmukhiScript,
-        englishTranslit,
-        firstLetters,
-        thamki,
-        vishraam,
+        unicodeRaw: action.payload.unicodeRaw,
+        unicode: action.payload.unicode,
+        gurmukhiScript: action.payload.gurmukhiScript,
+        englishTranslit: action.payload.englishTranslit,
+        firstLetters: action.payload.firstLetters,
+        thamki: action.payload.thamki,
+        vishraam: action.payload.vishraam,
       };
     default:
       console.log(`⚠️ Warning! Action ${action.type} not found!`);
@@ -44,8 +44,10 @@ const findWordIndiciesWith = (str, char) => {
 };
 
 const updateAddPauriForm = (dispatch) => (unicode) => {
+  debugger;
+  let _gurmukhiScript = anvaad.unicode(unicode, true);
   const formData = {
-    gurmukhiScript: anvaad.unicode(unicode, true),
+    gurmukhiScript: _gurmukhiScript,
     englishTranslit: anvaad.translit(_gurmukhiScript),
     firstLetters: anvaad.firstLetters(unicode),
     thamki: findWordIndiciesWith(unicode, ','),
@@ -55,12 +57,13 @@ const updateAddPauriForm = (dispatch) => (unicode) => {
 };
 
 const updateFormItem = (dispatch) => (formItem) => {
-  dispatch({ type: 'ADD_FORM_ITEM', payload: formItem });
+  debugger;
+  dispatch({ type: 'UPDATE_FORM_ITEM', payload: formItem });
 };
 
 export const { Provider, Context } = createDataContext(
   formReducer,
-  { updateAddPauriForm },
+  { updateAddPauriForm, updateFormItem },
   {
     unicodeRaw: '',
     unicode: '',
@@ -69,5 +72,6 @@ export const { Provider, Context } = createDataContext(
     gurmukhiScript: '',
     englishTranslit: '',
     firstLetters: '',
+    pauriNumber: 2,
   }
 );
