@@ -9,7 +9,12 @@ const regex = /[\u0A00-\u0A7F]/;
 const isGurmukhi = (s) => regex.test(s);
 
 const AddPauri = () => {
-  const { state, updateAddPauriForm, updateFormItem } = useContext(FormContext);
+  const {
+    state,
+    updateAddPauriTextFields,
+    updateFormItem,
+    updateUnicodeRaw,
+  } = useContext(FormContext);
   const {
     unicodeRaw,
     unicode,
@@ -26,13 +31,9 @@ const AddPauri = () => {
   const [currentChhandNumber, setCurrentChhandNumber] = useState(2);
 
   useEffect(() => {
-    if (unicodeRaw) {
-      updateFormItem({ unicode: unicodeRaw.replace(/[,.';]/g, '') });
-      debugger;
-      updateAddPauriForm(unicode);
-    }
+    if (unicode) updateAddPauriTextFields(unicode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unicodeRaw]);
+  }, [unicode]);
 
   return (
     <>
@@ -86,7 +87,7 @@ const AddPauri = () => {
                   name='unicode_raw'
                   type='text'
                   onChange={(e) => {
-                    updateFormItem({ unicodeRaw: e.target.value });
+                    updateUnicodeRaw(e.target.value);
                   }}
                   value={unicodeRaw}
                 />
@@ -151,7 +152,14 @@ const AddPauri = () => {
 
               <div className='form-input-container'>
                 <label htmlFor='thamki'>Thamkis</label>
-                <input id='thamki' name='thamki' type='text' value={thamki} />
+                <input
+                  id='thamki'
+                  readOnly
+                  name='thamki'
+                  type='text'
+                  value={thamki}
+                />
+
                 {/* <p className='form-error'>{formik.errors.thamki}</p> */}
               </div>
 
@@ -159,6 +167,7 @@ const AddPauri = () => {
                 <label htmlFor='vishraam'>Vishraam</label>
                 <input
                   id='vishraam'
+                  readOnly
                   name='vishraam'
                   type='text'
                   value={vishraam}
@@ -170,6 +179,7 @@ const AddPauri = () => {
                 <label htmlFor='number'>Tuk Number</label>
                 <input
                   disabled
+                  readOnly
                   id='pauriNumber'
                   name='pauriNumber'
                   type='number'
