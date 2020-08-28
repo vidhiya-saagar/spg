@@ -12,7 +12,7 @@ const Menu = () => {
         <Link to='/chapters'>Chapters</Link>
       </li>
       <li className={MenuStyles.MenuItem}>
-        <Link to='/chhands-types'>Chhands Types</Link>
+        <Link to='/chhand-types'>Chhands Types</Link>
       </li>
       <li className={MenuStyles.MenuItem}>
         <Link to='/chhands'>Chhands</Link>

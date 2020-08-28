@@ -99,7 +99,20 @@ app.get('/chhands', async (req, res) => {
   res.json({ chhands });
 });
 
-app.get('/chhand_types', async (req, res) => {
+app.get('/chhands/last', async (req, res) => {
+  const lastChapterId = await db
+    .select('*')
+    .from('chapters')
+    .max('order_number');
+
+  console.log('0000000');
+  console.log(lastChapterId);
+
+  // const chhand = await db.select('*').from('chhands').last();
+  res.json({ MESSAGE: 'OK' });
+});
+
+app.get('/chhand-types', async (req, res) => {
   const chhandTypes = await db.select('*').from('chhand_types');
 
   res.json({ chhandTypes });
