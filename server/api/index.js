@@ -101,19 +101,34 @@ app.get('/chhands', async (req, res) => {
 
 app.get('/chhand_types', async (req, res) => {
   const chhandTypes = await db.select('*').from('chhand_types');
+
   res.json({ chhandTypes });
 });
 
-app.post('/chhand_types', async (req, res) => {
-  const { chhand_name_unicode, chhand_name_english, chhand_name_gs } = req.body;
-  if (isNewChhandType(chhand_name_english) === true) {
-    const chhandTypes = await db.select('*').from('chhand_types');
-    res.json({ chhandTypes });
-  } else {
-    res.json({
-      message: 'This already an existing chhang_type in the database.',
-    });
-  }
+app.post('/chhands/:id/pauris', async (req, res) => {
+  console.log(req.body);
+  const chhand = await db
+    .select('*')
+    .from('chhands')
+    .where('id', req.params.id)
+    .first();
+
+  console.log(chhand);
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+
+  const tuk = await db('tuks').insert({
+    ...req.body,
+    pauri_id: 1,
+    chhand_id: chhand.id,
+    chhand_type_id: chhand.chhand_type_id,
+    chapter_id: chhand.chapter_id,
+  });
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  console.log(tuk);
+  res.json({ tuk });
+  // Whitelist params
+
+  res.json({ message: true });
 });
 
 const port = process.env.PORT || 1469;

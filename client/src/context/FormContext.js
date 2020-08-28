@@ -79,6 +79,5 @@ export const { Provider, Context } = createDataContext(
     gurmukhiScript: '',
     englishTranslit: '',
     firstLetters: '',
-    pauriNumber: 2,
   }
 );

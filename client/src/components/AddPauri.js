@@ -4,6 +4,7 @@ import AddPauriStyles from '../stylesheets/components/AddPauriStyles.module.css'
 import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
 import { Context as FormContext } from '../context/FormContext';
+import { fetchPost } from '../helpers/fetchHelper';
 
 const regex = /[\u0A00-\u0A7F]/;
 const isGurmukhi = (s) => regex.test(s);
@@ -23,10 +24,10 @@ const AddPauri = () => {
     gurmukhiScript,
     englishTranslit,
     firstLetters,
-    pauriNumber,
   } = state;
 
   const [currentPauri, setCurrentPauri] = useState(2);
+  const [tukNumber, setTukNumber] = useState(1);
   const [currentChhandName, setCurrentChhandName] = useState('Kabitt');
   const [currentChhandNumber, setCurrentChhandNumber] = useState(2);
 
@@ -34,6 +35,22 @@ const AddPauri = () => {
     if (unicode) updateAddPauriTextFields(unicode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unicode]);
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+    console.log('Submitting!');
+    const res = await fetchPost(`/chhands/2/pauris`, {
+      line_number: tukNumber,
+      content_unicode: unicode,
+      content_gs: gurmukhiScript,
+      content_transliteration_english: englishTranslit,
+      first_letters: firstLetters,
+      thamkis: thamki,
+      vishraams: vishraam,
+    });
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+    console.log(res);
+  };
 
   return (
     <>
@@ -78,7 +95,7 @@ const AddPauri = () => {
       <div className={AddPauriStyles.Form}>
         <Grid alignItems='flex-end' justify='center'>
           <Grid column={true} sm={12} md={12} lg={12}>
-            <form>
+            <form onSubmit={submitForm}>
               <div className='form-input-container'>
                 <label htmlFor='unicode_raw'>Gurmukhi Unicode (Raw)</label>
 
@@ -180,10 +197,10 @@ const AddPauri = () => {
                 <input
                   disabled
                   readOnly
-                  id='pauriNumber'
-                  name='pauriNumber'
+                  id='tukNumber'
+                  name='tukNumber'
                   type='number'
-                  value={pauriNumber}
+                  value={tukNumber}
                 />
                 {/* <p className='form-error'>{formik.errors.number}</p> */}
               </div>
