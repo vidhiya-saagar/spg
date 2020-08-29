@@ -26,7 +26,7 @@ const ChhandsIndexScreen = () => {
           </p>
         </Grid>
 
-        <Grid column={true} sm={12} md={10} lg={8}>
+        <Grid column={true} sm={12} md={10} lg={10}>
           {chapters &&
             chapters.map((chapter) => {
               return (
@@ -46,7 +46,7 @@ const ChhandsIndexScreen = () => {
                         <td>Chhand Name</td>
                         <td>Order Number</td>
                         <td>First Pauri Tuk</td>
-                        <td># Pauris</td>
+                        <td>Last Pauri #</td>
                       </tr>
                     </thead>
                     <tbody>
@@ -58,7 +58,8 @@ const ChhandsIndexScreen = () => {
                               <td>{chhand.chhand_type_id}</td>
                               <td>{chhand.chhand_name_english}</td>
                               <td>{chhand.order_number}</td>
-                              {<td>{chhand.first_tuk.content_unicode}</td>}
+                              <td>{chhand.first_tuk.content_unicode}</td>
+                              <td>{chhand.last_pauri.signature_unicode}</td>
                               <td></td>
                             </tr>
                           );

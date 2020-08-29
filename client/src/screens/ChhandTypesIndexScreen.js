@@ -25,7 +25,7 @@ const ChhandTypesIndexScreen = () => {
           <h1 className='title'>Chhand Types</h1>
         </Grid>
 
-        <Grid column={true} sm={12} md={10} lg={8}>
+        <Grid column={true} sm={12} md={10} lg={10}>
           <table className='mtop15'>
             <thead>
               <tr>
@@ -45,6 +45,7 @@ const ChhandTypesIndexScreen = () => {
                       <td>{chhandType.chhand_name_unicode}</td>
                       <td className='gurakhar'>{chhandType.chhand_name_gs}</td>
                       <td>{chhandType.chhand_name_english}</td>
+                      <td></td>
                     </tr>
                   );
                 })}

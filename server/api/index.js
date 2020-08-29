@@ -58,10 +58,18 @@ app.get('/chhands-screen', async (req, res) => {
       let firstTuk = await db
         .select('*')
         .from('tuks')
-        .where('chhand_id', chhand.id)
         .where('line_number', 1)
         .first();
+
+      let lastPauri = await db
+        .select('*')
+        .from('pauris')
+        .where('chhand_id', chhand.id)
+        .orderBy('number', 'ASC')
+        .first();
+
       chhand.first_tuk = firstTuk;
+      chhand.last_pauri = lastPauri;
     }
     chapter.chhands = chhands;
   }
