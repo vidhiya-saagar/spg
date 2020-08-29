@@ -9,13 +9,5 @@ exports.seed = async function seedNanakPrakash(knex) {
       title_transliteration_english: 'Sri Nanak Prakash Poorbaradh',
       description_english: '',
     },
-    {
-      id: 2,
-      book_order: 2,
-      title_unicode: 'ਸ੍ਰੀ ਨਾਨਕ ਪ੍ਰਕਾਸ਼ ਉੱਤਰਾਰਧ',
-      title_gs: 'sRI nwnk pRkwsæ au`qrwrD',
-      title_transliteration_english: 'Sri Nanak Prakash Utraradh',
-      description_english: '',
-    },
   ]);
 };

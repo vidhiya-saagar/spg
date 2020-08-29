@@ -35,13 +35,66 @@ app.get('/', (req, res) => {
 
 // app.use('/api/v1', api);
 
-// app.use(middlewares.notFound);
-// app.use(middlewares.errorHandler);
+const isSafeParam = (table, param) => {
+  switch (table.toUpperCase()) {
+    case 'CHAPTERS':
+      return [
+        'number',
+        'book_id',
+        'title_unicode',
+        'title_gs',
+        'title_transliteration_english',
+        'last',
+      ].includes(param);
+      break;
+
+    default:
+      return false;
+      break;
+  }
+};
+const chapterQueryParams = async (chapters, query) => {
+  for (let param of Object.keys(query)) {
+    if (!isSafeParam('CHAPTERS', param)) return false;
+
+    console.log(param);
+    switch (param) {
+      case 'number':
+      case 'book_id':
+        chapters.where(param, query[param]);
+        break;
+      case 'title_unicode':
+      case 'title_gs':
+      case 'title_transliteration_english':
+        chapters.where(param, 'LIKE', `%${query[param]}%`);
+        break;
+      case 'last':
+        console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+        const lastBookId = await db
+          .select('id')
+          .from('books')
+          .orderBy('book_order', 'ASC')
+          .first();
+        return chapters
+          .where('book_id', lastBookId)
+          .orderBy('order_number', 'ASC')
+          .first();
+        break;
+
+      // default:
+      //   break;
+    }
+  }
+};
 
 app.get('/chapters', async (req, res) => {
-  let chapters = await db.select('*').from('chapters');
+  let chapters = db.select('*').from('chapters');
 
-  res.json({ chapters });
+  if (Object.keys(req.query).length > 0) {
+    chapterQueryParams(chapters, req.query); // Side Effect
+  }
+
+  res.json({ chapters: await chapters });
 });
 
 // I do NOT know how to do this properly
