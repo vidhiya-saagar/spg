@@ -162,9 +162,6 @@ label {
   background: #FFF;
   border: 1.4px solid #e1e1e1;
   letter-spacing: 1px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   color: #242424;
   padding: 0.65rem 1.5rem;
 
@@ -516,58 +513,6 @@ td {
 @media (prefers-color-scheme: dark) {
   td {
     border-color: var(--gray-700);
-  }
-}
-
-/* Code
-––––––––––––––––––––––––––––––––– */
-code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
-    monospace;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  background: var(--gray-100);
-  padding: 0 0.328rem;
-  display: inline-block;
-  vertical-align: middle;
-  border-radius: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-  code {
-    background-color: var(--gray-700);
-  }
-}
-
-p > code {
-  white-space: normal;
-}
-
-pre > code {
-  line-height: 1.563em;
-  display: block;
-  padding: 1rem;
-  white-space: pre;
-  margin-bottom: 1.563rem;
-  overflow: scroll;
-}
-
-/* Forces a new-line at the end of a code block for layout purposes. */
-pre > code::after {
-  content: " ";
-}
-
-/* Blockquote
-––––––––––––––––––––––––––––––––– */
-blockquote {
-  border-left: 0.25rem solid var(--gray-100);
-  padding: 0 1rem;
-  margin-bottom: 1.563rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  blockquote {
-    border-left: 0.25rem solid var(--gray-700);
   }
 }
 
