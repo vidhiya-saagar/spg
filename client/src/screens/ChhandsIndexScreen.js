@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import { fetchGet } from '../helpers/fetchHelper';
 import ChapterStyles from '../stylesheets/components/ChapterStyles.module.css';
-
+import AddChhand from '../components/AddChhand';
 const ChhandsIndexScreen = () => {
   const [chapters, setChapters] = useState(null);
 
@@ -70,6 +70,8 @@ const ChhandsIndexScreen = () => {
               );
             })}
         </Grid>
+
+        <AddChhand />
       </Grid>
     </>
   );

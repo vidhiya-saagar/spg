@@ -148,7 +148,7 @@ app.get('/chhands/last', async (req, res) => {
 app.get('/chhand-types', async (req, res) => {
   const chhandTypes = await db.select('*').from('chhand_types');
 
-  res.json({ chhandTypes });
+  res.json({ chhand_types: chhandTypes });
 });
 
 app.post('/chhands/:id/pauris', async (req, res) => {

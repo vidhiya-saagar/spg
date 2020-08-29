@@ -4,7 +4,6 @@ import AddChhandType from '../components/AddChhandType';
 import { Link } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import { fetchGet } from '../helpers/fetchHelper';
-import * as anvaad from 'anvaad-js';
 
 const ChhandTypesIndexScreen = () => {
   const [chhandTypes, setChhandTypes] = useState([]);
@@ -12,7 +11,7 @@ const ChhandTypesIndexScreen = () => {
   useEffect(() => {
     const fetchAllChhandTypes = async () => {
       const res = await fetchGet('/chhand-types');
-      setChhandTypes(res.chhandTypes);
+      setChhandTypes(res.chhand_types);
     };
     fetchAllChhandTypes();
   }, []);
