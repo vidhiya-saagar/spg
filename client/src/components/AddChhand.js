@@ -4,6 +4,7 @@ import * as anvaad from 'anvaad-js';
 import { fetchGet } from '../helpers/fetchHelper';
 import { CodeBlock, a11yLight } from 'react-code-blocks';
 import Select from 'react-select';
+import Submit from '../components/Submit';
 
 const selectStyles = {
   control: (provided) => ({
@@ -64,7 +65,7 @@ const AddChhand = () => {
 
   return (
     <Grid alignItems='center' justify='center'>
-      <Grid sm={12} md={8} lg={8} justify='center'>
+      <Grid column={true} sm={12} md={8} lg={6}>
         {/* Chapter */}
         <form className='spg-form'>
           <div className='form-element'>
@@ -101,10 +102,7 @@ const AddChhand = () => {
               styles={selectStyles}
             />
           </div>
-
-          <button type='submit' className={`mtop15 `}>
-            Submit
-          </button>
+          <Submit />
         </form>
       </Grid>
     </Grid>
