@@ -105,12 +105,10 @@ p > *:last-child {
 
 a {
   color: inherit;
-  text-decoration: underline;
   text-decoration-color: var(--text-decoration-color);
   -webkit-text-decoration-color: var(--text-decoration-color);
   border-radius: 5px;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 2px;
+  text-decoration: none;
 }
 
 @media (hover: hover) {
