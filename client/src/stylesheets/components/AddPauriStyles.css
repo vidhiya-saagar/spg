@@ -156,7 +156,7 @@ label {
   font-weight: 300;
 }
 
-.spg-form input {
+.spg-form input, .spg-form textarea {
   border-radius: 20px;
   font-family: 'Josefin Sans', sans-serif;
   background: #FFF;
@@ -579,7 +579,7 @@ abbr {
   }
 }
 
-button:disabled {
+button:disabled, input:disabled, label.disabled {
   opacity: 0.5;
   cursor: not-allowed !important;
 }

@@ -5,6 +5,7 @@ import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
 import { Context as FormContext } from '../context/FormContext';
 import { fetchPost } from '../helpers/fetchHelper';
+import Submit from '../components/Submit';
 
 const regex = /[\u0A00-\u0A7F]/;
 const isGurmukhi = (s) => regex.test(s);
@@ -32,7 +33,7 @@ const AddPauri = () => {
   const [currentChhandNumber, setCurrentChhandNumber] = useState(2);
 
   useEffect(() => {
-    if (unicode) updateAddPauriTextFields(unicode);
+    updateAddPauriTextFields(unicode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unicode]);
 
@@ -95,117 +96,120 @@ const AddPauri = () => {
       <div className={AddPauriStyles.Form}>
         <Grid alignItems='flex-end' justify='center'>
           <Grid column={true} sm={12} md={12} lg={12}>
-            <form onSubmit={submitForm}>
-              <div className='form-input-container'>
+            <form onSubmit={submitForm} className='spg-form'>
+              <div className='form-element'>
                 <label htmlFor='unicode_raw'>Gurmukhi Unicode (Raw)</label>
 
-                <input
+                <textarea
                   id='unicode_raw'
                   name='unicode_raw'
                   type='text'
+                  rows='3'
                   onChange={(e) => {
                     updateUnicodeRaw(e.target.value);
                   }}
                   value={unicodeRaw}
                 />
-                {/* <p className='form-error'>{formik.errors.unicode}</p> */}
               </div>
 
-              <div className='form-input-container'>
+              <div className='form-element'>
                 <label htmlFor='unicode'>Gurmukhi Unicode</label>
-                <input
+                <textarea
                   id='unicode'
                   name='unicode'
                   type='text'
+                  rows='3'
                   onChange={(e) => {
                     updateFormItem({ unicode: e.target.value });
                   }}
                   value={unicode}
                 />
-                {/* <p className='form-error'>{formik.errors.unicode}</p> */}
               </div>
 
-              <div className='form-input-container'>
+              <div className='form-element'>
                 <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
-                <input
+                <textarea
                   id='gurmukhiScript'
                   name='gurmukhiScript'
                   type='text'
+                  rows='3'
                   onChange={(e) =>
                     updateFormItem({ gurmukhiScript: e.target.value })
                   }
                   value={gurmukhiScript} // state is imported from Context
                 />
-                {/* <p className='form-error'>{formik.errors.gurmukhiScript}</p> */}
               </div>
 
-              <div className='form-input-container'>
-                <label htmlFor='englishTranslit'>English Transliteration</label>
+              <div className='form-element'>
+                <label className='disabled' htmlFor='englishTranslit'>
+                  English Transliteration
+                </label>
                 <input
                   id='englishTranslit'
                   name='englishTranslit'
+                  readOnly
+                  disabled
                   type='text'
-                  onChange={(e) =>
-                    updateFormItem({ englishTranslit: e.target.value })
-                  }
                   value={englishTranslit}
                 />
-                {/* <p className='form-error'>{formik.errors.englishTranslit}</p> */}
               </div>
 
-              <div className='form-input-container'>
-                <label htmlFor='firstLetters'>First Letters</label>
+              <div className='form-element'>
+                <label className='disabled' htmlFor='firstLetters'>
+                  First Letters
+                </label>
                 <input
                   id='firstLetters'
                   name='firstLetters'
+                  readOnly
+                  disabled
                   type='text'
-                  onChange={(e) =>
-                    updateFormItem({ firstLetters: e.target.value })
-                  }
                   value={firstLetters}
                 />
-                {/* <p className='form-error'>{formik.errors.firstLetters}</p> */}
               </div>
 
-              <div className='form-input-container'>
-                <label htmlFor='thamki'>Thamkis</label>
+              <div className='form-element'>
+                <label className='disabled' htmlFor='thamki'>
+                  Thamkis
+                </label>
                 <input
                   id='thamki'
-                  readOnly
                   name='thamki'
+                  readOnly
+                  disabled
                   type='text'
                   value={thamki}
                 />
-
-                {/* <p className='form-error'>{formik.errors.thamki}</p> */}
               </div>
 
-              <div className='form-input-container'>
-                <label htmlFor='vishraam'>Vishraam</label>
+              <div className='form-element'>
+                <label className='disabled' htmlFor='vishraam'>
+                  Vishraam
+                </label>
                 <input
                   id='vishraam'
-                  readOnly
                   name='vishraam'
+                  readOnly
+                  disabled
                   type='text'
                   value={vishraam}
                 />
-                {/* <p className='form-error'>{formik.errors.vishraam}</p> */}
               </div>
 
-              <div className='form-input-container'>
-                <label htmlFor='number'>Tuk Number</label>
+              <div className='form-element'>
+                <label className='disabled' htmlFor='number'>
+                  Tuk Number
+                </label>
                 <input
-                  disabled
-                  readOnly
                   id='tukNumber'
                   name='tukNumber'
+                  readOnly
+                  disabled
                   type='number'
                   value={tukNumber}
                 />
-                {/* <p className='form-error'>{formik.errors.number}</p> */}
               </div>
-
-              <button type='submit'>Submit</button>
+              <Submit />
             </form>
           </Grid>
         </Grid>

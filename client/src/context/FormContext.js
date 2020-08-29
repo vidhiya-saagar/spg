@@ -55,11 +55,12 @@ const updateAddPauriTextFields = (dispatch) => (unicode) => {
 };
 
 const updateUnicodeRaw = (dispatch) => (unicodeRaw) => {
+  const unicodeRawString = unicodeRaw.replace(/\r?\n|\r/g, '; ');
   const payload = {
-    unicodeRaw,
-    unicode: unicodeRaw.replace(/[,.';]/g, ''),
-    thamki: findWordIndiciesWith(unicodeRaw, ','),
-    vishraam: findWordIndiciesWith(unicodeRaw, ';'),
+    unicodeRaw: unicodeRawString,
+    unicode: unicodeRawString.trim().replace(/[,.';]/g, ''),
+    thamki: findWordIndiciesWith(unicodeRawString, ','),
+    vishraam: findWordIndiciesWith(unicodeRawString, ';'),
   };
   dispatch({ type: 'UPDATE_UNICODE_RAW', payload });
 };
