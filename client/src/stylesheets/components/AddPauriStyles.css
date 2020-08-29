@@ -156,6 +156,59 @@ label {
   font-weight: 300;
 }
 
+.spg-form input {
+  border-radius: 20px;
+  font-family: 'Josefin Sans', sans-serif;
+  background: #FFF;
+  border: 1.4px solid #e1e1e1;
+  letter-spacing: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #242424;
+  padding: 0.65rem 1.5rem;
+
+  margin-bottom: 15px;
+}
+
+.spg-form label {
+  font-family: 'Josefin Sans', sans-serif;
+  color: #242424;
+  padding: 0.25em;
+}
+
+.spg-form input:focus, .spg-form select:focus, .spg-form textarea:focus {
+  outline: none;
+  border: 1.4px solid #969696;
+}
+
+.spg-btn {
+
+}
+
+.spg-form input[type="submit"],
+.spg-form input[type="reset"],
+.spg-form input[type="button"],
+.spg-form button, .spg-btn {
+  min-width: 240px;
+  text-transform: uppercase;
+  font-family: 'Josefin Sans', sans-serif;
+  color: #ffe9f4;
+  background-color: #ff9cce;
+  border: 2px solid #ff9cce;
+}
+
+@media (hover: hover) {
+  .spg-form input[type="submit"]:hover,
+  .spg-form input[type="reset"]:hover,
+  .spg-form input[type="button"]:hover,
+  .spg-form button:hover,
+  .spg-btn:hover {
+    background-color: #ff83c1;
+    /* background-color: var(--gray-800); */
+  }
+}
+
 .form-input-container p {
   font-weight: 600;
   color: red;
