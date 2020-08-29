@@ -39,7 +39,32 @@ app.get('/', (req, res) => {
 // app.use(middlewares.errorHandler);
 
 app.get('/chapters', async (req, res) => {
-  const chapters = await db.select('*').from('chapters');
+  let chapters = await db.select('*').from('chapters');
+
+  res.json({ chapters });
+});
+
+// I do NOT know how to do this properly
+app.get('/chhands-screen', async (req, res) => {
+  let chapters = await db.select('*').from('chapters');
+
+  for (let chapter of chapters) {
+    let chhands = await db
+      .select('*')
+      .from('chhands')
+      .where('chapter_id', chapter.id);
+
+    for (let chhand of chhands) {
+      let firstTuk = await db
+        .select('*')
+        .from('tuks')
+        .where('chhand_id', chhand.id)
+        .where('line_number', 1)
+        .first();
+      chhand.first_tuk = firstTuk;
+    }
+    chapter.chhands = chhands;
+  }
   res.json({ chapters });
 });
 

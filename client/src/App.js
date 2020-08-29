@@ -5,6 +5,7 @@ import Menu from './components/Menu';
 import HomeScreen from './screens/HomeScreen';
 import ChaptersIndexScreen from './screens/ChaptersIndexScreen';
 import ChhandTypesIndexScreen from './screens/ChhandTypesIndexScreen';
+import ChhandsIndexScreen from './screens/ChhandsIndexScreen';
 import ChapterScreen from './screens/ChapterScreen';
 import NewChapterScreen from './screens/NewChapterScreen';
 import NewChhandScreen from './screens/NewChhandScreen';
@@ -28,6 +29,9 @@ const App = () => {
           </Route>
           <Route exact path='/chhand-types'>
             <ChhandTypesIndexScreen />
+          </Route>
+          <Route exact path='/chhands'>
+            <ChhandsIndexScreen />
           </Route>
           <Route exact path='/chapters/new'>
             <NewChapterScreen />

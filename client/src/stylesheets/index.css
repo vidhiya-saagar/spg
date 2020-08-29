@@ -24,6 +24,15 @@ code {
   text-align: center;
 }
 
+.subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: 1.2px;
+  text-transform: lowercase;
+}
+
 .gurakhar {
   font-family: 'GurAkhar';
 }

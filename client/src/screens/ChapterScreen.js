@@ -16,13 +16,13 @@ const ChapterScreen = () => {
 
   // // !prettier-ignore
   useEffect(() => {
-    const fetchAllChhands = async () => {
+    const fetchAllChapterChhands = async () => {
       const res = await fetchGet(`/chapters/${id}/tuks`);
       setChapter(res.chapter);
       setChhands(res.chhands);
     };
 
-    fetchAllChhands();
+    fetchAllChapterChhands();
   }, [id]);
 
   return (
