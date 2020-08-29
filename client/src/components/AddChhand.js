@@ -4,19 +4,28 @@ import * as anvaad from 'anvaad-js';
 import { fetchGet } from '../helpers/fetchHelper';
 
 const AddChhand = () => {
-  const [chhandTypes, setChhandTypes] = useState(null);
+  const [chhandTypeOptions, setChhandTypeOptions] = useState(null);
+  const [lastChapter, setLastChapter] = useState(null);
 
   const [unicode, setUnicode] = useState('');
-
   const [chhandType, setChhandType] = useState('');
   const [english, setEnglish] = useState('');
 
   useEffect(() => {
     const fetchAllChhandTypes = async () => {
       const res = await fetchGet('/chhand-types');
-      setChhandTypes(res.chhand_types);
+      console.log('fetchAllChhandTypes', res);
+      setChhandTypeOptions(res.chhand_types);
     };
-  });
+
+    const fetchLastChapter = async () => {
+      const res = await fetchGet('/chapters?last=1');
+      console.log('fetchLastChapter', res);
+      setLastChapter(res.chhand_types);
+    };
+    // fetchAllChhandTypes();
+    fetchLastChapter();
+  }, []);
 
   return (
     <Grid alignItems='center' justify='center'>

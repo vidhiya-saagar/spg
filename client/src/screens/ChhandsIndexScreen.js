@@ -70,7 +70,6 @@ const ChhandsIndexScreen = () => {
               );
             })}
         </Grid>
-
         <AddChhand />
       </Grid>
     </>

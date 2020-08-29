@@ -8,7 +8,6 @@ import ChhandTypesIndexScreen from './screens/ChhandTypesIndexScreen';
 import ChhandsIndexScreen from './screens/ChhandsIndexScreen';
 import ChapterScreen from './screens/ChapterScreen';
 import NewChapterScreen from './screens/NewChapterScreen';
-import NewChhandScreen from './screens/NewChhandScreen';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Provider as FormContext } from './context/FormContext';
 
@@ -35,9 +34,6 @@ const App = () => {
           </Route>
           <Route exact path='/chapters/new'>
             <NewChapterScreen />
-          </Route>
-          <Route exact path='/chhands/new'>
-            <NewChhandScreen />
           </Route>
           <Route path='/chapters/:id'>
             <ChapterScreen />
