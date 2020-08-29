@@ -19,11 +19,14 @@ const AddChhand = () => {
     };
 
     const fetchLastChapter = async () => {
-      const res = await fetchGet('/chapters?last=1');
-      console.log('fetchLastChapter', res);
-      setLastChapter(res.chhand_types);
+      try {
+        const res = await fetchGet('/chapters?last=1');
+        setLastChapter(res.chapters[0]);
+      } catch (error) {
+        console.log(`⚠️ Error: ${error}`);
+      }
     };
-    // fetchAllChhandTypes();
+    fetchAllChhandTypes();
     fetchLastChapter();
   }, []);
 

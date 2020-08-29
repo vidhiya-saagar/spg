@@ -35,6 +35,7 @@ app.get('/', (req, res) => {
 
 // app.use('/api/v1', api);
 
+// This is redundant, but will be using it as a Schema
 const isSafeParam = (table, param) => {
   switch (table.toUpperCase()) {
     case 'CHAPTERS':
@@ -54,10 +55,11 @@ const isSafeParam = (table, param) => {
   }
 };
 const chapterQueryParams = async (chapters, query) => {
+  console.log(`chapterQueryParams: ${query}`);
+
   for (let param of Object.keys(query)) {
     if (!isSafeParam('CHAPTERS', param)) return false;
 
-    console.log(param);
     switch (param) {
       case 'number':
       case 'book_id':
@@ -69,7 +71,6 @@ const chapterQueryParams = async (chapters, query) => {
         chapters.where(param, 'LIKE', `%${query[param]}%`);
         break;
       case 'last':
-        console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         const lastBookId = await db
           .select('id')
           .from('books')
@@ -78,11 +79,12 @@ const chapterQueryParams = async (chapters, query) => {
         return chapters
           .where('book_id', lastBookId)
           .orderBy('order_number', 'ASC')
-          .first();
+          .limit(query.last);
         break;
 
-      // default:
-      //   break;
+      default:
+        console.log(`⚠️ Something went wrong! ${param} was not recorgnized`);
+        break;
     }
   }
 };

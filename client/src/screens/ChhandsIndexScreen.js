@@ -30,7 +30,7 @@ const ChhandsIndexScreen = () => {
           {chapters &&
             chapters.map((chapter) => {
               return (
-                <>
+                <div key={chapter.id}>
                   <h1 className={ChapterStyles.ChapterTitle}>
                     <Link to={`/chapters/${chapter.id}`}>
                       Chapter {chapter.number}:{' '}
@@ -66,7 +66,7 @@ const ChhandsIndexScreen = () => {
                         })}
                     </tbody>
                   </table>
-                </>
+                </div>
               );
             })}
         </Grid>
