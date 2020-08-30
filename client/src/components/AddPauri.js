@@ -49,8 +49,6 @@ const AddPauri = () => {
       thamkis: thamki,
       vishraams: vishraam,
     });
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-    console.log(res);
   };
 
   return (

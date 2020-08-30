@@ -39,7 +39,6 @@ const AddChhand = () => {
   useEffect(() => {
     const fetchAllChhandTypes = async () => {
       const res = await fetchGet('/chhand-types');
-      console.log('fetchAllChhandTypes', res);
       setChhandTypeOptions(
         res.chhand_types.map((chhandType) => {
           return {
