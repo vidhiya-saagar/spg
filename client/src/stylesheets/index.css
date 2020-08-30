@@ -14,7 +14,7 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    monospace !important;
 }
 
 .title {
@@ -22,4 +22,21 @@ code {
   font-weight: 600;
   font-size: 32px;
   text-align: center;
+}
+
+.subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: 1.2px;
+  text-transform: lowercase;
+}
+
+.gurakhar {
+  font-family: 'GurAkhar';
+}
+
+.mtop15 {
+  margin-top: 15px;
 }

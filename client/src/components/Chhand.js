@@ -11,7 +11,7 @@ const Chhand = (props) => {
   return (
     <>
       <p>{chhandType.chhand_name_unicode}</p>
-      <p className={TukStyles.GurAkhar}>{chhandType.chhand_name_gs}</p>
+      <p className='gurakhar'>{chhandType.chhand_name_gs}</p>
       <p className={TukStyles.EnglishTranslit}>
         {chhandType.chhand_name_english}
       </p>

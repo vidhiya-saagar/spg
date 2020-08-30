@@ -11,7 +11,6 @@ exports.seed = async function createChapterOne(knex) {
       title_gs: 'mMglw crn nwm mihmw brnn nwm pRQmo DÎwie',
       title_transliteration_english:
         'ma(n)galaa charana naam mahimaa baranana naam prathamo dhayai',
-      order_number: 1,
       description_english:
         "Kavi Santokh Singh's masterpiece begins with some of the most profolific Mangals of all time.",
     },

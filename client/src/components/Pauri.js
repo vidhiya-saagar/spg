@@ -8,7 +8,7 @@ const Pauri = (props) => {
         return (
           <div key={tuk.id}>
             <p>{tuk.content_unicode}</p>
-            <p className={TukStyles.GurAkhar}>{tuk.content_gs}</p>
+            <p className='gurakhar'>{tuk.content_gs}</p>
             <p className={TukStyles.EnglishTranslit}>
               {tuk.content_transliteration_english}
             </p>

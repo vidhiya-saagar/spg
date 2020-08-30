@@ -1,69 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import TukStyles from '../stylesheets/TukStyles.module.css';
 import AddPauriStyles from '../stylesheets/components/AddPauriStyles.module.css';
 import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
-import { useFormik, Field } from 'formik';
-// import * as anv from 'anvaad-js';
-import * as anvaad from 'anvaad-js';
-// const anvaad = require('anvaad-js');
+import { Context as FormContext } from '../context/FormContext';
+import { fetchPost } from '../helpers/fetchHelper';
+import Submit from '../components/Submit';
 
 const regex = /[\u0A00-\u0A7F]/;
 const isGurmukhi = (s) => regex.test(s);
 
-// Formik is kinda stupid... I'll look into it tomorrow
-const validate = (values) => {
-  const errors = {};
-
-  for (let key in values) {
-    if (values[key] === '') errors[key] = 'Required';
-    if (!isGurmukhi(values.unicode)) errors.unicode = 'Must be Gurmukhi';
-    if (!isGurmukhi(values.firstLetters)) {
-      errors.firstLetters = 'Must be Gurmukhi';
-    }
-    if (values.unicode.slice(-1) === ' ') {
-      errors.unicode = 'Cannot end in a space';
-    }
-
-    // If it ends in a ।, there needs to be a space before it
-    if (values.unicode.slice(-1) === '।') {
-      if (values.unicode.slice(-2) !== ' ।') {
-        errors.unicode = "Space issues with the '।' ";
-      }
-    }
-  }
-  return errors;
-};
-
 const AddPauri = () => {
+  const {
+    state,
+    updateAddPauriTextFields,
+    updateFormItem,
+    updateUnicodeRaw,
+  } = useContext(FormContext);
+  const {
+    unicodeRaw,
+    unicode,
+    thamki,
+    vishraam,
+    gurmukhiScript,
+    englishTranslit,
+    firstLetters,
+  } = state;
+
   const [currentPauri, setCurrentPauri] = useState(2);
+  const [tukNumber, setTukNumber] = useState(1);
   const [currentChhandName, setCurrentChhandName] = useState('Kabitt');
   const [currentChhandNumber, setCurrentChhandNumber] = useState(2);
 
-  const formik = useFormik({
-    initialValues: {
-      unicode: '',
-      gurmukhiScript: '',
-      englishTranslit: '',
-      firstLetters: '',
-      number: currentChhandNumber,
-    },
-    validate,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
+  useEffect(() => {
+    updateAddPauriTextFields(unicode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unicode]);
 
-  const updateTextFields = (e) => {
-    formik.handleChange(e);
-    const val = e.target.value.trim();
-    let _gurmukhiScript = anvaad.unicode(val, true);
-    let _englishTranslit = anvaad.translit(_gurmukhiScript);
-    let _firstLetters = anvaad.firstLetters(val);
-
-    formik.setFieldValue('gurmukhiScript', _gurmukhiScript);
-    formik.setFieldValue('englishTranslit', _englishTranslit);
-    formik.setFieldValue('firstLetters', _firstLetters);
+  const submitForm = async (e) => {
+    e.preventDefault();
+    console.log('Submitting!');
+    const res = await fetchPost(`/chhands/2/pauris`, {
+      line_number: tukNumber,
+      content_unicode: unicode,
+      content_gs: gurmukhiScript,
+      content_transliteration_english: englishTranslit,
+      first_letters: firstLetters,
+      thamkis: thamki,
+      vishraams: vishraam,
+    });
   };
 
   return (
@@ -109,70 +94,120 @@ const AddPauri = () => {
       <div className={AddPauriStyles.Form}>
         <Grid alignItems='flex-end' justify='center'>
           <Grid column={true} sm={12} md={12} lg={12}>
-            <form onSubmit={formik.handleSubmit}>
-              <div className='form-input-container'>
+            <form onSubmit={submitForm} className='spg-form'>
+              <div className='form-element'>
+                <label htmlFor='unicode_raw'>Gurmukhi Unicode (Raw)</label>
+
+                <textarea
+                  id='unicode_raw'
+                  name='unicode_raw'
+                  type='text'
+                  rows='3'
+                  onChange={(e) => {
+                    updateUnicodeRaw(e.target.value);
+                  }}
+                  value={unicodeRaw}
+                />
+              </div>
+
+              <div className='form-element'>
                 <label htmlFor='unicode'>Gurmukhi Unicode</label>
-                <input
+                <textarea
                   id='unicode'
                   name='unicode'
                   type='text'
+                  rows='3'
                   onChange={(e) => {
-                    updateTextFields(e);
+                    updateFormItem({ unicode: e.target.value });
                   }}
-                  value={formik.values.unicode}
+                  value={unicode}
                 />
-                <p className='form-error'>{formik.errors.unicode}</p>
               </div>
 
-              <div className='form-input-container'>
+              <div className='form-element'>
                 <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
-                <input
+                <textarea
                   id='gurmukhiScript'
                   name='gurmukhiScript'
                   type='text'
-                  onChange={formik.handleChange}
-                  value={formik.values.gurmukhiScript}
+                  rows='3'
+                  onChange={(e) =>
+                    updateFormItem({ gurmukhiScript: e.target.value })
+                  }
+                  value={gurmukhiScript} // state is imported from Context
                 />
-                <p className='form-error'>{formik.errors.gurmukhiScript}</p>
               </div>
 
-              <div className='form-input-container'>
-                <label htmlFor='englishTranslit'>English Transliteration</label>
+              <div className='form-element'>
+                <label className='disabled' htmlFor='englishTranslit'>
+                  English Transliteration
+                </label>
                 <input
                   id='englishTranslit'
                   name='englishTranslit'
+                  readOnly
+                  disabled
                   type='text'
-                  onChange={formik.handleChange}
-                  value={formik.values.englishTranslit}
+                  value={englishTranslit}
                 />
-                <p className='form-error'>{formik.errors.englishTranslit}</p>
               </div>
 
-              <div className='form-input-container'>
-                <label htmlFor='firstLetters'>First Letters</label>
+              <div className='form-element'>
+                <label className='disabled' htmlFor='firstLetters'>
+                  First Letters
+                </label>
                 <input
                   id='firstLetters'
                   name='firstLetters'
-                  type='text'
-                  onChange={formik.handleChange}
-                  value={formik.values.firstLetters}
-                />
-                <p className='form-error'>{formik.errors.firstLetters}</p>
-              </div>
-
-              <div className='form-input-container'>
-                <label htmlFor='number'>Tuk Number</label>
-                <input
+                  readOnly
                   disabled
-                  id='number'
-                  name='number'
-                  type='number'
-                  value={formik.values.number}
+                  type='text'
+                  value={firstLetters}
                 />
-                <p className='form-error'>{formik.errors.number}</p>
               </div>
 
-              <button type='submit'>Submit</button>
+              <div className='form-element'>
+                <label className='disabled' htmlFor='thamki'>
+                  Thamkis
+                </label>
+                <input
+                  id='thamki'
+                  name='thamki'
+                  readOnly
+                  disabled
+                  type='text'
+                  value={thamki}
+                />
+              </div>
+
+              <div className='form-element'>
+                <label className='disabled' htmlFor='vishraam'>
+                  Vishraam
+                </label>
+                <input
+                  id='vishraam'
+                  name='vishraam'
+                  readOnly
+                  disabled
+                  type='text'
+                  value={vishraam}
+                />
+              </div>
+
+              <div className='form-element'>
+                <label className='disabled' htmlFor='number'>
+                  Tuk Number
+                </label>
+                <input
+                  id='tukNumber'
+                  name='tukNumber'
+                  readOnly
+                  disabled
+                  type='number'
+                  value={tukNumber}
+                />
+              </div>
+              <Submit />
             </form>
           </Grid>
         </Grid>

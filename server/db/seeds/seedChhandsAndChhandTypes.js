@@ -3,7 +3,7 @@ exports.seed = async function runChhandSeeds(knex) {
     await knex('chhand_types').del();
     return await knex('chhand_types').insert([
       {
-        id: 4,
+        id: 1,
         chhand_name_unicode: 'ਦੋਹਰਾ',
         chhand_name_english: 'Dohra',
         chhand_name_gs: 'dohrw',
@@ -17,7 +17,7 @@ exports.seed = async function runChhandSeeds(knex) {
         id: 1,
         order_number: 1,
         chhand_name_english: 'Dohra',
-        chhand_type_id: 4,
+        chhand_type_id: 1,
         chapter_id: 1,
       },
     ]);

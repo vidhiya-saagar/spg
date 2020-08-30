@@ -1,6 +1,7 @@
 .ContentContainer {
-  background: antiquewhite;
-  height: 800px;
+  /* background: antiquewhite;
+  height: 800px; */
+  border-right: 1px solid black;
 }
 
 .PauriContainer {

@@ -105,12 +105,10 @@ p > *:last-child {
 
 a {
   color: inherit;
-  text-decoration: underline;
   text-decoration-color: var(--text-decoration-color);
   -webkit-text-decoration-color: var(--text-decoration-color);
   border-radius: 5px;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 2px;
+  text-decoration: none;
 }
 
 @media (hover: hover) {
@@ -156,6 +154,54 @@ label {
 .form-input-container {
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 300;
+}
+
+.spg-form input, .spg-form textarea {
+  border-radius: 20px;
+  font-family: 'Josefin Sans', sans-serif;
+  background: #FFF;
+  border: 1.4px solid #e1e1e1;
+  letter-spacing: 1px;
+  color: #242424;
+  padding: 0.65rem 1.5rem;
+}
+
+.spg-form label {
+  font-family: 'Josefin Sans', sans-serif;
+  color: #242424;
+  padding: 0.25em;
+}
+
+.spg-form input:focus, .spg-form select:focus, .spg-form textarea:focus {
+  outline: none;
+  border: 1.4px solid #969696;
+}
+
+.spg-form .form-element {
+  margin-bottom: 15px;
+}
+
+.spg-form input[type="submit"],
+.spg-form input[type="reset"],
+.spg-form input[type="button"],
+.spg-form button, .spg-btn {
+  min-width: 240px;
+  text-transform: uppercase;
+  font-family: 'Josefin Sans', sans-serif;
+  color: #ffe9f4;
+  background-color: #ff9cce;
+  border: 2px solid #ff9cce;
+}
+
+@media (hover: hover) {
+  .spg-form input[type="submit"]:hover,
+  .spg-form input[type="reset"]:hover,
+  .spg-form input[type="button"]:hover,
+  .spg-form button:hover,
+  .spg-btn:hover {
+    background-color: #ff83c1;
+    /* background-color: var(--gray-800); */
+  }
 }
 
 .form-input-container p {
@@ -440,7 +486,7 @@ table {
 
 th,
 td {
-  padding: 0.5rem 0.5rem 0.5rem 0;
+  padding: 1.5rem 1.5rem 1.5rem 0;
   margin: 0;
 }
 
@@ -465,58 +511,6 @@ td {
 @media (prefers-color-scheme: dark) {
   td {
     border-color: var(--gray-700);
-  }
-}
-
-/* Code
-––––––––––––––––––––––––––––––––– */
-code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
-    monospace;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  background: var(--gray-100);
-  padding: 0 0.328rem;
-  display: inline-block;
-  vertical-align: middle;
-  border-radius: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-  code {
-    background-color: var(--gray-700);
-  }
-}
-
-p > code {
-  white-space: normal;
-}
-
-pre > code {
-  line-height: 1.563em;
-  display: block;
-  padding: 1rem;
-  white-space: pre;
-  margin-bottom: 1.563rem;
-  overflow: scroll;
-}
-
-/* Forces a new-line at the end of a code block for layout purposes. */
-pre > code::after {
-  content: " ";
-}
-
-/* Blockquote
-––––––––––––––––––––––––––––––––– */
-blockquote {
-  border-left: 0.25rem solid var(--gray-100);
-  padding: 0 1rem;
-  margin-bottom: 1.563rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  blockquote {
-    border-left: 0.25rem solid var(--gray-700);
   }
 }
 
@@ -585,7 +579,7 @@ abbr {
   }
 }
 
-button:disabled {
+button:disabled, input:disabled, label.disabled {
   opacity: 0.5;
   cursor: not-allowed !important;
 }

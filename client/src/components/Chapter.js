@@ -22,7 +22,7 @@ const Chapter = (props) => {
         </h1>
       </Grid>
       <Grid sm={12}>
-        <h3 className={ChapterStyles.GurAkhar}>{title_gs}</h3>
+        <h3 className='gurakhar'>{title_gs}</h3>
       </Grid>
       <Grid sm={12}>
         <h4 className={ChapterStyles.EnglishTranslit}>

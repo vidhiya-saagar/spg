@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const baseUrl = 'http://localhost:1469';
+const baseUrl = 'http://localhost:1469/api/v1';
 
 const fetchPost = async (url = '', data = {}) => {
   console.log('POST', url);

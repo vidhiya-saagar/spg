@@ -7,7 +7,7 @@
   "author": "Dilraj <dsomel21@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon server/api/index.js"
+    "start": "nodemon server/api/app.js"
   },
   "dependencies": {
     "anvaad-js": "^1.4.2",
