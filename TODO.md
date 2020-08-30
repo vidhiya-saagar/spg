@@ -14,14 +14,20 @@
  * [X] Create a directory/repo to handle client side
  * [X] Setup basic client side project structure (src, helpers, config)
  * [X] Mockup some quick designs for admin client side
- * [ ] Create an admin form that allows to add new:
-  * [ ] Visually see the chapter content (so far...) 
-  * [ ] Chhand Types
-  * [ ] New Chhands
-  * [ ] New lines into a pauri of chhands
-* [ ] Auto populating `transliteration` when pasting the unicode 
-* [ ] Auto populating `gurmukhi_script` when pasting the unicode 
+ * [X] Create an admin form that allows to add new:
+  * [X] Visually see the chapter content (so far...) 
+  * [X] Chhand Types
+  * [X] New Chhands
+  * [X] New lines into a pauri of chhands
+* [X] Auto populating `transliteration` when pasting the unicode 
+* [X] Auto populating `gurmukhi_script` when pasting the unicode 
 * [ ] Preview of the `gurmukhi_script` (with correct fonts)
+
+Version 0.0.7 Goals:
+* [ ] Send data from form submissions to backend
+* [ ] UI and navigation improvements 
+* [ ] Adding better validations on client side
+* [ ] Adding validations on backend with JSON { error } returns
 
 ## Perhaps this visualization will help:
 
