@@ -24,6 +24,7 @@
 * [ ] Preview of the `gurmukhi_script` (with correct fonts)
 
 Version 0.0.7 Goals:
+* [ ] Be able to add a pauri (support adding multiple tuks)
 * [ ] Send data from form submissions to backend
 * [ ] UI and navigation improvements 
 * [ ] Adding better validations on client side

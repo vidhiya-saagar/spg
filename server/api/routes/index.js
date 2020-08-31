@@ -15,6 +15,10 @@ const {
   createPauriInChhand,
 } = require('../controllers/chhands.controller');
 
+const { pauriIndex } = require('../controllers/pauris.controller');
+
+const { last } = require('../controllers/application.controller');
+
 const router = express.Router();
 
 // chapters
@@ -29,6 +33,11 @@ router.get('/chhand-types', chhandTypeIndex);
 // chhands
 router.get('/chhands', chhandIndex);
 router.get('/chhands-screen', chhandScreen);
-router.post('/chhands/:id/pauris', createPauriInChhand);
+
+// pauris
+router.get('/pauris', pauriIndex);
+
+// APPLICATIONS
+router.get('/last', last);
 
 module.exports = router;
