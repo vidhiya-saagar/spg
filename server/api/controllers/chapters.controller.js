@@ -1,30 +1,11 @@
 const db = require('../db');
-
+const { isSafeParam } = require('../controllers/helpers/validations');
 /*
- * TODO: Seperate these concerns:
+ * TODO: Separate these concerns:
  * Use controllers for only reading, parsing, validating input
- * Send complex, business logic, DB stuff to seperate service
+ * Send complex, business logic, DB stuff to separate service
  */
 
-// This is redundant, but will be using it as a Schema
-const isSafeParam = (table, param) => {
-  switch (table.toUpperCase()) {
-    case 'CHAPTERS':
-      return [
-        'number',
-        'book_id',
-        'title_unicode',
-        'title_gs',
-        'title_transliteration_english',
-        'last',
-      ].includes(param);
-      break;
-
-    default:
-      return false;
-      break;
-  }
-};
 const chapterQueryParams = async (chapters, query) => {
   console.log(`chapterQueryParams: ${query}`);
 
@@ -41,20 +22,21 @@ const chapterQueryParams = async (chapters, query) => {
       case 'title_transliteration_english':
         chapters.where(param, 'LIKE', `%${query[param]}%`);
         break;
+      // NOTE: Will return immediately (no chaining)
       case 'last':
         const lastBookId = await db
           .select('id')
           .from('books')
-          .orderBy('book_order', 'ASC')
+          .orderBy('book_order', 'DESC')
           .first();
         return chapters
           .where('book_id', lastBookId)
-          .orderBy('order_number', 'ASC')
+          .orderBy('order_number', 'DESC')
           .limit(query.last);
         break;
 
       default:
-        console.log(`⚠️ Something went wrong! ${param} was not recorgnized`);
+        console.log(`⚠️ Something went wrong! ${param} was not recognized`);
         break;
     }
   }
