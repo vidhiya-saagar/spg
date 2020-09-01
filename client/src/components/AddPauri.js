@@ -66,7 +66,7 @@ const AddPauri = () => {
         <Grid alignItems='flex-end' justify='center'>
           <Grid column={true} sm={8} md={8} lg={8}>
             <div className={`${AddPauriStyles.TableData}`}>
-              Current Pauri (Not created yet)
+              Next Pauri # (Not created yet)
             </div>
             <div className={`${AddPauriStyles.TableData}`}>Current Chhand</div>
             <div className={`${AddPauriStyles.TableData}`}>
@@ -78,17 +78,17 @@ const AddPauri = () => {
             <div
               className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
             >
-              {currentPauri}
+              {granthState.lastPauri?.number + 1 || 'N/A'}
             </div>
             <div
               className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
             >
-              {currentChhandName}
+              {granthState.lastChhand?.chhand_name_english || 'N/A'}
             </div>
             <div
               className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
             >
-              {currentChhandNumber}
+              {granthState.lastChhand?.order_number || 'N/A'}
             </div>
           </Grid>
           <p className={`${AddPauriStyles.Warning} ${AddPauriStyles.Bold}`}>
