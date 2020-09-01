@@ -4,6 +4,7 @@ import AddPauriStyles from '../stylesheets/components/AddPauriStyles.module.css'
 import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
 import { Context as FormContext } from '../context/FormContext';
+import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost } from '../helpers/fetchHelper';
 import Submit from '../components/Submit';
 
@@ -12,20 +13,24 @@ const isGurmukhi = (s) => regex.test(s);
 
 const AddPauri = () => {
   const {
-    state,
+    state: formState,
     updateAddPauriTextFields,
     updateFormItem,
     updateUnicodeRaw,
   } = useContext(FormContext);
+
+  const { state: granthState, getSpgStatus } = useContext(GranthContext);
+
   const {
     unicodeRaw,
     unicode,
+    unicodeVishraam,
     thamki,
     vishraam,
     gurmukhiScript,
     englishTranslit,
     firstLetters,
-  } = state;
+  } = formState;
 
   const [currentPauri, setCurrentPauri] = useState(2);
   const [tukNumber, setTukNumber] = useState(1);
@@ -33,10 +38,14 @@ const AddPauri = () => {
   const [currentChhandNumber, setCurrentChhandNumber] = useState(2);
 
   useEffect(() => {
+    getSpgStatus();
     updateAddPauriTextFields(unicode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unicode]);
 
+  console.log('----', granthState);
+
+  // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
     console.log('Submitting!');
