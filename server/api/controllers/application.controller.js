@@ -35,8 +35,6 @@ const last = async (req, res) => {
     .orderBy('book_order', 'DESC')
     .first();
 
-  json.last_book = lastBook;
-
   lastChapter = await db
     .select('*')
     .from('chapters')
@@ -45,8 +43,6 @@ const last = async (req, res) => {
     .first();
 
   if (lastChapter) {
-    json.last_book.last_chapter = lastChapter;
-
     lastChhand = await db
       .select('*')
       .from('chhands')
@@ -56,8 +52,6 @@ const last = async (req, res) => {
   }
 
   if (lastChhand) {
-    json.last_book.last_chapter.last_chhand = lastChhand;
-
     chhandType = await db
       .select('*')
       .from('chhand_types')
@@ -73,9 +67,6 @@ const last = async (req, res) => {
   }
 
   if (lastPauri) {
-    json.last_book.last_chapter.last_chhand.chhand_type = chhandType;
-    json.last_book.last_chapter.last_chhand.last_pauri = lastPauri;
-
     lastTuk = await db
       .select('*')
       .from('tuks')
@@ -85,10 +76,25 @@ const last = async (req, res) => {
   }
 
   if (lastTuk) {
-    json.last_book.last_chapter.last_chhand.last_pauri.last_tuk = lastTuk;
   }
 
-  res.json(json);
+  res.json({
+    last_book: {
+      ...lastBook,
+      last_chapter: {
+        ...lastChapter,
+        last_chhand: {
+          ...lastChhand,
+          last_pauri: {
+            ...lastPauri,
+            last_tuk: {
+              ...lastTuk,
+            },
+          },
+        },
+      },
+    },
+  });
 };
 
 module.exports = { last };

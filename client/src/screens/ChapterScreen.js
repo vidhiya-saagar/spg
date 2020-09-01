@@ -14,7 +14,6 @@ const ChapterScreen = () => {
   const [chapter, setChapter] = useState(null);
   const [chhands, setChhands] = useState(null);
 
-  // // !prettier-ignore
   useEffect(() => {
     const fetchAllChapterChhands = async () => {
       const res = await fetchGet(`/chapters/${id}/tuks`);
