@@ -15,6 +15,7 @@ const formReducer = (state, action) => {
       return {
         ...state,
         unicode: action.payload.unicode,
+        unicodeVishraam: action.payload.unicodeVishraam,
         gurmukhiScript: action.payload.gurmukhiScript,
       };
     case 'UPDATE_UNICODE_RAW':
@@ -22,6 +23,7 @@ const formReducer = (state, action) => {
         ...state,
         unicodeRaw: action.payload.unicodeRaw,
         unicode: action.payload.unicode,
+        unicodeVishraam: action.payload.unicodeVishraam,
         thamki: action.payload.thamki,
         vishraam: action.payload.vishraam,
       };
@@ -43,7 +45,11 @@ const findWordIndiciesWith = (str, char) => {
   return arr;
 };
 
-// When unicide Changes
+const handleLineBreaks = (str) => str.trim().replace(/\r?\n|\r/g, '; ');
+const removeSpecialChars = (str) => str.replace(/[,.';]/g, '');
+const keepVishraams = (str) => str.replace(/[.']/g, '');
+
+// When unicode changes
 const updateAddPauriTextFields = (dispatch) => (unicode) => {
   let _gurmukhiScript = anvaad.unicode(unicode, true);
   const formData = {
@@ -54,19 +60,20 @@ const updateAddPauriTextFields = (dispatch) => (unicode) => {
   dispatch({ type: 'UPDATE_ADD_PAURI_FORM', payload: formData });
 };
 
-// When unicodeRaw Changes
+// When unicodeRaw changes
 const updateUnicodeRaw = (dispatch) => (unicodeRaw) => {
-  const unicodeRawString = unicodeRaw.replace(/\r?\n|\r/g, '; ');
+  const unicodeRawString = handleLineBreaks(unicodeRaw);
   const payload = {
     unicodeRaw: unicodeRawString,
-    unicode: unicodeRawString.trim().replace(/[,.';]/g, ''),
+    unicode: removeSpecialChars(unicodeRawString),
+    unicodeVishraam: keepVishraams(unicodeRawString),
     thamki: findWordIndiciesWith(unicodeRawString, ','),
     vishraam: findWordIndiciesWith(unicodeRawString, ';'),
   };
   dispatch({ type: 'UPDATE_UNICODE_RAW', payload });
 };
 
-// When unicode/gurmukhiScript Changes
+// When unicode/gurmukhiScript/unicodeVishraam changes
 const updateFormItem = (dispatch) => (formItem) => {
   dispatch({ type: 'UPDATE_FORM_ITEM', payload: formItem });
 };

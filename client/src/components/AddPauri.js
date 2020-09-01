@@ -32,18 +32,17 @@ const AddPauri = () => {
     firstLetters,
   } = formState;
 
-  const [currentPauri, setCurrentPauri] = useState(2);
   const [tukNumber, setTukNumber] = useState(1);
-  const [currentChhandName, setCurrentChhandName] = useState('Kabitt');
-  const [currentChhandNumber, setCurrentChhandNumber] = useState(2);
 
   useEffect(() => {
     getSpgStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     updateAddPauriTextFields(unicode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unicode]);
-
-  console.log('----', granthState);
 
   // TODO: Finish this properly when ready
   const submitForm = async (e) => {
@@ -91,7 +90,9 @@ const AddPauri = () => {
               {granthState.lastChhand?.order_number || 'N/A'}
             </div>
           </Grid>
-          <p className={`${AddPauriStyles.Warning} ${AddPauriStyles.Bold}`}>
+          <p
+            className={`${AddPauriStyles.Warning} ${AddPauriStyles.Bold} mtop15`}
+          >
             Do not skip tuks!
           </p>
         </Grid>
@@ -115,6 +116,7 @@ const AddPauri = () => {
                   onChange={(e) => {
                     updateUnicodeRaw(e.target.value);
                   }}
+                  spellcheck='false'
                   value={unicodeRaw}
                 />
               </div>
@@ -129,7 +131,25 @@ const AddPauri = () => {
                   onChange={(e) => {
                     updateFormItem({ unicode: e.target.value });
                   }}
+                  spellcheck='false'
                   value={unicode}
+                />
+              </div>
+
+              <div className='form-element'>
+                <label htmlFor='unicodeVishraam'>
+                  Gurmukhi (With Vishraams)
+                </label>
+                <textarea
+                  id='unicodeVishraam'
+                  name='unicodeVishraam'
+                  type='text'
+                  rows='3'
+                  onChange={(e) => {
+                    updateFormItem({ unicodeVishraam: e.target.value });
+                  }}
+                  spellcheck='false'
+                  value={unicodeVishraam}
                 />
               </div>
 
@@ -143,6 +163,7 @@ const AddPauri = () => {
                   onChange={(e) =>
                     updateFormItem({ gurmukhiScript: e.target.value })
                   }
+                  spellcheck='false'
                   value={gurmukhiScript} // state is imported from Context
                 />
               </div>
@@ -157,6 +178,7 @@ const AddPauri = () => {
                   readOnly
                   disabled
                   type='text'
+                  spellcheck='false'
                   value={englishTranslit}
                 />
               </div>
@@ -171,6 +193,7 @@ const AddPauri = () => {
                   readOnly
                   disabled
                   type='text'
+                  spellcheck='false'
                   value={firstLetters}
                 />
               </div>
@@ -185,6 +208,7 @@ const AddPauri = () => {
                   readOnly
                   disabled
                   type='text'
+                  spellcheck='false'
                   value={thamki}
                 />
               </div>
@@ -199,6 +223,7 @@ const AddPauri = () => {
                   readOnly
                   disabled
                   type='text'
+                  spellcheck='false'
                   value={vishraam}
                 />
               </div>
@@ -213,6 +238,7 @@ const AddPauri = () => {
                   readOnly
                   disabled
                   type='number'
+                  spellcheck='false'
                   value={tukNumber}
                 />
               </div>
