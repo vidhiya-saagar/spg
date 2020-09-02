@@ -1,14 +1,13 @@
+import { useContext } from 'react';
 import createDataContext from './createDataContext';
 import * as anvaad from 'anvaad-js';
 import { fetchGet } from '../helpers/fetchHelper';
 
 const formReducer = (state, action) => {
-  const index = state.tukForm.findIndex(
-    (tuk) => tuk.tukNumber === action.payload.tukNumber
-  );
-
+  let index;
   switch (action.type) {
     case 'UPDATE_FORM_ITEM':
+      index = findTukIndex(state, action.payload.tukNumber);
       return updateTukForm(index, state, {
         ...state.tukForm[index],
         unicode: action.payload.unicode,
@@ -17,6 +16,7 @@ const formReducer = (state, action) => {
       });
 
     case 'UPDATE_UNICODE_RAW':
+      index = findTukIndex(state, action.payload.tukNumber);
       return updateTukForm(index, state, {
         unicodeRaw: action.payload.unicodeRaw,
         unicode: action.payload.unicode,
@@ -29,9 +29,27 @@ const formReducer = (state, action) => {
         tukNumber: action.payload.tukNumber,
       });
 
+    case 'ADD_TUK_FORM':
+      index = state.tukForm.length + 1;
+      return updateTukForm(index, state, {
+        unicodeRaw: '',
+        unicode: '',
+        unicodeVishraam: '',
+        gurmukhiScript: '',
+        englishTranslit: '',
+        firstLetters: '',
+        thamki: [],
+        vishraam: [],
+        tukNumber: state.tukForm[state.tukForm.length - 1].tukNumber + 1,
+      });
+
     default:
       console.log(`⚠️ Warning! Action ${action.type} not found!`);
   }
+};
+
+const findTukIndex = (state, tukNumber) => {
+  return state.tukForm.findIndex((t) => t.tukNumber === tukNumber);
 };
 
 const updateTukForm = (index, oldState, newState) => {
@@ -87,11 +105,20 @@ const updateFormItem = (dispatch) => (formItem) => {
   dispatch({ type: 'UPDATE_FORM_ITEM', payload: formItem });
 };
 
+const addTukForm = (dispatch) => () => {
+  dispatch({ type: 'ADD_TUK_FORM' });
+};
+
+const removeLastTukForm = (dispatch) => () => {
+  dispatch({ type: 'REMOVE_LAST_TUK_FORM' });
+};
+
 export const { Provider, Context } = createDataContext(
   formReducer,
   {
     updateFormItem,
     updateUnicodeRaw,
+    addTukForm,
   },
   {
     tukForm: [
@@ -99,11 +126,11 @@ export const { Provider, Context } = createDataContext(
         unicodeRaw: '',
         unicode: '',
         unicodeVishraam: '',
-        thamki: [],
-        vishraam: [],
         gurmukhiScript: '',
         englishTranslit: '',
         firstLetters: '',
+        thamki: [],
+        vishraam: [],
         tukNumber: 1,
       },
     ],

@@ -17,6 +17,7 @@ const AddPauri = () => {
     updateAddPauriTextFields,
     updateFormItem,
     updateUnicodeRaw,
+    addTukForm,
   } = useContext(AddPauriFormContext);
   const tukForm = formState.tukForm;
 
@@ -31,6 +32,7 @@ const AddPauri = () => {
   // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
+    addTukForm();
     console.log('Submitting!');
     // const res = await fetchPost(`/chhands/2/pauris`, {
     //   line_number: tukNumber,
