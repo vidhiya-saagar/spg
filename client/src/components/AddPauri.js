@@ -18,24 +18,13 @@ const AddPauri = () => {
     updateFormItem,
     updateUnicodeRaw,
   } = useContext(AddPauriFormContext);
+  const tukForm = formState.tukForm;
 
   const { state: granthState, getSpgStatus } = useContext(GranthContext);
 
-  const tukForm = formState.tukForm;
-
   useEffect(() => {
     getSpgStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // useEffect(() => {
-  //   updateAddPauriTextFields(unicode);
-  // }, [unicode])
-
-  useEffect(() => {
-    if (tukForm && tukForm.length > 0) {
-      updateAddPauriTextFields(tukForm[0].unicode, 1);
-    }
+    updateUnicodeRaw(tukForm[0].unicodeRaw, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -98,15 +87,6 @@ const AddPauri = () => {
 
       {tukForm &&
         tukForm.map((tuk) => {
-          {
-            console.log('tukForm', tukForm);
-            console.log(
-              'tuk.unicode',
-              tuk.unicode,
-              'tuk.tukNumber',
-              tuk.tukNumber
-            );
-          }
           return (
             <div className={AddPauriStyles.Form} key={tuk.tukNumber.toString()}>
               <Grid alignItems='flex-end' justify='center'>

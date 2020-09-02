@@ -8,15 +8,6 @@ const formReducer = (state, action) => {
   );
 
   switch (action.type) {
-    case 'UPDATE_ADD_PAURI_FORM':
-      return updateTukForm(index, state, {
-        ...state.tukForm[index],
-        gurmukhiScript: action.payload.gurmukhiScript,
-        englishTranslit: action.payload.englishTranslit,
-        firstLetters: action.payload.firstLetters,
-        tukNumber: action.payload.tukNumber,
-      });
-
     case 'UPDATE_FORM_ITEM':
       return updateTukForm(index, state, {
         ...state.tukForm[index],
@@ -30,8 +21,12 @@ const formReducer = (state, action) => {
         unicodeRaw: action.payload.unicodeRaw,
         unicode: action.payload.unicode,
         unicodeVishraam: action.payload.unicodeVishraam,
+        gurmukhiScript: action.payload.gurmukhiScript,
+        englishTranslit: action.payload.englishTranslit,
+        firstLetters: action.payload.firstLetters,
         thamki: action.payload.thamki,
         vishraam: action.payload.vishraam,
+        tukNumber: action.payload.tukNumber,
       });
 
     default:
@@ -40,7 +35,6 @@ const formReducer = (state, action) => {
 };
 
 const updateTukForm = (index, oldState, newState) => {
-  debugger;
   return {
     ...oldState,
     tukForm: [
@@ -50,10 +44,6 @@ const updateTukForm = (index, oldState, newState) => {
     ],
   };
 };
-
-function removeItem(array, action) {
-  return [...array.slice(0, action.index), ...array.slice(action.index + 1)];
-}
 
 const findWordIndiciesWith = (str, char) => {
   const words = str.split(' ');
@@ -72,27 +62,21 @@ const handleLineBreaks = (str) => str.trim().replace(/\r?\n|\r/g, '; ');
 const removeSpecialChars = (str) => str.replace(/[,.';]/g, '');
 const keepVishraams = (str) => str.replace(/[.']/g, '');
 
-// When unicode changes
-const updateAddPauriTextFields = (dispatch) => (unicode, tukNumber) => {
-  let _gurmukhiScript = anvaad.unicode(unicode, true);
-  const formData = {
-    gurmukhiScript: _gurmukhiScript,
-    englishTranslit: anvaad.translit(_gurmukhiScript),
-    firstLetters: anvaad.firstLetters(unicode),
-    tukNumber,
-  };
-  dispatch({ type: 'UPDATE_ADD_PAURI_FORM', payload: formData });
-};
-
 // When unicodeRaw changes
 const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
-  const unicodeRawString = handleLineBreaks(unicodeRaw);
+  const unicodeRawSafe = handleLineBreaks(unicodeRaw);
+  const unicodeSafe = removeSpecialChars(unicodeRawSafe);
+  const _gurmukhiScript = anvaad.unicode(unicodeSafe, true);
+
   const payload = {
-    unicodeRaw: unicodeRawString,
-    unicode: removeSpecialChars(unicodeRawString),
-    unicodeVishraam: keepVishraams(unicodeRawString),
-    thamki: findWordIndiciesWith(unicodeRawString, ','),
-    vishraam: findWordIndiciesWith(unicodeRawString, ';'),
+    unicodeRaw: unicodeRawSafe,
+    unicode: unicodeSafe,
+    unicodeVishraam: keepVishraams(unicodeRawSafe),
+    gurmukhiScript: _gurmukhiScript,
+    englishTranslit: anvaad.translit(_gurmukhiScript),
+    firstLetters: anvaad.firstLetters(unicodeSafe),
+    thamki: findWordIndiciesWith(unicodeRawSafe, ','),
+    vishraam: findWordIndiciesWith(unicodeRawSafe, ';'),
     tukNumber,
   };
   dispatch({ type: 'UPDATE_UNICODE_RAW', payload });
@@ -106,7 +90,6 @@ const updateFormItem = (dispatch) => (formItem) => {
 export const { Provider, Context } = createDataContext(
   formReducer,
   {
-    updateAddPauriTextFields,
     updateFormItem,
     updateUnicodeRaw,
   },
