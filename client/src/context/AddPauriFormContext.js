@@ -9,12 +9,12 @@ const formReducer = (state, action) => {
 
   switch (action.type) {
     case 'UPDATE_ADD_PAURI_FORM':
-      // debugger;
       return updateTukForm(index, state, {
         ...state.tukForm[index],
         gurmukhiScript: action.payload.gurmukhiScript,
         englishTranslit: action.payload.englishTranslit,
         firstLetters: action.payload.firstLetters,
+        tukNumber: action.payload.tukNumber,
       });
 
     case 'UPDATE_FORM_ITEM':
@@ -40,11 +40,12 @@ const formReducer = (state, action) => {
 };
 
 const updateTukForm = (index, oldState, newState) => {
+  debugger;
   return {
     ...oldState,
     tukForm: [
       ...oldState.tukForm.slice(0, index), // everything before current post
-      newState,
+      { ...oldState.tukForm[index], ...newState },
       ...oldState.tukForm.slice(index + 1), // everything after current post
     ],
   };
@@ -86,7 +87,6 @@ const updateAddPauriTextFields = (dispatch) => (unicode, tukNumber) => {
 // When unicodeRaw changes
 const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
   const unicodeRawString = handleLineBreaks(unicodeRaw);
-  debugger;
   const payload = {
     unicodeRaw: unicodeRawString,
     unicode: removeSpecialChars(unicodeRawString),
@@ -100,7 +100,6 @@ const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
 
 // When unicode/gurmukhiScript/unicodeVishraam changes
 const updateFormItem = (dispatch) => (formItem) => {
-  debugger;
   dispatch({ type: 'UPDATE_FORM_ITEM', payload: formItem });
 };
 

@@ -28,11 +28,12 @@ const AddPauri = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // useEffect(() => {
+  //   updateAddPauriTextFields(unicode);
+  // }, [unicode])
+
   useEffect(() => {
     if (tukForm && tukForm.length > 0) {
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-      console.log(tukForm);
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx');
       updateAddPauriTextFields(tukForm[0].unicode, 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,8 +98,17 @@ const AddPauri = () => {
 
       {tukForm &&
         tukForm.map((tuk) => {
+          {
+            console.log('tukForm', tukForm);
+            console.log(
+              'tuk.unicode',
+              tuk.unicode,
+              'tuk.tukNumber',
+              tuk.tukNumber
+            );
+          }
           return (
-            <div className={AddPauriStyles.Form} key={tuk.tukNumber}>
+            <div className={AddPauriStyles.Form} key={tuk.tukNumber.toString()}>
               <Grid alignItems='flex-end' justify='center'>
                 <Grid column={true} sm={12} md={12} lg={12}>
                   <form onSubmit={submitForm} className='spg-form'>
