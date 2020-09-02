@@ -9,13 +9,13 @@ import ChhandsIndexScreen from './screens/ChhandsIndexScreen';
 import ChapterScreen from './screens/ChapterScreen';
 import NewChapterScreen from './screens/NewChapterScreen';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Provider as FormContext } from './context/FormContext';
+import { Provider as AddPauriFormContext } from './context/AddPauriFormContext';
 import { Provider as GranthContext } from './context/GranthContext';
 
 const App = () => {
   return (
     <GranthContext>
-      <FormContext>
+      <AddPauriFormContext>
         <Router>
           <div className='App'>
             <Header />
@@ -42,7 +42,7 @@ const App = () => {
             </Route>
           </Switch>
         </Router>
-      </FormContext>
+      </AddPauriFormContext>
     </GranthContext>
   );
 };
