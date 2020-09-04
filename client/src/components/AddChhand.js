@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '../components/Grid';
 import * as anvaad from 'anvaad-js';
 import { fetchGet } from '../helpers/fetchHelper';
 import { CodeBlock, a11yLight } from 'react-code-blocks';
 import Select from 'react-select';
 import Submit from '../components/Submit';
+import {
+  SweetError,
+  SweetSuccess,
+  SweetInputWarning,
+} from '../components/SweetAlert.js';
+import { fetchPost } from '../helpers/fetchHelper';
+import { Context as GranthContext } from '../context/GranthContext';
 
 const selectStyles = {
   control: (provided) => ({
@@ -24,17 +31,41 @@ const selectStyles = {
 
 const AddChhand = () => {
   const [chhandTypeOptions, setChhandTypeOptions] = useState([]);
-  const [lastChapter, setLastChapter] = useState(null);
+  const { state: granthState, getSpgStatus } = useContext(GranthContext);
 
   const [unicode, setUnicode] = useState('');
   const [selectedChhandType, setSelectedChhandType] = useState(null);
 
   const chapterCode = `{
-    id: ${lastChapter?.id},
-    number: ${lastChapter?.number},
-    order_number: ${lastChapter?.order_number},
-    title_unicode: "${lastChapter?.title_unicode}"
+    id: ${granthState.lastChapter?.id},
+    number: ${granthState.lastChapter?.number},
+    order_number: ${granthState.lastChapter?.order_number},
+    title_unicode: "${granthState.lastChapter?.title_unicode}"
 }`;
+
+  const createChhand = async (e) => {
+    e.preventDefault();
+    if (!selectedChhandType) return SweetInputWarning();
+    const res = await fetchPost('/chhands', {
+      chhand_type: selectedChhandType,
+      chhand_type_id: selectedChhandType.id,
+      chapter: granthState.lastChapter,
+      chapter_id: granthState.lastChapter.id,
+      order_number: granthState.lastChhand.order_number + 1,
+    });
+    handleCreateChhandResponse(res);
+  };
+
+  const handleCreateChhandResponse = (res) => {
+    if (res.errors?.length > 0) {
+      SweetError({ text: JSON.stringify(res.errors, null, 2) });
+    } else {
+      SweetSuccess({
+        title: `Chhand Saved!`,
+        text: JSON.stringify(res.chhand, null, 2),
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchAllChhandTypes = async () => {
@@ -49,16 +80,8 @@ const AddChhand = () => {
       );
     };
 
-    const fetchLastChapter = async () => {
-      try {
-        const res = await fetchGet('/chapters?last=1');
-        setLastChapter(res.chapters[0]);
-      } catch (error) {
-        console.log(`⚠️ Error: ${error}`);
-      }
-    };
+    getSpgStatus();
     fetchAllChhandTypes();
-    fetchLastChapter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -66,7 +89,7 @@ const AddChhand = () => {
     <Grid alignItems='center' justify='center'>
       <Grid column={true} sm={12} md={8} lg={6}>
         {/* Chapter */}
-        <form className='spg-form'>
+        <form className='spg-form' onSubmit={createChhand}>
           <div className='form-element'>
             <label htmlFor='chapterNumber'>Chapter</label>
             <CodeBlock
@@ -87,7 +110,7 @@ const AddChhand = () => {
               id='chhandOrderNumber'
               name='chhandOrderNumber'
               readOnly
-              value={2}
+              value={granthState?.lastChhand?.order_number + 1}
             />
           </div>
 
