@@ -35,4 +35,12 @@ const isSafeParam = (table, param) => {
   }
 };
 
-module.exports = { isSafeParam };
+const isGurmukhi = (s) => {
+  if (/[\u0A00-\u0A7F]/.test(s)) {
+    return true;
+  } else {
+    throw new Error('Input must be Gurmukhi unicode.');
+  }
+};
+
+module.exports = { isSafeParam, isGurmukhi };

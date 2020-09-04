@@ -8,9 +8,6 @@ import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost } from '../helpers/fetchHelper';
 import Submit from '../components/Submit';
 
-const regex = /[\u0A00-\u0A7F]/;
-const isGurmukhi = (s) => regex.test(s);
-
 const AddPauri = () => {
   const {
     state: formState,

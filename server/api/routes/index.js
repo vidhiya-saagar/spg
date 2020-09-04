@@ -7,7 +7,11 @@ const {
   chapterTuks,
 } = require('../controllers/chapters.controller');
 
-const { chhandTypeIndex } = require('../controllers/chhandTypes.controller');
+const {
+  chhandTypeIndex,
+  createChhandType,
+  validateChhandType,
+} = require('../controllers/chhandTypes.controller');
 
 const {
   chhandIndex,
@@ -29,6 +33,11 @@ router.get('/chapters/:id/tuks', chapterTuks);
 
 // chhand_types
 router.get('/chhand-types', chhandTypeIndex);
+router.post(
+  '/chhand-types',
+  validateChhandType('createChhandType'),
+  createChhandType
+);
 
 // chhands
 router.get('/chhands', chhandIndex);

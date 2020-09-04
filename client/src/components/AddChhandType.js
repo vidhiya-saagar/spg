@@ -3,16 +3,28 @@ import Grid from '../components/Grid';
 import * as anvaad from 'anvaad-js';
 import AddChhandTypeStyles from '../stylesheets/components/AddChhandTypeStyles.module.css';
 import Submit from '../components/Submit';
+import { fetchPost } from '../helpers/fetchHelper';
 
 const AddChhandType = () => {
   const [unicode, setUnicode] = useState('');
   const [gurmukhiScript, setGurmukhiScript] = useState('');
   const [english, setEnglish] = useState('');
 
+  const createChhandType = async (e) => {
+    e.preventDefault();
+    const res = await fetchPost('/chhand-types', {
+      chhand_name_unicode: unicode,
+      chhand_name_english: english,
+      chhand_name_gs: gurmukhiScript,
+    });
+    console.log(res);
+    debugger;
+  };
+
   return (
     <Grid alignItems='center' justify='center'>
       <Grid column={true} sm={12} md={8} lg={6}>
-        <form className='spg-form'>
+        <form className='spg-form' onSubmit={createChhandType}>
           {/* Unicode */}
           <div className='form-element'>
             <label htmlFor='unicode'>Gurmukhi Unicode</label>
