@@ -14,7 +14,9 @@
     "react-jss": "^10.4.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-select": "^3.1.0"
+    "react-select": "^3.1.0",
+    "sweetalert2": "^9.17.2",
+    "sweetalert2-react-content": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

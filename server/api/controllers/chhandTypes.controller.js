@@ -15,14 +15,16 @@ const createChhandType = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const chhandType = db('chhand-types').insert({ ...req.body });
+  const chhandTypeId = await db('chhand_types').insert({ ...req.body });
+  const chhandType = await db('chhand_types').where('id', chhandTypeId).first();
 
-  res.json({ errors, chhand_type: chhandType });
+  res.status(200).json({ chhand_type: chhandType });
 };
 
 const validateChhandType = (action) => {
   switch (action) {
     case 'createChhandType':
+      // Make sure this name doesn't exist already
       return [
         body('chhand_name_unicode').isString(),
         body('chhand_name_unicode').custom(isGurmukhi),

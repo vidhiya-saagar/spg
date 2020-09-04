@@ -4,6 +4,12 @@ import * as anvaad from 'anvaad-js';
 import AddChhandTypeStyles from '../stylesheets/components/AddChhandTypeStyles.module.css';
 import Submit from '../components/Submit';
 import { fetchPost } from '../helpers/fetchHelper';
+// import SweetAlert from '../components/SweetAlert.js';
+import {
+  SweetError,
+  SweetSuccess,
+  SweetInputWarning,
+} from '../components/SweetAlert.js';
 
 const AddChhandType = () => {
   const [unicode, setUnicode] = useState('');
@@ -12,13 +18,30 @@ const AddChhandType = () => {
 
   const createChhandType = async (e) => {
     e.preventDefault();
+    if (!isValidInput()) return SweetInputWarning();
     const res = await fetchPost('/chhand-types', {
       chhand_name_unicode: unicode,
       chhand_name_english: english,
       chhand_name_gs: gurmukhiScript,
     });
-    console.log(res);
-    debugger;
+    handleCreateChhandTypeResponse(res);
+  };
+
+  const isValidInput = () => {
+    return (
+      unicode.length > 0 && gurmukhiScript.length > 0 && english.length > 0
+    );
+  };
+
+  const handleCreateChhandTypeResponse = (res) => {
+    if (res.errors?.length > 0) {
+      SweetError({ text: JSON.stringify(res.errors, null, 2) });
+    } else {
+      SweetSuccess({
+        title: `Chhand Type Saved!`,
+        text: JSON.stringify(res.chhand_type, null, 2),
+      });
+    }
   };
 
   return (
