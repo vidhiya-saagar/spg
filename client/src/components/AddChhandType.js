@@ -4,12 +4,13 @@ import * as anvaad from 'anvaad-js';
 import AddChhandTypeStyles from '../stylesheets/components/AddChhandTypeStyles.module.css';
 import Submit from '../components/Submit';
 import { fetchPost } from '../helpers/fetchHelper';
-// import SweetAlert from '../components/SweetAlert.js';
+import * as Yup from 'yup';
 import {
   SweetError,
   SweetSuccess,
   SweetInputWarning,
 } from '../components/SweetAlert.js';
+import { isGurmukhi } from '../helpers/validationHelper';
 
 const AddChhandType = () => {
   const [unicode, setUnicode] = useState('');
@@ -18,20 +19,38 @@ const AddChhandType = () => {
 
   const createChhandType = async (e) => {
     e.preventDefault();
-    if (!isValidInput()) return SweetInputWarning();
+    const valid = await AddChhandTypeSchema.isValid({
+      unicode,
+      gurmukhiScript,
+      english,
+    });
+    console.log(valid);
+    debugger;
+    if (!valid) return SweetInputWarning();
     const res = await fetchPost('/chhand-types', {
       chhand_name_unicode: unicode,
-      chhand_name_english: english,
       chhand_name_gs: gurmukhiScript,
+      chhand_name_english: english,
     });
     handleCreateChhandTypeResponse(res);
   };
 
-  const isValidInput = () => {
-    return (
-      unicode.length > 0 && gurmukhiScript.length > 0 && english.length > 0
-    );
-  };
+  const AddChhandTypeSchema = Yup.object().shape({
+    unicode: Yup.string()
+      .min(2, 'Chhand name is too short.')
+      .required('Required')
+      .test('isGurmukhi', 'Must be Gurmukhi Unicode', isGurmukhi),
+
+    gurmukhiScript: Yup.string()
+      .min(2, 'Chhand name is too short.')
+      .required('Required'),
+
+    english: Yup.string()
+      .min(2, 'Chhand name is too short.')
+      .required('Required'),
+
+    // email: Yup.string().email('Invalid email').required('Required'),
+  });
 
   const handleCreateChhandTypeResponse = (res) => {
     if (res.errors?.length > 0) {
