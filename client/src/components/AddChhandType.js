@@ -20,7 +20,6 @@ const AddChhandType = () => {
 
   const createChhandType = async (e) => {
     e.preventDefault();
-
     if (!(await isValidInput())) return SweetInputWarning();
     const res = await fetchPost('/chhand-types', {
       chhand_name_unicode: unicode,
@@ -31,7 +30,7 @@ const AddChhandType = () => {
   };
 
   // TODO: The Yup library is... Not gonna say anything... But wtf is this
-  const isValidInput = async () => {
+  const isValidInput = () => {
     const valid = AddChhandTypeSchema.validate(
       {
         unicode,
@@ -39,8 +38,10 @@ const AddChhandType = () => {
         english,
       },
       { abortEarly: false }
-    ).catch(handleFormErrors);
-    return true;
+    )
+      .then(() => true)
+      .catch(handleFormErrors);
+    return valid;
   };
 
   const handleFormErrors = (error) => {

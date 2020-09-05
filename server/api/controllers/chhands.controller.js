@@ -125,7 +125,7 @@ const createChhand = async (req, res) => {
   });
   const chhand = await db('chhands').where('id', chhandId).first();
 
-  res.status(200).json({ message: true });
+  res.status(200).json({ chhand });
 };
 
 // TODO: This is not complete
@@ -175,6 +175,24 @@ const validateChhand = (action) => {
             });
           }
         ),
+        // TODO: ALSO NOT WORKING. WHAT A SURPRISE...
+        // check('order_number', 'The previous Chhand is empty.').custom(
+        //   (orderNum) => {
+        //     return getLastChhand().then((chhand) => {
+        //       if (orderNum === 1) return true;
+        //       return db
+        //         .select('*')
+        //         .from('pauris')
+        //         .where('chhand_id', chhand.id)
+        //         .limit(1)
+        //         .then((pauris) => {
+        //           debugger;
+        //           return pauris.length > 0;
+        //         });
+        //     });
+        //   }
+        // ),
+
         // check(
         //   'chapter_id',
         //   'Chhand can only be added to the last chapter.'
