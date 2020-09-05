@@ -16,23 +16,47 @@ const AddChhandType = () => {
   const [unicode, setUnicode] = useState('');
   const [gurmukhiScript, setGurmukhiScript] = useState('');
   const [english, setEnglish] = useState('');
+  const [formErrors, setFormErrors] = useState(null);
 
   const createChhandType = async (e) => {
     e.preventDefault();
-    const valid = await AddChhandTypeSchema.isValid({
-      unicode,
-      gurmukhiScript,
-      english,
-    });
-    console.log(valid);
-    debugger;
-    if (!valid) return SweetInputWarning();
+
+    if (!(await isValidInput())) return SweetInputWarning();
     const res = await fetchPost('/chhand-types', {
       chhand_name_unicode: unicode,
       chhand_name_gs: gurmukhiScript,
       chhand_name_english: english,
     });
     handleCreateChhandTypeResponse(res);
+  };
+
+  // TODO: The Yup library is... Not gonna say anything... But wtf is this
+  const isValidInput = async () => {
+    const valid = AddChhandTypeSchema.validate(
+      {
+        unicode,
+        gurmukhiScript,
+        english,
+      },
+      { abortEarly: false }
+    )
+      .then(() => true)
+      .catch(handleFormErrors);
+  };
+
+  const handleFormErrors = (error) => {
+    const errorObj = {};
+
+    error.inner.map((e) => {
+      if (errorObj[e.path]) {
+        errorObj[e.path].push(e.message);
+      } else {
+        errorObj[e.path] = [e.message];
+      }
+    });
+    setFormErrors(errorObj);
+
+    return false;
   };
 
   const AddChhandTypeSchema = Yup.object().shape({
@@ -42,14 +66,12 @@ const AddChhandType = () => {
       .test('isGurmukhi', 'Must be Gurmukhi Unicode', isGurmukhi),
 
     gurmukhiScript: Yup.string()
-      .min(2, 'Chhand name is too short.')
+      .min(2, 'Gurmukhi Script is too short.')
       .required('Required'),
 
     english: Yup.string()
-      .min(2, 'Chhand name is too short.')
+      .min(2, 'English transliteration is too short.')
       .required('Required'),
-
-    // email: Yup.string().email('Invalid email').required('Required'),
   });
 
   const handleCreateChhandTypeResponse = (res) => {
@@ -81,9 +103,10 @@ const AddChhandType = () => {
               }}
               value={unicode}
             />
+            <p>{formErrors?.unicode && formErrors.unicode}</p>
           </div>
 
-          {/* Unicode */}
+          {/* Gurmukhi Script */}
           <div className='form-element'>
             <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
             <input
@@ -94,9 +117,10 @@ const AddChhandType = () => {
               placeholder='isrKMfI CMd'
               value={gurmukhiScript}
             />
+            <p>{formErrors?.gurmukhiScript && formErrors.gurmukhiScript}</p>
           </div>
 
-          {/* Unicode */}
+          {/* English */}
           <div className='form-element'>
             <label htmlFor='english'>English</label>
             <input
@@ -109,6 +133,7 @@ const AddChhandType = () => {
               }}
               value={english}
             />
+            <p>{formErrors?.english && formErrors.english}</p>
           </div>
 
           <Submit />
