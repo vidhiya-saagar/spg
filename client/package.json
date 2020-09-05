@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "anvaad-js": "^1.4.2",
     "formik": "^2.1.5",
+    "lodash": "^4.17.20",
     "react": "^16.13.1",
     "react-code-blocks": "^0.0.8",
     "react-dom": "^16.13.1",
