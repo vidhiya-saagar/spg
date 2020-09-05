@@ -1,5 +1,5 @@
 const db = require('../db');
-const { body, validationResult } = require('express-validator');
+const { check, body, validationResult } = require('express-validator');
 const { isGurmukhi } = require('../controllers/helpers/validations');
 // GET `/chhand-types`
 const chhandTypeIndex = async (req, res) => {
@@ -30,6 +30,22 @@ const validateChhandType = (action) => {
         body('chhand_name_unicode').custom(isGurmukhi),
         body('chhand_name_english').isString(),
         body('chhand_name_gs').isString(),
+        // TODO: Does this work? You guessed it! NOPE! Why? I'll pay $100 for a good reason why
+        // check(
+        //   'chhand_name_unicode',
+        //   'Chhand already exists in the database'
+        // ).custom((unicode) => {
+        //   return db
+        //     .select('*')
+        //     .from('chhand_types')
+        //     .where('chhand_name_unicode', unicode)
+        //     .first()
+        //     .then((chhandType) => {
+        //       // If this exists, then prevent it from going to the controller
+        //       // return typeof chhandType === 'undefined';
+        //       return false;
+        //     });
+        // }),
       ];
       break;
 
