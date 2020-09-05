@@ -7,6 +7,7 @@ import { Context as AddPauriFormContext } from '../context/AddPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost } from '../helpers/fetchHelper';
 import Submit from '../components/Submit';
+import { formattedTukForm } from '../helpers/remap';
 
 const AddPauri = () => {
   const {
@@ -16,8 +17,8 @@ const AddPauri = () => {
     updateUnicodeRaw,
     addTukForm,
   } = useContext(AddPauriFormContext);
-  const tukForm = formState.tukForm;
 
+  const tukForm = formState.tukForm;
   const { state: granthState, getSpgStatus } = useContext(GranthContext);
 
   useEffect(() => {
@@ -29,19 +30,21 @@ const AddPauri = () => {
   // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
-    addTukForm();
+    console.log('----------------------------------');
+    console.log(granthState);
     console.log('Submitting!');
-    // const res = await fetchPost(`/chhands/2/pauris`, {
-    //   line_number: tukNumber,
-    //   content_unicode: unicode,
-    //   content_gs: gurmukhiScript,
-    //   content_transliteration_english: englishTranslit,
-    //   first_letters: firstLetters,
-    //   thamkis: thamki,
-    //   vishraams: vishraam,
-    // });
+    const res = await fetchPost(
+      `/chhands/${granthState.lastChhand.id}/pauris`,
+      formattedTukForm(tukForm)
+    );
+    console.log(res);
+    debugger;
   };
 
+  if (granthState) {
+    console.log('==================================');
+    console.log(granthState);
+  }
   return (
     <>
       <div className={AddPauriStyles.Info}>
@@ -60,7 +63,7 @@ const AddPauri = () => {
             <div
               className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
             >
-              {granthState.lastPauri?.number + 1 || 'N/A'}
+              {granthState.lastPauri?.number + 1 || 'Potentially New Pauri'}
             </div>
             <div
               className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
@@ -239,13 +242,18 @@ const AddPauri = () => {
                         value={tuk.tukNumber}
                       />
                     </div>
-                    <Submit />
                   </form>
                 </Grid>
               </Grid>
             </div>
           );
         })}
+      <button onClick={addTukForm}>Add Tuk</button>
+      <br />
+      <br />
+      <button onClick={submitForm} type='submit'>
+        Submit
+      </button>
     </>
   );
 };
