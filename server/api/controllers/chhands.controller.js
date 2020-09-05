@@ -77,6 +77,7 @@ const chhandScreen = async (req, res) => {
       let firstTuk = await db
         .select('*')
         .from('tuks')
+        .where('chhand_id', chhand.id)
         .where('line_number', 1)
         .first();
 
@@ -109,35 +110,20 @@ const createChhand = async (req, res) => {
 
   // Get this chapter and make sure it is the same as input
   // Get the last chhand.order_number and make sure it is the same as in
-  const lastBook = await db
+  const lastChhand = await getLastChhand();
+  const chhandType = await db
     .select('*')
-    .from('books')
-    .orderBy('book_order', 'DESC')
+    .from('chhand_types')
+    .where('id', req.body.chhand_type_id)
     .first();
 
-  const lastChapter = await db
-    .select('*')
-    .from('chapters')
-    .where('book_id', lastBook.id)
-    .orderBy('order_number', 'DESC')
-    .first();
-
-  const lastChhand = await db
-    .select('*')
-    .from('chhands')
-    .where('chapter_id', lastChapter.id)
-    .orderBy('order_number', 'DESC')
-    .first();
-
-  // debugger;ç
-  // const chhand = await knex('chhands').insert({
-  //   order_number: 1,
-  //   chhand_name_english: 'Dohra',
-  //   chhand_type_id: 1,
-  //   chapter_id: 1,
-  // });
-  // const chhandId = await db('chhand_types').insert({ ...req.body });
-  // const chhandType = await db('chhand_types').where('id', chhandTypeId).first();
+  const chhandId = await db('chhands').insert({
+    order_number: req.body.order_number,
+    chhand_name_english: chhandType.chhand_name_english,
+    chhand_type_id: chhandType.id,
+    chapter_id: lastChhand.chapter_id,
+  });
+  const chhand = await db('chhands').where('id', chhandId).first();
 
   res.status(200).json({ message: true });
 };
