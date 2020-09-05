@@ -47,8 +47,7 @@ const AddChhand = () => {
     e.preventDefault();
     if (!selectedChhandType) return SweetInputWarning();
     const res = await fetchPost('/chhands', {
-      chhand_type: selectedChhandType,
-      chhand_type_id: selectedChhandType.id,
+      chhand_type_id: selectedChhandType.value,
       chapter: granthState.lastChapter,
       chapter_id: granthState.lastChapter.id,
       order_number: granthState.lastChhand.order_number + 1,

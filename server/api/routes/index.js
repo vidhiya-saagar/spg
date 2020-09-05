@@ -15,8 +15,10 @@ const {
 
 const {
   chhandIndex,
+  createChhand,
   chhandScreen,
   createPauriInChhand,
+  validateChhand,
 } = require('../controllers/chhands.controller');
 
 const { pauriIndex } = require('../controllers/pauris.controller');
@@ -41,6 +43,7 @@ router.post(
 
 // chhands
 router.get('/chhands', chhandIndex);
+router.post('/chhands', validateChhand('createChhand'), createChhand);
 router.get('/chhands-screen', chhandScreen);
 
 // pauris

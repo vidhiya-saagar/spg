@@ -39,9 +39,8 @@ const AddChhandType = () => {
         english,
       },
       { abortEarly: false }
-    )
-      .then(() => true)
-      .catch(handleFormErrors);
+    ).catch(handleFormErrors);
+    return true;
   };
 
   const handleFormErrors = (error) => {

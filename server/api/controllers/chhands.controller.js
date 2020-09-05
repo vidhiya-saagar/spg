@@ -1,5 +1,14 @@
 const db = require('../db');
-const { isSafeParam } = require('../controllers/helpers/validations');
+const {
+  isSafeParam,
+  isGurmukhi,
+} = require('../controllers/helpers/validations');
+const { check, body, validationResult } = require('express-validator');
+const {
+  getLastBook,
+  getLastChapter,
+  getLastChhand,
+} = require('../controllers/helpers/queries');
 
 const chhandQueryParams = async (chhands, query) => {
   console.log(`chhandQueryParams: ${query}`);
@@ -86,6 +95,53 @@ const chhandScreen = async (req, res) => {
   res.json({ chapters });
 };
 
+// POST `/chhands`
+const createChhand = async (req, res) => {
+  const errors = validationResult(req);
+
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  // Get this chapter and make sure it is the same as input
+  // Get the last chhand.order_number and make sure it is the same as in
+  const lastBook = await db
+    .select('*')
+    .from('books')
+    .orderBy('book_order', 'DESC')
+    .first();
+
+  const lastChapter = await db
+    .select('*')
+    .from('chapters')
+    .where('book_id', lastBook.id)
+    .orderBy('order_number', 'DESC')
+    .first();
+
+  const lastChhand = await db
+    .select('*')
+    .from('chhands')
+    .where('chapter_id', lastChapter.id)
+    .orderBy('order_number', 'DESC')
+    .first();
+
+  // debugger;ç
+  // const chhand = await knex('chhands').insert({
+  //   order_number: 1,
+  //   chhand_name_english: 'Dohra',
+  //   chhand_type_id: 1,
+  //   chapter_id: 1,
+  // });
+  // const chhandId = await db('chhand_types').insert({ ...req.body });
+  // const chhandType = await db('chhand_types').where('id', chhandTypeId).first();
+
+  res.status(200).json({ message: true });
+};
+
 // TODO: This is not complete
 // POST `/chhands/:id/pauris`
 const createPauriInChhand = async (req, res) => {
@@ -108,4 +164,57 @@ const createPauriInChhand = async (req, res) => {
   res.json({ message: true });
 };
 
-module.exports = { chhandIndex, chhandScreen, createPauriInChhand };
+const validateChhand = (action) => {
+  switch (action) {
+    case 'createChhand':
+      return [
+        body('chhand_type_id').isNumeric(),
+        check(
+          'chhand_type_id',
+          'Chhand Type with that ID does not exist.'
+        ).custom((id) => {
+          return db
+            .select('*')
+            .from('chhand_types')
+            .where('id', id)
+            .first()
+            .then((chhandType) => {
+              return chhandType.id && chhandType.id > 0;
+            });
+        }),
+        check('order_number', 'The order number is misaligned').custom(
+          (orderNum) => {
+            return getLastChhand().then((chhand) => {
+              return orderNum === chhand.order_number + 1;
+            });
+          }
+        ),
+        // check(
+        //   'chapter_id',
+        //   'Chhand can only be added to the last chapter.'
+        // ).custom((id) => {
+        //   return db
+        //     .select('*')
+        //     .from('chapters')
+        //     .where('id', id)
+        //     .first()
+        //     .then((chapter) => {
+        //       chapter.id == getLastChapter().id &&
+        //         chapter.book_id == getLastBook().id;
+        //     });
+        // }),
+      ];
+      break;
+
+    default:
+      break;
+  }
+};
+
+module.exports = {
+  chhandIndex,
+  chhandScreen,
+  createPauriInChhand,
+  createChhand,
+  validateChhand,
+};
