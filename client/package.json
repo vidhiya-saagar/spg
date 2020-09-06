@@ -8,13 +8,17 @@
     "@testing-library/user-event": "^7.1.2",
     "anvaad-js": "^1.4.2",
     "formik": "^2.1.5",
+    "lodash": "^4.17.20",
     "react": "^16.13.1",
     "react-code-blocks": "^0.0.8",
     "react-dom": "^16.13.1",
     "react-jss": "^10.4.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-select": "^3.1.0"
+    "react-select": "^3.1.0",
+    "sweetalert2": "^9.17.2",
+    "sweetalert2-react-content": "^3.1.0",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",

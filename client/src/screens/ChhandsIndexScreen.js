@@ -58,8 +58,12 @@ const ChhandsIndexScreen = () => {
                               <td>{chhand.chhand_type_id}</td>
                               <td>{chhand.chhand_name_english}</td>
                               <td>{chhand.order_number}</td>
-                              <td>{chhand.first_tuk.content_unicode}</td>
-                              <td>{chhand.last_pauri.signature_unicode}</td>
+                              <td>
+                                {chhand?.first_tuk?.content_unicode || 'N/A'}
+                              </td>
+                              <td>
+                                {chhand?.last_pauri?.signature_unicode || 'N/A'}
+                              </td>
                               <td></td>
                             </tr>
                           );
