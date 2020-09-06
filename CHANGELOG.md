@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/dsomel21/spg/tree/HEAD)
+
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.6...HEAD)
+
+**Closed issues:**
+
+- Send data from form submissions to backend [\#6](https://github.com/dsomel21/spg/issues/6)
+
+**Merged pull requests:**
+
+- Bump http-proxy from 1.18.0 to 1.18.1 in /client [\#8](https://github.com/dsomel21/spg/pull/8) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [0.0.6](https://github.com/dsomel21/spg/tree/0.0.6) (2020-08-30)
 
 [Full Changelog](https://github.com/dsomel21/spg/compare/0.0.5...0.0.6)
