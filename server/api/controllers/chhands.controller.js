@@ -128,8 +128,16 @@ const createChhand = async (req, res) => {
   res.status(200).json({ chhand });
 };
 
-// TODO: This is not complete
 // POST `/chhands/:id/pauris`
+/** TODO:
+ * Test for adding pauri to an existing chhand
+ * Test for adding pauri to a new Chhand
+ * Test for adding pauri to a new Chhand in NEW chapter
+ * Test for adding pauri to a new Chhand in NEW chapter + book
+ * Validation for invalid entries (null values, empty strings)
+ * Validation for duplicate/similar tuks
+ */
+// TODO:
 const createPauriInChhand = async (req, res) => {
   const errors = validationResult(req);
 
@@ -176,11 +184,9 @@ const createPauriInChhand = async (req, res) => {
       debugger;
     })
     .catch((err) => {
-      console.log('ERR');
+      console.log(`⚠️ Error: ${err}`);
       debugger;
     });
-
-  // debugger;
 
   const tuks = await db
     .select('*')
@@ -189,30 +195,6 @@ const createPauriInChhand = async (req, res) => {
     .where('pauri_id', pauri.id);
 
   pauri.tuks = tuks;
-
-  // debugger;
-  // // [id
-  // [number
-  // // [signature_unicode
-  // // [signature_gs
-  // // [signature_english
-  // // [chhand_id
-  // [chapter_id
-  // [first_tuk_id
-  // [last_tuk_id
-  // [created_at
-  // [updated_at
-  // [
-
-  // const tuk = await db('tuks').insert({
-  //   ...req.body,
-  //   pauri_id: 1,
-  //   chhand_id: chhand.id,
-  //   chhand_type_id: chhand.chhand_type_id,
-  //   chapter_id: chhand.chapter_id,
-  // });
-  // res.json({ tuk });
-  // Whitelist params
 
   res.json({ pauri });
 };
