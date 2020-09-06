@@ -8,7 +8,12 @@ const {
   getLastBook,
   getLastChapter,
   getLastChhand,
+  getlastPauriInChhand,
 } = require('../controllers/helpers/queries');
+
+const {
+  getFormattedSignatureObj,
+} = require('../controllers/helpers/dictionary');
 
 const chhandQueryParams = async (chhands, query) => {
   console.log(`chhandQueryParams: ${query}`);
@@ -100,16 +105,11 @@ const chhandScreen = async (req, res) => {
 const createChhand = async (req, res) => {
   const errors = validationResult(req);
 
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  // Get this chapter and make sure it is the same as input
-  // Get the last chhand.order_number and make sure it is the same as in
+  debugger;
   const lastChhand = await getLastChhand();
   const chhandType = await db
     .select('*')
@@ -131,26 +131,93 @@ const createChhand = async (req, res) => {
 // TODO: This is not complete
 // POST `/chhands/:id/pauris`
 const createPauriInChhand = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
   const chhand = await db
     .select('*')
     .from('chhands')
     .where('id', req.params.id)
     .first();
 
-  const tuk = await db('tuks').insert({
-    ...req.body,
-    pauri_id: 1,
-    chhand_id: chhand.id,
-    chhand_type_id: chhand.chhand_type_id,
+  const lastPauri = await getlastPauriInChhand(chhand.id);
+  const nextPauriNumber = lastPauri ? lastPauri.number + 1 : 1;
+
+  const pauriId = await db('pauris').insert({
+    number: nextPauriNumber,
+    ...getFormattedSignatureObj(nextPauriNumber),
     chapter_id: chhand.chapter_id,
+    chhand_id: chhand.id,
   });
-  res.json({ tuk });
+
+  const pauri = await db
+    .select('*')
+    .from('pauris')
+    .where('id', pauriId)
+    .first();
+
+  // prettier-ignore
+  Promise.all(
+    req.body.pauri.map((tuk) => {
+      return db('tuks').insert({
+        ...tuk,
+        chhand_id: chhand.id,
+        chhand_type_id: chhand.chhand_type_id,
+        chapter_id: chhand.chapter_id,
+        pauri_id: pauri.id,
+        vishraams: JSON.stringify(tuk.vishraams), /* NOTE: Knex cannot handle [] out the box */
+        thamkis: JSON.stringify(tuk.thamkis), /* NOTE: Knex cannot handle [] out the box */
+      });
+    })
+  )
+    .then((val) => {
+      debugger;
+    })
+    .catch((err) => {
+      console.log('ERR');
+      debugger;
+    });
+
+  // debugger;
+
+  const tuks = await db
+    .select('*')
+    .from('tuks')
+    .where('chhand_id', chhand.id)
+    .where('pauri_id', pauri.id);
+
+  pauri.tuks = tuks;
+
+  // debugger;
+  // // [id
+  // [number
+  // // [signature_unicode
+  // // [signature_gs
+  // // [signature_english
+  // // [chhand_id
+  // [chapter_id
+  // [first_tuk_id
+  // [last_tuk_id
+  // [created_at
+  // [updated_at
+  // [
+
+  // const tuk = await db('tuks').insert({
+  //   ...req.body,
+  //   pauri_id: 1,
+  //   chhand_id: chhand.id,
+  //   chhand_type_id: chhand.chhand_type_id,
+  //   chapter_id: chhand.chapter_id,
+  // });
+  // res.json({ tuk });
   // Whitelist params
 
-  res.json({ message: true });
+  res.json({ pauri });
 };
 
-const validateChhand = (action) => {
+const validateChhand = (action) => () => {
   switch (action) {
     case 'createChhand':
       return [
@@ -186,7 +253,6 @@ const validateChhand = (action) => {
         //         .where('chhand_id', chhand.id)
         //         .limit(1)
         //         .then((pauris) => {
-        //           debugger;
         //           return pauris.length > 0;
         //         });
         //     });
@@ -207,6 +273,23 @@ const validateChhand = (action) => {
         //         chapter.book_id == getLastBook().id;
         //     });
         // }),
+      ];
+      break;
+    case 'createPauriInChhand':
+      return [
+        // ===== CONTENT =====
+        body('*.content_unicode').isInt(),
+        // body('*.content_gs').isString(),
+        // body('*.content_transliteration_english').isString(),
+        // body('*.first_letters').isString(),
+        // // ===== END OF CONTENT =====
+        // // ===== VISHRAAM INFO =====
+        // body('*.thamkis').isArray(),
+        // body('*.thamkis').optional(),
+        // body('*.vishraams').isArray(),
+        // body('*.vishraams').optional(),
+        // // ===== END OF VISHRAAM INFO =====
+        // body('*.line_number').isInt(),
       ];
       break;
 

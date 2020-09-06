@@ -30,11 +30,11 @@ const reMapAll = (customSchema, missingKeys, data) => {
   return newArray;
 };
 
-export const formattedTukForm = (tukForm) => {
+export const formattedTukFormObj = (tukForm) => {
   const mappings = {
     tukNumber: 'line_number',
     unicode: 'content_unicode',
-    unicodeVishraam: 'content_unicode_vishraam',
+    // unicodeVishraam: 'content_unicode_vishraam',
     gurmukhiScript: 'content_gs',
     englishTranslit: 'content_transliteration_english',
     firstLetters: 'first_letters',

@@ -7,7 +7,7 @@ import { Context as AddPauriFormContext } from '../context/AddPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost } from '../helpers/fetchHelper';
 import Submit from '../components/Submit';
-import { formattedTukForm } from '../helpers/remap';
+import { formattedTukFormObj } from '../helpers/remap';
 
 const AddPauri = () => {
   const {
@@ -30,21 +30,18 @@ const AddPauri = () => {
   // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
-    console.log('----------------------------------');
-    console.log(granthState);
-    console.log('Submitting!');
     const res = await fetchPost(
       `/chhands/${granthState.lastChhand.id}/pauris`,
-      formattedTukForm(tukForm)
+      {
+        pauri: formattedTukFormObj(tukForm),
+        last_pauri_id: granthState.lastPauri?.id,
+      }
     );
+
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
     console.log(res);
-    debugger;
   };
 
-  if (granthState) {
-    console.log('==================================');
-    console.log(granthState);
-  }
   return (
     <>
       <div className={AddPauriStyles.Info}>
@@ -130,6 +127,7 @@ const AddPauri = () => {
                       />
                     </div>
 
+                    {/*  
                     <div className='form-element'>
                       <label htmlFor='unicodeVishraam'>
                         Gurmukhi (With Vishraams)
@@ -149,6 +147,7 @@ const AddPauri = () => {
                         value={tuk.unicodeVishraam}
                       />
                     </div>
+                    */}
 
                     <div className='form-element'>
                       <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
