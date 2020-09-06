@@ -8,7 +8,7 @@ const {
   getLastBook,
   getLastChapter,
   getLastChhand,
-  getlastPauriInChhand,
+  getlastPauriInChapter,
 } = require('../controllers/helpers/queries');
 
 const {
@@ -109,7 +109,6 @@ const createChhand = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  debugger;
   const lastChhand = await getLastChhand();
   const chhandType = await db
     .select('*')
@@ -134,8 +133,9 @@ const createChhand = async (req, res) => {
  * Test for adding pauri to a new Chhand
  * Test for adding pauri to a new Chhand in NEW chapter
  * Test for adding pauri to a new Chhand in NEW chapter + book
- * Validation for invalid entries (null values, empty strings)
- * Validation for duplicate/similar tuks
+ * Before Validation for invalid entries (null values, empty strings)
+ * Before Validation for duplicate/similar tuks
+ * During Validation for non-duplicate pauri numbers and tuk numbers
  */
 // TODO:
 const createPauriInChhand = async (req, res) => {
@@ -150,9 +150,8 @@ const createPauriInChhand = async (req, res) => {
     .where('id', req.params.id)
     .first();
 
-  const lastPauri = await getlastPauriInChhand(chhand.id);
+  const lastPauri = await getlastPauriInChapter(chhand.chapter_id);
   const nextPauriNumber = lastPauri ? lastPauri.number + 1 : 1;
-
   const pauriId = await db('pauris').insert({
     number: nextPauriNumber,
     ...getFormattedSignatureObj(nextPauriNumber),
@@ -181,11 +180,10 @@ const createPauriInChhand = async (req, res) => {
     })
   )
     .then((val) => {
-      debugger;
+      // TODO: Figure out if I need to put my res.json() in here
     })
     .catch((err) => {
       console.log(`⚠️ Error: ${err}`);
-      debugger;
     });
 
   const tuks = await db
@@ -196,7 +194,7 @@ const createPauriInChhand = async (req, res) => {
 
   pauri.tuks = tuks;
 
-  res.json({ pauri });
+  res.status(200).json({ pauri });
 };
 
 const validateChhand = (action) => () => {

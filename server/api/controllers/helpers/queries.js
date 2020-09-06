@@ -30,12 +30,12 @@ const getLastChhand = async () => {
     .first();
 };
 
-const getlastPauriInChhand = async (chhandId) => {
-  if (!chhandId) return null;
+const getlastPauriInChapter = async (chapterId) => {
+  if (!chapterId) return null;
   return await db
     .select('*')
     .from('pauris')
-    .where('chhand_id', chhandId)
+    .where('chapter_id', chapterId)
     .orderBy('number', 'DESC')
     .first();
 };
@@ -44,5 +44,5 @@ module.exports = {
   getLastBook,
   getLastChapter,
   getLastChhand,
-  getlastPauriInChhand,
+  getlastPauriInChapter,
 };
