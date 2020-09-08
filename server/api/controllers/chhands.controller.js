@@ -104,7 +104,6 @@ const chhandScreen = async (req, res) => {
 // POST `/chhands`
 const createChhand = async (req, res) => {
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
@@ -197,62 +196,66 @@ const createPauriInChhand = async (req, res) => {
   res.status(200).json({ pauri });
 };
 
-const validateChhand = (action) => () => {
+const validateChhand = (action) => {
   switch (action) {
     case 'createChhand':
       return [
         body('chhand_type_id').isNumeric(),
-        check(
-          'chhand_type_id',
-          'Chhand Type with that ID does not exist.'
-        ).custom((id) => {
+        body('chhand_type_id').isNumeric(),
+        check('chhand_type_id').custom((id) => {
           return db
             .select('*')
             .from('chhand_types')
             .where('id', id)
             .first()
             .then((chhandType) => {
-              return chhandType.id && chhandType.id > 0;
+              if (!chhandType) {
+                return Promise.reject('ChhandType with that ID does not exist');
+              }
             });
         }),
-        check('order_number', 'The order number is misaligned').custom(
-          (orderNum) => {
-            return getLastChhand().then((chhand) => {
-              return orderNum === chhand.order_number + 1;
-            });
-          }
-        ),
+        check('order_number').custom((orderNum) => {
+          return getLastChhand().then((chhand) => {
+            if (orderNum !== chhand.order_number + 1) {
+              return Promise.reject(
+                `Chhand out of order. Expected ${chhand.order_number + 1}`
+              );
+            }
+          });
+        }),
         // TODO: ALSO NOT WORKING. WHAT A SURPRISE...
-        // check('order_number', 'The previous Chhand is empty.').custom(
-        //   (orderNum) => {
-        //     return getLastChhand().then((chhand) => {
-        //       if (orderNum === 1) return true;
-        //       return db
-        //         .select('*')
-        //         .from('pauris')
-        //         .where('chhand_id', chhand.id)
-        //         .limit(1)
-        //         .then((pauris) => {
-        //           return pauris.length > 0;
-        //         });
-        //     });
-        //   }
-        // ),
+        check('order_number').custom((orderNum) => {
+          return getLastChhand().then((chhand) => {
+            if (orderNum === 1) return true;
+            return db
+              .select('*')
+              .from('pauris')
+              .where('chhand_id', chhand.id)
+              .first()
+              .then((pauris) => {
+                if (!pauris || pauris.length === 0) {
+                  return Promise.reject('The previous Chhand is empty');
+                }
+              });
+          });
+        }),
 
-        // check(
-        //   'chapter_id',
-        //   'Chhand can only be added to the last chapter.'
-        // ).custom((id) => {
-        //   return db
-        //     .select('*')
-        //     .from('chapters')
-        //     .where('id', id)
-        //     .first()
-        //     .then((chapter) => {
-        //       chapter.id == getLastChapter().id &&
-        //         chapter.book_id == getLastBook().id;
-        //     });
-        // }),
+        check('chapter_id').custom((id) => {
+          return db
+            .select('*')
+            .from('chapters')
+            .where('id', id)
+            .first()
+            .then((chapter) => {
+              debugger;
+              if (
+                chapter.id == getLastChapter().id &&
+                chapter.book_id == getLastBook().id
+              ) {
+                // return Promise.reject('The previous Chhand is empty');
+              }
+            });
+        }),
       ];
       break;
     case 'createPauriInChhand':
