@@ -22,6 +22,7 @@ const createChhandType = async (req, res) => {
 };
 
 const validateChhandType = (action) => {
+  console.log('=================validateChhandType=================');
   switch (action) {
     case 'createChhandType':
       return [

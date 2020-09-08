@@ -198,6 +198,8 @@ const createPauriInChhand = async (req, res) => {
 };
 
 const validateChhand = (action) => {
+  console.log('================validateChhand==================');
+  debugger;
   switch (action) {
     case 'createChhand':
       return [
