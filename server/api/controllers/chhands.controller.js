@@ -246,13 +246,12 @@ const validateChhand = (action) => {
             .from('chapters')
             .where('id', id)
             .first()
-            .then((chapter) => {
-              debugger;
-              if (
-                chapter.id == getLastChapter().id &&
-                chapter.book_id == getLastBook().id
-              ) {
-                // return Promise.reject('The previous Chhand is empty');
+            .then(async (chapter) => {
+              const lastChapter = await getLastChapter();
+              if (!chapter || chapter.id !== lastChapter.id) {
+                return Promise.reject(
+                  'Chhand can only be added to the last chapter'
+                );
               }
             });
         }),
