@@ -24,28 +24,33 @@ const createChhandType = async (req, res) => {
 const validateChhandType = (action) => {
   switch (action) {
     case 'createChhandType':
-      // Make sure this name doesn't exist already
       return [
         body('chhand_name_unicode').isString(),
         body('chhand_name_unicode').custom(isGurmukhi),
-        body('chhand_name_english').isString(),
         body('chhand_name_gs').isString(),
-        // TODO: Does this work? You guessed it! NOPE! Why? I'll pay $100 for a good reason why
-        // check(
-        //   'chhand_name_unicode',
-        //   'Chhand already exists in the database'
-        // ).custom((unicode) => {
-        //   return db
-        //     .select('*')
-        //     .from('chhand_types')
-        //     .where('chhand_name_unicode', unicode)
-        //     .first()
-        //     .then((chhandType) => {
-        //       // If this exists, then prevent it from going to the controller
-        //       // return typeof chhandType === 'undefined';
-        //       return false;
-        //     });
-        // }),
+        body('chhand_name_english').isString(),
+        // FIXME: Does not return the correct boolean
+        // Make sure this name doesn't exist already
+        check('chhand_name_unicode').custom((unicode) => {
+          return db
+            .select('*')
+            .from('chhand_types')
+            .where('chhand_name_unicode', unicode)
+            .first()
+            .then((chhandType) => {
+              if (chhandType) return Promise.reject('Chhand already exists');
+            });
+        }),
+        check('chhand_name_english').custom((english) => {
+          return db
+            .select('*')
+            .from('chhand_types')
+            .where('chhand_name_english', english)
+            .first()
+            .then((chhandType) => {
+              if (chhandType) return Promise.reject('Chhand already exists');
+            });
+        }),
       ];
       break;
 
