@@ -104,6 +104,7 @@ const chhandScreen = async (req, res) => {
 // POST `/chhands`
 const createChhand = async (req, res) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
@@ -246,13 +247,14 @@ const validateChhand = (action) => {
             .from('chapters')
             .where('id', id)
             .first()
-            .then(async (chapter) => {
-              const lastChapter = await getLastChapter();
-              if (!chapter || chapter.id !== lastChapter.id) {
-                return Promise.reject(
-                  'Chhand can only be added to the last chapter'
-                );
-              }
+            .then((chapter) => {
+              return getLastChapter().then((lastChapter) => {
+                if (!chapter || chapter_id !== lastChapter.id) {
+                  return Promise.reject(
+                    'Chhand can only be added to the last chapter'
+                  );
+                }
+              });
             });
         }),
       ];
