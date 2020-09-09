@@ -27,12 +27,12 @@ const ChapterScreen = () => {
   return (
     <>
       <Grid alignItems='flex-start' justify='center'>
-        <Grid column={true} sm={12} md={8} lg={4}>
+        <Grid column={true} sm={12} md={5} lg={5}>
           <div className={ChapterScreenStyles.ContentContainer}>
             <AddPauri />
           </div>
         </Grid>
-        <Grid column={true} sm={12} md={8} lg={8}>
+        <Grid column={true} sm={12} md={7} lg={7}>
           <div className={ChapterScreenStyles.PauriContainer}>
             <Chapter {...chapter} />
             {chhands &&

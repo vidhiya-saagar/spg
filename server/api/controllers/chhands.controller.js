@@ -129,15 +129,14 @@ const createChhand = async (req, res) => {
 
 // POST `/chhands/:id/pauris`
 /** TODO:
- * Test for adding pauri to an existing chhand
- * Test for adding pauri to a new Chhand
- * Test for adding pauri to a new Chhand in NEW chapter
- * Test for adding pauri to a new Chhand in NEW chapter + book
- * Before Validation for invalid entries (null values, empty strings)
- * Before Validation for duplicate/similar tuks
- * During Validation for non-duplicate pauri numbers and tuk numbers
+ * Test for adding pauri to an existing chhand ❓
+ * Test for adding pauri to a new Chhand ❓
+ * Test for adding pauri to a new Chhand in NEW chapter ❓
+ * Test for adding pauri to a new Chhand in NEW chapter + book ❓
+ * Before Validation for invalid entries (null values, empty strings) ✅
+ * Before Validation for duplicate/similar tuks ✅
+ * Before/During Validation for non-duplicate pauri numbers and tuk numbers ✅
  */
-// TODO:
 const createPauriInChhand = async (req, res) => {
   const errors = validationResult(req);
 
@@ -261,6 +260,8 @@ const validateChhand = (action) => {
       ];
       break;
     case 'createPauriInChhand':
+      let _unicodeTuks = [];
+      let _tukNumbers = [];
       // prettier-ignore
       return [
         // ===== CONTENT =====
@@ -287,11 +288,31 @@ const validateChhand = (action) => {
             .then((tuk) => {
               if (tuk) {
                 return Promise.reject({
-                  message: 'This tuk may already exist.',
+                  message: 'This tuk may already exist',
                   tuk,
                 });
               }
             });
+        }),
+        // Roughly validate submitted req.body has Unique content_unicode
+        check('pauri.*.content_unicode').custom((unicode) => {
+          if (_unicodeTuks.includes(unicode)) {
+            return Promise.reject(
+              `The tuk "${unicode}" has already been entered`
+            );
+          } else {
+            _unicodeTuks.push(unicode);
+          }
+        }),
+        // Roughly validate submitted req.body contains no dup. tuk_numbers
+        check('pauri.*.line_number').custom((tukNumber) => {
+          if (_tukNumbers.includes(tukNumber)) {
+            return Promise.reject(
+              `There is a duplicate Tuk number of "${tukNumber}"`
+            );
+          } else {
+            _tukNumbers.push(tukNumber);
+          }
         }),
       ];
       break;
