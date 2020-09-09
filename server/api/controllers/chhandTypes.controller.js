@@ -26,10 +26,10 @@ const validateChhandType = (action) => {
   switch (action) {
     case 'createChhandType':
       return [
-        body('chhand_name_unicode').isString(),
+        body('chhand_name_unicode').isString().not().isEmpty().trim().escape(),
         body('chhand_name_unicode').custom(isGurmukhi),
-        body('chhand_name_gs').isString(),
-        body('chhand_name_english').isString(),
+        body('chhand_name_gs').isString().not().isEmpty().trim().escape(),
+        body('chhand_name_english').isString().not().isEmpty().trim().escape(),
         // Make sure this name doesn't exist already
         check('chhand_name_unicode').custom((unicode) => {
           return db
