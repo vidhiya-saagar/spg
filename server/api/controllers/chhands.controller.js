@@ -199,12 +199,11 @@ const createPauriInChhand = async (req, res) => {
 
 const validateChhand = (action) => {
   console.log('================validateChhand==================');
-  debugger;
   switch (action) {
     case 'createChhand':
       return [
         body('chhand_type_id').isNumeric(),
-        body('chhand_type_id').isNumeric(),
+        body('chapter_id').isNumeric(),
         check('chhand_type_id').custom((id) => {
           return db
             .select('*')
@@ -251,7 +250,7 @@ const validateChhand = (action) => {
             .first()
             .then((chapter) => {
               return getLastChapter().then((lastChapter) => {
-                if (!chapter || chapter_id !== lastChapter.id) {
+                if (!chapter || chapter.id !== lastChapter.id) {
                   return Promise.reject(
                     'Chhand can only be added to the last chapter'
                   );
