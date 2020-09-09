@@ -8,6 +8,11 @@ import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost } from '../helpers/fetchHelper';
 import Submit from '../components/Submit';
 import { formattedTukFormObj } from '../helpers/remap';
+import {
+  SweetError,
+  SweetSuccess,
+  SweetInputWarning,
+} from '../components/SweetAlert.js';
 
 const AddPauri = () => {
   const {
@@ -37,9 +42,18 @@ const AddPauri = () => {
         last_pauri_id: granthState.lastPauri?.id,
       }
     );
+    handleCreatePauriInChhandResponse(res);
+  };
 
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-    console.log(res);
+  const handleCreatePauriInChhandResponse = (res) => {
+    if (res.errors?.length > 0) {
+      SweetError({ text: JSON.stringify(res.errors, null, 2) });
+    } else {
+      SweetSuccess({
+        title: `Pauri Saved!`,
+        text: JSON.stringify(res.pauri, null, 2),
+      });
+    }
   };
 
   return (

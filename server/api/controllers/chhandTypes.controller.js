@@ -1,6 +1,7 @@
 const db = require('../db');
 const { check, body, validationResult } = require('express-validator');
 const { isGurmukhi } = require('../controllers/helpers/validations');
+
 // GET `/chhand-types`
 const chhandTypeIndex = async (req, res) => {
   const chhandTypes = await db.select('*').from('chhand_types');
@@ -14,7 +15,6 @@ const createChhandType = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
-
   const chhandTypeId = await db('chhand_types').insert({ ...req.body });
   const chhandType = await db('chhand_types').where('id', chhandTypeId).first();
 
@@ -22,30 +22,35 @@ const createChhandType = async (req, res) => {
 };
 
 const validateChhandType = (action) => {
+  console.log('=================validateChhandType=================');
   switch (action) {
     case 'createChhandType':
-      // Make sure this name doesn't exist already
       return [
-        body('chhand_name_unicode').isString(),
+        body('chhand_name_unicode').isString().not().isEmpty().trim().escape(),
         body('chhand_name_unicode').custom(isGurmukhi),
-        body('chhand_name_english').isString(),
-        body('chhand_name_gs').isString(),
-        // TODO: Does this work? You guessed it! NOPE! Why? I'll pay $100 for a good reason why
-        // check(
-        //   'chhand_name_unicode',
-        //   'Chhand already exists in the database'
-        // ).custom((unicode) => {
-        //   return db
-        //     .select('*')
-        //     .from('chhand_types')
-        //     .where('chhand_name_unicode', unicode)
-        //     .first()
-        //     .then((chhandType) => {
-        //       // If this exists, then prevent it from going to the controller
-        //       // return typeof chhandType === 'undefined';
-        //       return false;
-        //     });
-        // }),
+        body('chhand_name_gs').isString().not().isEmpty().trim().escape(),
+        body('chhand_name_english').isString().not().isEmpty().trim().escape(),
+        // Make sure this name doesn't exist already
+        check('chhand_name_unicode').custom((unicode) => {
+          return db
+            .select('*')
+            .from('chhand_types')
+            .where('chhand_name_unicode', unicode)
+            .first()
+            .then((chhandType) => {
+              if (chhandType) return Promise.reject('Chhand already exists');
+            });
+        }),
+        check('chhand_name_english').custom((english) => {
+          return db
+            .select('*')
+            .from('chhand_types')
+            .where('chhand_name_english', english)
+            .first()
+            .then((chhandType) => {
+              if (chhandType) return Promise.reject('Chhand already exists');
+            });
+        }),
       ];
       break;
 

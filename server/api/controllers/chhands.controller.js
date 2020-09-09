@@ -129,15 +129,14 @@ const createChhand = async (req, res) => {
 
 // POST `/chhands/:id/pauris`
 /** TODO:
- * Test for adding pauri to an existing chhand
- * Test for adding pauri to a new Chhand
- * Test for adding pauri to a new Chhand in NEW chapter
- * Test for adding pauri to a new Chhand in NEW chapter + book
- * Before Validation for invalid entries (null values, empty strings)
- * Before Validation for duplicate/similar tuks
- * During Validation for non-duplicate pauri numbers and tuk numbers
+ * Test for adding pauri to an existing chhand ❓
+ * Test for adding pauri to a new Chhand ❓
+ * Test for adding pauri to a new Chhand in NEW chapter ❓
+ * Test for adding pauri to a new Chhand in NEW chapter + book ❓
+ * Before Validation for invalid entries (null values, empty strings) ✅
+ * Before Validation for duplicate/similar tuks ✅
+ * Before/During Validation for non-duplicate pauri numbers and tuk numbers ✅
  */
-// TODO:
 const createPauriInChhand = async (req, res) => {
   const errors = validationResult(req);
 
@@ -197,79 +196,124 @@ const createPauriInChhand = async (req, res) => {
   res.status(200).json({ pauri });
 };
 
-const validateChhand = (action) => () => {
+const validateChhand = (action) => {
+  console.log('================validateChhand==================');
   switch (action) {
     case 'createChhand':
       return [
         body('chhand_type_id').isNumeric(),
-        check(
-          'chhand_type_id',
-          'Chhand Type with that ID does not exist.'
-        ).custom((id) => {
+        body('chapter_id').isNumeric(),
+        check('chhand_type_id').custom((id) => {
           return db
             .select('*')
             .from('chhand_types')
             .where('id', id)
             .first()
             .then((chhandType) => {
-              return chhandType.id && chhandType.id > 0;
+              if (!chhandType) {
+                return Promise.reject('ChhandType with that ID does not exist');
+              }
             });
         }),
-        check('order_number', 'The order number is misaligned').custom(
-          (orderNum) => {
-            return getLastChhand().then((chhand) => {
-              return orderNum === chhand.order_number + 1;
-            });
-          }
-        ),
+        check('order_number').custom((orderNum) => {
+          return getLastChhand().then((chhand) => {
+            if (orderNum !== chhand.order_number + 1) {
+              return Promise.reject(
+                `Chhand out of order. Expected ${chhand.order_number + 1}`
+              );
+            }
+          });
+        }),
         // TODO: ALSO NOT WORKING. WHAT A SURPRISE...
-        // check('order_number', 'The previous Chhand is empty.').custom(
-        //   (orderNum) => {
-        //     return getLastChhand().then((chhand) => {
-        //       if (orderNum === 1) return true;
-        //       return db
-        //         .select('*')
-        //         .from('pauris')
-        //         .where('chhand_id', chhand.id)
-        //         .limit(1)
-        //         .then((pauris) => {
-        //           return pauris.length > 0;
-        //         });
-        //     });
-        //   }
-        // ),
+        check('order_number').custom((orderNum) => {
+          return getLastChhand().then((chhand) => {
+            if (orderNum === 1) return true;
+            return db
+              .select('*')
+              .from('pauris')
+              .where('chhand_id', chhand.id)
+              .first()
+              .then((pauris) => {
+                if (!pauris || pauris.length === 0) {
+                  return Promise.reject('The previous Chhand is empty');
+                }
+              });
+          });
+        }),
 
-        // check(
-        //   'chapter_id',
-        //   'Chhand can only be added to the last chapter.'
-        // ).custom((id) => {
-        //   return db
-        //     .select('*')
-        //     .from('chapters')
-        //     .where('id', id)
-        //     .first()
-        //     .then((chapter) => {
-        //       chapter.id == getLastChapter().id &&
-        //         chapter.book_id == getLastBook().id;
-        //     });
-        // }),
+        check('chapter_id').custom((id) => {
+          return db
+            .select('*')
+            .from('chapters')
+            .where('id', id)
+            .first()
+            .then((chapter) => {
+              return getLastChapter().then((lastChapter) => {
+                if (!chapter || chapter.id !== lastChapter.id) {
+                  return Promise.reject(
+                    'Chhand can only be added to the last chapter'
+                  );
+                }
+              });
+            });
+        }),
       ];
       break;
     case 'createPauriInChhand':
+      let _unicodeTuks = [];
+      let _tukNumbers = [];
+      // prettier-ignore
       return [
         // ===== CONTENT =====
-        body('*.content_unicode').isInt(),
-        // body('*.content_gs').isString(),
-        // body('*.content_transliteration_english').isString(),
-        // body('*.first_letters').isString(),
-        // // ===== END OF CONTENT =====
-        // // ===== VISHRAAM INFO =====
-        // body('*.thamkis').isArray(),
-        // body('*.thamkis').optional(),
-        // body('*.vishraams').isArray(),
-        // body('*.vishraams').optional(),
-        // // ===== END OF VISHRAAM INFO =====
-        // body('*.line_number').isInt(),
+        body('pauri.*.content_unicode').isString().not().isEmpty().trim().escape(),
+        body('pauri.*.content_unicode').custom(isGurmukhi),
+        body('pauri.*.content_gs').isString().not().isEmpty().trim().escape(),
+        body('pauri.*.content_transliteration_english').isString().not().isEmpty().trim().escape(),
+        body('pauri.*.first_letters').isString().not().isEmpty().trim().escape(),
+        // ===== END OF CONTENT =====
+        // ===== VISHRAAM INFO =====
+        body('pauri.*.thamkis').isArray(),
+        body('pauri.*.thamkis').optional(),
+        body('pauri.*.vishraams').isArray(),
+        body('pauri.*.vishraams').optional(),
+        // ===== END OF VISHRAAM INFO =====
+        body('pauri.*.line_number').isInt(),
+        // Make sure this name doesn't exist already
+        check('pauri.*.content_unicode').custom((unicode) => {
+          return db
+            .select('*')
+            .from('tuks')
+            .where('content_unicode', unicode)
+            .first()
+            .then((tuk) => {
+              if (tuk) {
+                return Promise.reject({
+                  message: 'This tuk may already exist',
+                  tuk,
+                });
+              }
+            });
+        }),
+        // Roughly validate submitted req.body has Unique content_unicode
+        check('pauri.*.content_unicode').custom((unicode) => {
+          if (_unicodeTuks.includes(unicode)) {
+            return Promise.reject(
+              `The tuk "${unicode}" has already been entered`
+            );
+          } else {
+            _unicodeTuks.push(unicode);
+          }
+        }),
+        // Roughly validate submitted req.body contains no dup. tuk_numbers
+        check('pauri.*.line_number').custom((tukNumber) => {
+          if (_tukNumbers.includes(tukNumber)) {
+            return Promise.reject(
+              `There is a duplicate Tuk number of "${tukNumber}"`
+            );
+          } else {
+            _tukNumbers.push(tukNumber);
+          }
+        }),
       ];
       break;
 
