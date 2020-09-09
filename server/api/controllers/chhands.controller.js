@@ -261,20 +261,38 @@ const validateChhand = (action) => {
       ];
       break;
     case 'createPauriInChhand':
+      // prettier-ignore
       return [
         // ===== CONTENT =====
-        body('*.content_unicode').isInt(),
-        // body('*.content_gs').isString(),
-        // body('*.content_transliteration_english').isString(),
-        // body('*.first_letters').isString(),
-        // // ===== END OF CONTENT =====
-        // // ===== VISHRAAM INFO =====
-        // body('*.thamkis').isArray(),
-        // body('*.thamkis').optional(),
-        // body('*.vishraams').isArray(),
-        // body('*.vishraams').optional(),
-        // // ===== END OF VISHRAAM INFO =====
-        // body('*.line_number').isInt(),
+        body('pauri.*.content_unicode').isString().not().isEmpty().trim().escape(),
+        body('pauri.*.content_unicode').custom(isGurmukhi),
+        body('pauri.*.content_gs').isString().not().isEmpty().trim().escape(),
+        body('pauri.*.content_transliteration_english').isString().not().isEmpty().trim().escape(),
+        body('pauri.*.first_letters').isString().not().isEmpty().trim().escape(),
+        // ===== END OF CONTENT =====
+        // ===== VISHRAAM INFO =====
+        body('pauri.*.thamkis').isArray(),
+        body('pauri.*.thamkis').optional(),
+        body('pauri.*.vishraams').isArray(),
+        body('pauri.*.vishraams').optional(),
+        // ===== END OF VISHRAAM INFO =====
+        body('pauri.*.line_number').isInt(),
+        // Make sure this name doesn't exist already
+        check('pauri.*.content_unicode').custom((unicode) => {
+          return db
+            .select('*')
+            .from('tuks')
+            .where('content_unicode', unicode)
+            .first()
+            .then((tuk) => {
+              if (tuk) {
+                return Promise.reject({
+                  message: 'This tuk may already exist.',
+                  tuk,
+                });
+              }
+            });
+        }),
       ];
       break;
 

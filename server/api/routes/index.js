@@ -45,7 +45,11 @@ router.post(
 router.get('/chhands', chhandIndex);
 router.post('/chhands', validateChhand('createChhand'), createChhand);
 router.get('/chhands-screen', chhandScreen);
-router.post('/chhands/:id/pauris', createPauriInChhand);
+router.post(
+  '/chhands/:id/pauris',
+  validateChhand('createPauriInChhand'),
+  createPauriInChhand
+);
 
 // pauris
 router.get('/pauris', pauriIndex);
