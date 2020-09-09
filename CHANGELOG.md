@@ -1,8 +1,16 @@
 # Changelog
 
-## [Unreleased](https://github.com/dsomel21/spg/tree/HEAD)
+## [0.0.8](https://github.com/dsomel21/spg/tree/0.0.8) (2020-09-09)
 
-[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.6...HEAD)
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.7...0.0.8)
+
+**Implemented enhancements:**
+
+- Pop up response when a pauri is added [\#11](https://github.com/dsomel21/spg/issues/11)
+
+**Fixed bugs:**
+
+- Improve validations and error message on forms [\#7](https://github.com/dsomel21/spg/issues/7)
 
 **Closed issues:**
 
@@ -11,6 +19,10 @@
 **Merged pull requests:**
 
 - Bump http-proxy from 1.18.0 to 1.18.1 in /client [\#8](https://github.com/dsomel21/spg/pull/8) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [0.0.7](https://github.com/dsomel21/spg/tree/0.0.7) (2020-09-06)
+
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.6...0.0.7)
 
 ## [0.0.6](https://github.com/dsomel21/spg/tree/0.0.6) (2020-08-30)
 

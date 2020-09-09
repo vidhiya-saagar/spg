@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon server/api/app.js",
-    "debug": "nodemon --inspect server/api/app.js"
+    "debug": "nodemon --inspect server/api/app.js",
+    "changelog": "github_changelog_generator -u dsomel21 -p spg"
   },
   "dependencies": {
     "anvaad-js": "^1.4.2",
