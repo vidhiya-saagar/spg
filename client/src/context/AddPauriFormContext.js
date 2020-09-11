@@ -43,6 +43,11 @@ const formReducer = (state, action) => {
         tukNumber: state.tukForm[state.tukForm.length - 1].tukNumber + 1,
       });
 
+    case 'REMOVE_LAST_TUK_FORM':
+      return {
+        ...state,
+        tukForm: [...state.tukForm.slice(0, -1)],
+      };
     default:
       console.log(`⚠️ Warning! Action ${action.type} not found!`);
   }
@@ -119,6 +124,7 @@ export const { Provider, Context } = createDataContext(
     updateFormItem,
     updateUnicodeRaw,
     addTukForm,
+    removeLastTukForm,
   },
   {
     tukForm: [

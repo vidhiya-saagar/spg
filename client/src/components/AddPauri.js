@@ -21,6 +21,7 @@ const AddPauri = () => {
     updateFormItem,
     updateUnicodeRaw,
     addTukForm,
+    removeLastTukForm,
   } = useContext(AddPauriFormContext);
 
   const tukForm = formState.tukForm;
@@ -255,6 +256,9 @@ const AddPauri = () => {
                         value={tuk.tukNumber}
                       />
                     </div>
+                    {tuk.tukNumber > 1 && (
+                      <button onClick={removeLastTukForm}>Remove Tuk</button>
+                    )}
                   </form>
                 </Grid>
               </Grid>
