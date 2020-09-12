@@ -260,8 +260,6 @@ const validateChhand = (action) => {
       ];
       break;
     case 'createPauriInChhand':
-      let _unicodeTuks = [];
-      let _tukNumbers = [];
       // prettier-ignore
       return [
         // ===== CONTENT =====
@@ -293,26 +291,6 @@ const validateChhand = (action) => {
                 });
               }
             });
-        }),
-        // Roughly validate submitted req.body has Unique content_unicode
-        check('pauri.*.content_unicode').custom((unicode) => {
-          if (_unicodeTuks.includes(unicode)) {
-            return Promise.reject(
-              `The tuk "${unicode}" has already been entered`
-            );
-          } else {
-            _unicodeTuks.push(unicode);
-          }
-        }),
-        // Roughly validate submitted req.body contains no dup. tuk_numbers
-        check('pauri.*.line_number').custom((tukNumber) => {
-          if (_tukNumbers.includes(tukNumber)) {
-            return Promise.reject(
-              `There is a duplicate Tuk number of "${tukNumber}"`
-            );
-          } else {
-            _tukNumbers.push(tukNumber);
-          }
         }),
       ];
       break;
