@@ -1,5 +1,6 @@
 const db = require('../db');
 const { isSafeParam } = require('../controllers/helpers/validations');
+const { getLastPauriInChapter } = require('./helpers/queries');
 /*
  * TODO: Separate these concerns:
  * Use controllers for only reading, parsing, validating input
@@ -105,4 +106,15 @@ const chapterTuks = async (req, res) => {
   res.json({ chapter, chhands });
 };
 
-module.exports = { chapterIndex, chapterFind, chapterChhands, chapterTuks };
+// GET `/chapters/:id/last-pauri`
+const lastPauri = async (req, res) => {
+  res.json({ last_pauri: await getLastPauriInChapter(req.params.id) });
+};
+
+module.exports = {
+  chapterIndex,
+  chapterFind,
+  chapterChhands,
+  chapterTuks,
+  lastPauri,
+};

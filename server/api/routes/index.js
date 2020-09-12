@@ -5,6 +5,7 @@ const {
   chapterFind,
   chapterChhands,
   chapterTuks,
+  lastPauri,
 } = require('../controllers/chapters.controller');
 
 const {
@@ -32,6 +33,7 @@ router.get('/chapters', chapterIndex);
 router.get('/chapters/:id', chapterFind);
 router.get('/chapters/:id/chhands', chapterChhands);
 router.get('/chapters/:id/tuks', chapterTuks);
+router.get('/chapters/:id/last-pauri', lastPauri);
 
 // chhand_types
 router.get('/chhand-types', chhandTypeIndex);

@@ -6,3 +6,7 @@
   font-family: 'Playfair Display', serif;
   font-style: italic;
 }
+
+.Bold {
+  font-weight: 800;
+}

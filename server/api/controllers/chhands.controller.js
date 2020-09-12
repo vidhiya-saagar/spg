@@ -8,7 +8,7 @@ const {
   getLastBook,
   getLastChapter,
   getLastChhand,
-  getlastPauriInChapter,
+  getLastPauriInChapter,
 } = require('../controllers/helpers/queries');
 
 const {
@@ -149,7 +149,7 @@ const createPauriInChhand = async (req, res) => {
     .where('id', req.params.id)
     .first();
 
-  const lastPauri = await getlastPauriInChapter(chhand.chapter_id);
+  const lastPauri = await getLastPauriInChapter(chhand.chapter_id);
   const nextPauriNumber = lastPauri ? lastPauri.number + 1 : 1;
   const pauriId = await db('pauris').insert({
     number: nextPauriNumber,
