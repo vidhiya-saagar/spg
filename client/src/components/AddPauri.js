@@ -6,7 +6,11 @@ import Grid from './Grid';
 import { Context as AddPauriFormContext } from '../context/AddPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost } from '../helpers/fetchHelper';
-import { isGurmukhi, hasSpaceBeforePeriod } from '../helpers/validationHelper';
+import {
+  isGurmukhi,
+  hasSpaceBeforePeriod,
+  isValidGurmukhiScript,
+} from '../helpers/validationHelper';
 import Submit from '../components/Submit';
 import { formattedTukFormObj } from '../helpers/remap';
 import {
@@ -100,12 +104,17 @@ const AddPauri = () => {
           .test('isGurmukhi', 'Must be Gurmukhi Unicode', isGurmukhi)
           .test(
             'hasSpaceBeforePeriod',
-            'There must be a single space before the ।',
+            "There must be a single space before the '।'",
             hasSpaceBeforePeriod
           ),
         gurmukhiScript: Yup.string()
           .min(2, 'Gurmukhi Script is too short.')
-          .required('Required'),
+          .required('Required')
+          .test(
+            'isValidGurmukhiScript',
+            "Can only container letters and ']'",
+            isValidGurmukhiScript
+          ),
         englishTranslit: Yup.string()
           .min(2, 'English transliteration is too short.')
           .required('Required'),
