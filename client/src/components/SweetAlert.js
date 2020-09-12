@@ -14,7 +14,7 @@ export const SweetError = (props) => {
   });
 };
 
-export const SweetSuccess = (props) => {
+export const SweetSuccess = (props = {}) => {
   return SweetAlert.fire({
     title: props.title || 'Perfect!',
     text: props.text || 'The request was successful.',

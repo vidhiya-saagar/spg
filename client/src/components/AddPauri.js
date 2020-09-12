@@ -6,6 +6,7 @@ import Grid from './Grid';
 import { Context as AddPauriFormContext } from '../context/AddPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost } from '../helpers/fetchHelper';
+import { isGurmukhi, hasSpaceBeforePeriod } from '../helpers/validationHelper';
 import Submit from '../components/Submit';
 import { formattedTukFormObj } from '../helpers/remap';
 import {
@@ -14,6 +15,7 @@ import {
   SweetInputWarning,
   SweetConfirm,
 } from '../components/SweetAlert.js';
+import * as Yup from 'yup';
 
 const AddPauri = () => {
   const {
@@ -28,6 +30,8 @@ const AddPauri = () => {
   const tukForm = formState.tukForm;
   const { state: granthState, getSpgStatus } = useContext(GranthContext);
 
+  const [formErrors, setFormErrors] = useState(null);
+
   useEffect(() => {
     getSpgStatus();
     updateUnicodeRaw(tukForm[0].unicodeRaw, 1);
@@ -37,14 +41,16 @@ const AddPauri = () => {
   // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
-    const res = await fetchPost(
-      `/chhands/${granthState.lastChhand.id}/pauris`,
-      {
-        pauri: formattedTukFormObj(tukForm),
-        last_pauri_id: granthState.lastPauri?.id,
-      }
-    );
-    handleCreatePauriInChhandResponse(res);
+    if (!(await isValidInput())) return SweetInputWarning();
+    SweetSuccess();
+    // const res = await fetchPost(
+    //   `/chhands/${granthState.lastChhand.id}/pauris`,
+    //   {
+    //     pauri: formattedTukFormObj(tukForm),
+    //     last_pauri_id: granthState.lastPauri?.id,
+    //   }
+    // );
+    // handleCreatePauriInChhandResponse(res);
   };
 
   const handleCreatePauriInChhandResponse = (res) => {
@@ -71,6 +77,54 @@ const AddPauri = () => {
       }
     });
   };
+
+  // TODO: The Yup library is... Not gonna say anything... But wtf is this
+  const isValidInput = () => {
+    const valid = AddPauriSchema.validate(tukForm, { abortEarly: false })
+      .then(() => true)
+      .catch(handleFormErrors);
+    return valid;
+  };
+
+  const handleFormErrors = (error) => {
+    debugger;
+    const errorObj = {};
+
+    error.inner.map((e) => {
+      if (errorObj[e.path]) {
+        errorObj[e.path].push(e.message);
+      } else {
+        errorObj[e.path] = [e.message];
+      }
+    });
+    setFormErrors(errorObj);
+    return false;
+  };
+
+  const AddPauriSchema = //Yup.object().shape({
+    // tukForm:
+    Yup.array().of(
+      Yup.object().shape({
+        unicode: Yup.string()
+          .min(2, 'Tuk is too short.')
+          .required('Required')
+          .test('isGurmukhi', 'Must be Gurmukhi Unicode', isGurmukhi)
+          .test(
+            'hasSpaceBeforePeriod',
+            'There must be a single space before the ।',
+            hasSpaceBeforePeriod
+          ),
+        gurmukhiScript: Yup.string()
+          .min(2, 'Gurmukhi Script is too short.')
+          .required('Required'),
+        englishTranslit: Yup.string()
+          .min(2, 'English transliteration is too short.')
+          .required('Required'),
+        tukNumber: Yup.number().required('Required'),
+      })
+    );
+  // ),
+  // });
 
   return (
     <>
