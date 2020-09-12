@@ -12,6 +12,7 @@ import {
   SweetError,
   SweetSuccess,
   SweetInputWarning,
+  SweetConfirm,
 } from '../components/SweetAlert.js';
 
 const AddPauri = () => {
@@ -55,6 +56,20 @@ const AddPauri = () => {
         text: JSON.stringify(res.pauri, null, 2),
       });
     }
+  };
+
+  const confirmRemoveTuk = (tukNumber) => {
+    SweetConfirm({
+      title: `Are you sure you want to delete Tuk #${tukNumber}`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeLastTukForm();
+        SweetSuccess({
+          title: 'Deleted!',
+          text: 'The Tuk has been removed.',
+        });
+      }
+    });
   };
 
   return (
@@ -257,7 +272,12 @@ const AddPauri = () => {
                       />
                     </div>
                     {tuk.tukNumber > 1 && (
-                      <button onClick={removeLastTukForm}>Remove Tuk</button>
+                      <button
+                        onClick={() => confirmRemoveTuk(tuk.tukNumber)}
+                        type='button'
+                      >
+                        Remove Tuk
+                      </button>
                     )}
                   </form>
                 </Grid>

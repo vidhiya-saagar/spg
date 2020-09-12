@@ -35,3 +35,16 @@ export const SweetInputWarning = (props = {}) => {
     confirmButtonColor: '#65524D',
   });
 };
+
+export const SweetConfirm = (props = {}) => {
+  return SweetAlert.fire({
+    title: props.title || 'Are you sure?',
+    text: props.text || 'You will not be able to undo this!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#65524D',
+    cancelButtonColor: '#d33',
+    confirmButtonText: props.okButtonText || 'Delete',
+    reverseButtons: true,
+  });
+};
