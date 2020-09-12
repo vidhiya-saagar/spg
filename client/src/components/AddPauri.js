@@ -23,6 +23,7 @@ const AddPauri = () => {
     updateAddPauriTextFields,
     updateFormItem,
     updateUnicodeRaw,
+    updateUnicode,
     addTukForm,
     removeLastTukForm,
   } = useContext(AddPauriFormContext);
@@ -43,14 +44,14 @@ const AddPauri = () => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
     SweetSuccess();
-    // const res = await fetchPost(
-    //   `/chhands/${granthState.lastChhand.id}/pauris`,
-    //   {
-    //     pauri: formattedTukFormObj(tukForm),
-    //     last_pauri_id: granthState.lastPauri?.id,
-    //   }
-    // );
-    // handleCreatePauriInChhandResponse(res);
+    const res = await fetchPost(
+      `/chhands/${granthState.lastChhand.id}/pauris`,
+      {
+        pauri: formattedTukFormObj(tukForm),
+        last_pauri_id: granthState.lastPauri?.id,
+      }
+    );
+    handleCreatePauriInChhandResponse(res);
   };
 
   const handleCreatePauriInChhandResponse = (res) => {
@@ -176,6 +177,7 @@ const AddPauri = () => {
                         onChange={(e) => {
                           updateUnicodeRaw(e.target.value, tuk.tukNumber);
                         }}
+                        placeholder={`#${tuk.tukNumber}`}
                         spellCheck='false'
                         value={tuk.unicodeRaw}
                       />
@@ -189,10 +191,7 @@ const AddPauri = () => {
                         type='text'
                         rows='3'
                         onChange={(e) => {
-                          updateFormItem({
-                            unicode: e.target.value,
-                            tukNumber: tuk.tukNumber,
-                          });
+                          updateUnicode(e.target.value, tuk.tukNumber);
                         }}
                         spellCheck='false'
                         value={tuk.unicode}

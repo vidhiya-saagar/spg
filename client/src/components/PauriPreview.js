@@ -15,7 +15,7 @@ const PauriPreview = (props) => {
             {/* 
               <p>{tuk.content_unicode}</p>
              */}
-            <p className='gurakhar'>{tuk.content_gs}</p>
+            <p className={`gurakhar ${TukStyles.Large}`}>{tuk.content_gs}</p>
             {/*  
             <p className={TukStyles.EnglishTranslit}>
               {tuk.content_transliteration_english}

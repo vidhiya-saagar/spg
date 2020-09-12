@@ -8,11 +8,13 @@ const formReducer = (state, action) => {
   switch (action.type) {
     case 'UPDATE_FORM_ITEM':
       index = findTukIndex(state, action.payload.tukNumber);
+      debugger;
+      // prettier-ignore
       return updateTukForm(index, state, {
         ...state.tukForm[index],
-        unicode: action.payload.unicode,
-        unicodeVishraam: action.payload.unicodeVishraam,
-        gurmukhiScript: action.payload.gurmukhiScript,
+          unicode: action.payload.unicode || state.tukForm[index].unicode,
+          unicodeVishraam: action.payload.unicodeVishraam || state.tukForm[index].unicodeVishraam,
+          gurmukhiScript: action.payload.gurmukhiScript || state.tukForm[index].gurmukhiScript,
       });
 
     case 'UPDATE_UNICODE_RAW':
@@ -26,6 +28,15 @@ const formReducer = (state, action) => {
         firstLetters: action.payload.firstLetters,
         thamki: action.payload.thamki,
         vishraam: action.payload.vishraam,
+        tukNumber: action.payload.tukNumber,
+      });
+
+    case 'UPDATE_UNICODE':
+      index = findTukIndex(state, action.payload.tukNumber);
+      return updateTukForm(index, state, {
+        unicode: action.payload.unicode,
+        gurmukhiScript: action.payload.gurmukhiScript,
+        englishTranslit: action.payload.englishTranslit,
         tukNumber: action.payload.tukNumber,
       });
 
@@ -105,6 +116,18 @@ const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
   dispatch({ type: 'UPDATE_UNICODE_RAW', payload });
 };
 
+const updateUnicode = (dispatch) => (unicode, tukNumber) => {
+  const _gurmukhiScript = anvaad.unicode(unicode, true);
+
+  const payload = {
+    unicode: unicode,
+    gurmukhiScript: _gurmukhiScript,
+    englishTranslit: anvaad.translit(_gurmukhiScript),
+    tukNumber,
+  };
+  dispatch({ type: 'UPDATE_UNICODE', payload });
+};
+
 // When unicode/gurmukhiScript/unicodeVishraam changes
 const updateFormItem = (dispatch) => (formItem) => {
   dispatch({ type: 'UPDATE_FORM_ITEM', payload: formItem });
@@ -123,6 +146,7 @@ export const { Provider, Context } = createDataContext(
   {
     updateFormItem,
     updateUnicodeRaw,
+    updateUnicode,
     addTukForm,
     removeLastTukForm,
   },
