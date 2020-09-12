@@ -82,23 +82,11 @@ const AddPauri = () => {
   const isValidInput = () => {
     const valid = AddPauriSchema.validate(tukForm, { abortEarly: false })
       .then(() => true)
-      .catch(handleFormErrors);
+      .catch((err) => {
+        console.log(`⚠️ Error: ${err}`);
+        return false;
+      });
     return valid;
-  };
-
-  const handleFormErrors = (error) => {
-    debugger;
-    const errorObj = {};
-
-    error.inner.map((e) => {
-      if (errorObj[e.path]) {
-        errorObj[e.path].push(e.message);
-      } else {
-        errorObj[e.path] = [e.message];
-      }
-    });
-    setFormErrors(errorObj);
-    return false;
   };
 
   const AddPauriSchema = //Yup.object().shape({
@@ -339,7 +327,15 @@ const AddPauri = () => {
             </div>
           );
         })}
-      <button onClick={addTukForm}>Add Tuk</button>
+      <button
+        onClick={() =>
+          isValidInput().then((valid) => {
+            return valid ? addTukForm() : SweetInputWarning();
+          })
+        }
+      >
+        Add Tuk
+      </button>
       <br />
       <br />
       <button onClick={submitForm} type='submit'>
