@@ -10,6 +10,7 @@ import Chhand from '../components/Chhand';
 import AddPauri from '../components/AddPauri';
 import { Context as AddPauriFormContext } from '../context/AddPauriFormContext';
 import { formattedTukFormObj } from '../helpers/remap';
+import Sticky from 'react-stickynode';
 
 const ChapterScreen = () => {
   const { id } = useParams();
@@ -54,10 +55,12 @@ const ChapterScreen = () => {
               chhands.map((chhand) => {
                 return <Chhand {...chhand} key={chhand.id} />;
               })}
-            <PauriPreview
-              pauri={formattedTukFormObj(tukForm)}
-              nextPauriNum={lastPauriNumInChapter + 1}
-            />
+            <Sticky>
+              <PauriPreview
+                pauri={formattedTukFormObj(tukForm)}
+                nextPauriNum={lastPauriNumInChapter + 1}
+              />
+            </Sticky>
           </div>
         </Grid>
       </Grid>

@@ -93,7 +93,7 @@ const findWordIndiciesWith = (str, char) => {
 };
 
 const handleLineBreaks = (str) => str.trim().replace(/\r?\n|\r/g, '; ');
-const removeSpecialChars = (str) => str.replace(/[,.';]/g, '');
+const removeSpecialChars = (str) => str.replace(/[,.'”*;]/g, '');
 const keepVishraams = (str) => str.replace(/[.']/g, '');
 
 // When unicodeRaw changes

@@ -9,7 +9,7 @@ import { fetchPost } from '../helpers/fetchHelper';
 import {
   isGurmukhi,
   hasSpaceBeforePeriod,
-  isValidGurmukhiScript,
+  isValidGurbaniAkhar,
 } from '../helpers/validationHelper';
 import Submit from '../components/Submit';
 import { formattedTukFormObj } from '../helpers/remap';
@@ -111,9 +111,9 @@ const AddPauri = () => {
           .min(2, 'Gurmukhi Script is too short.')
           .required('Required')
           .test(
-            'isValidGurmukhiScript',
-            "Can only container letters and ']'",
-            isValidGurmukhiScript
+            'isValidGurbaniAkhar',
+            "Can only container ASCII letters, spaces, and the following: '&<>@|~¡¤§®°`´µ¿ÅÆæÇÍÎÏÒœˆ˜†₈['",
+            isValidGurbaniAkhar
           ),
         englishTranslit: Yup.string()
           .min(2, 'English transliteration is too short.')
