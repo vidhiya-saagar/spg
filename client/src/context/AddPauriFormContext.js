@@ -8,7 +8,6 @@ const formReducer = (state, action) => {
   switch (action.type) {
     case 'UPDATE_FORM_ITEM':
       index = findTukIndex(state, action.payload.tukNumber);
-      debugger;
       // prettier-ignore
       return updateTukForm(index, state, {
         ...state.tukForm[index],

@@ -35,8 +35,6 @@ const AddPauri = () => {
   const tukForm = formState.tukForm;
   const { state: granthState, getSpgStatus } = useContext(GranthContext);
 
-  const [formErrors, setFormErrors] = useState(null);
-
   useEffect(() => {
     getSpgStatus();
     updateUnicodeRaw(tukForm[0].unicodeRaw, 1);
@@ -83,7 +81,6 @@ const AddPauri = () => {
     });
   };
 
-  // TODO: The Yup library is... Not gonna say anything... But wtf is this
   const isValidInput = () => {
     const valid = AddPauriSchema.validate(tukForm, { abortEarly: false })
       .then(() => true)
@@ -94,35 +91,32 @@ const AddPauri = () => {
     return valid;
   };
 
-  const AddPauriSchema = //Yup.object().shape({
-    // tukForm:
-    Yup.array().of(
-      Yup.object().shape({
-        unicode: Yup.string()
-          .min(2, 'Tuk is too short.')
-          .required('Required')
-          .test('isGurmukhi', 'Must be Gurmukhi Unicode', isGurmukhi)
-          .test(
-            'hasSpaceBeforePeriod',
-            "There must be a single space before the '।'",
-            hasSpaceBeforePeriod
-          ),
-        gurmukhiScript: Yup.string()
-          .min(2, 'Gurmukhi Script is too short.')
-          .required('Required')
-          .test(
-            'isValidGurbaniAkhar',
-            "Can only container ASCII letters, spaces, and the following: '&<>@|~¡¤§®°`´µ¿ÅÆæÇÍÎÏÒœˆ˜†₈['",
-            isValidGurbaniAkhar
-          ),
-        englishTranslit: Yup.string()
-          .min(2, 'English transliteration is too short.')
-          .required('Required'),
-        tukNumber: Yup.number().required('Required'),
-      })
-    );
-  // ),
-  // });
+  // TODO: Figure out a way to display the errors better
+  const AddPauriSchema = Yup.array().of(
+    Yup.object().shape({
+      unicode: Yup.string()
+        .min(2, 'Tuk is too short.')
+        .required('Required')
+        .test('isGurmukhi', 'Must be Gurmukhi Unicode', isGurmukhi)
+        .test(
+          'hasSpaceBeforePeriod',
+          "There must be a single space before the '।'",
+          hasSpaceBeforePeriod
+        ),
+      gurmukhiScript: Yup.string()
+        .min(2, 'Gurmukhi Script is too short.')
+        .required('Required')
+        .test(
+          'isValidGurbaniAkhar',
+          "Can only container ASCII letters, spaces, and the following: '&<>@|~¡¤§®°`´µ¿ÅÆæÇÍÎÏÒœˆ˜†₈['",
+          isValidGurbaniAkhar
+        ),
+      englishTranslit: Yup.string()
+        .min(2, 'English transliteration is too short.')
+        .required('Required'),
+      tukNumber: Yup.number().required('Required'),
+    })
+  );
 
   return (
     <>
