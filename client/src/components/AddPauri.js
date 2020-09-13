@@ -6,13 +6,20 @@ import Grid from './Grid';
 import { Context as AddPauriFormContext } from '../context/AddPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost } from '../helpers/fetchHelper';
+import {
+  isGurmukhi,
+  hasSpaceBeforePeriod,
+  isValidGurbaniAkhar,
+} from '../helpers/validationHelper';
 import Submit from '../components/Submit';
 import { formattedTukFormObj } from '../helpers/remap';
 import {
   SweetError,
   SweetSuccess,
   SweetInputWarning,
+  SweetConfirm,
 } from '../components/SweetAlert.js';
+import * as Yup from 'yup';
 
 const AddPauri = () => {
   const {
@@ -20,7 +27,9 @@ const AddPauri = () => {
     updateAddPauriTextFields,
     updateFormItem,
     updateUnicodeRaw,
+    updateUnicode,
     addTukForm,
+    removeLastTukForm,
   } = useContext(AddPauriFormContext);
 
   const tukForm = formState.tukForm;
@@ -35,6 +44,8 @@ const AddPauri = () => {
   // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
+    if (!(await isValidInput())) return SweetInputWarning();
+    SweetSuccess();
     const res = await fetchPost(
       `/chhands/${granthState.lastChhand.id}/pauris`,
       {
@@ -55,6 +66,57 @@ const AddPauri = () => {
       });
     }
   };
+
+  const confirmRemoveTuk = (tukNumber) => {
+    SweetConfirm({
+      title: `Are you sure you want to delete Tuk #${tukNumber}`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeLastTukForm();
+        SweetSuccess({
+          title: 'Deleted!',
+          text: 'The Tuk has been removed.',
+        });
+      }
+    });
+  };
+
+  const isValidInput = () => {
+    const valid = AddPauriSchema.validate(tukForm, { abortEarly: false })
+      .then(() => true)
+      .catch((err) => {
+        console.log(`⚠️ Error: ${err}`);
+        return false;
+      });
+    return valid;
+  };
+
+  // TODO: Figure out a way to display the errors better
+  const AddPauriSchema = Yup.array().of(
+    Yup.object().shape({
+      unicode: Yup.string()
+        .min(2, 'Tuk is too short.')
+        .required('Required')
+        .test('isGurmukhi', 'Must be Gurmukhi Unicode', isGurmukhi)
+        .test(
+          'hasSpaceBeforePeriod',
+          "There must be a single space before the '।'",
+          hasSpaceBeforePeriod
+        ),
+      gurmukhiScript: Yup.string()
+        .min(2, 'Gurmukhi Script is too short.')
+        .required('Required')
+        .test(
+          'isValidGurbaniAkhar',
+          "Can only container ASCII letters, spaces, and the following: '&<>@|~¡¤§®°`´µ¿ÅÆæÇÍÎÏÒœˆ˜†₈['",
+          isValidGurbaniAkhar
+        ),
+      englishTranslit: Yup.string()
+        .min(2, 'English transliteration is too short.')
+        .required('Required'),
+      tukNumber: Yup.number().required('Required'),
+    })
+  );
 
   return (
     <>
@@ -118,6 +180,7 @@ const AddPauri = () => {
                         onChange={(e) => {
                           updateUnicodeRaw(e.target.value, tuk.tukNumber);
                         }}
+                        placeholder={`#${tuk.tukNumber}`}
                         spellCheck='false'
                         value={tuk.unicodeRaw}
                       />
@@ -131,10 +194,7 @@ const AddPauri = () => {
                         type='text'
                         rows='3'
                         onChange={(e) => {
-                          updateFormItem({
-                            unicode: e.target.value,
-                            tukNumber: tuk.tukNumber,
-                          });
+                          updateUnicode(e.target.value, tuk.tukNumber);
                         }}
                         spellCheck='false'
                         value={tuk.unicode}
@@ -255,13 +315,29 @@ const AddPauri = () => {
                         value={tuk.tukNumber}
                       />
                     </div>
+                    {tuk.tukNumber > 1 && (
+                      <button
+                        onClick={() => confirmRemoveTuk(tuk.tukNumber)}
+                        type='button'
+                      >
+                        Remove Tuk
+                      </button>
+                    )}
                   </form>
                 </Grid>
               </Grid>
             </div>
           );
         })}
-      <button onClick={addTukForm}>Add Tuk</button>
+      <button
+        onClick={() =>
+          isValidInput().then((valid) => {
+            return valid ? addTukForm() : SweetInputWarning();
+          })
+        }
+      >
+        Add Tuk
+      </button>
       <br />
       <br />
       <button onClick={submitForm} type='submit'>

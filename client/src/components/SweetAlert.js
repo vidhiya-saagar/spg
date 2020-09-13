@@ -14,7 +14,7 @@ export const SweetError = (props) => {
   });
 };
 
-export const SweetSuccess = (props) => {
+export const SweetSuccess = (props = {}) => {
   return SweetAlert.fire({
     title: props.title || 'Perfect!',
     text: props.text || 'The request was successful.',
@@ -33,5 +33,18 @@ export const SweetInputWarning = (props = {}) => {
     confirmButtonText: props.confirmButtonText || 'Close',
     footer: 'SPG',
     confirmButtonColor: '#65524D',
+  });
+};
+
+export const SweetConfirm = (props = {}) => {
+  return SweetAlert.fire({
+    title: props.title || 'Are you sure?',
+    text: props.text || 'You will not be able to undo this!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#65524D',
+    cancelButtonColor: '#d33',
+    confirmButtonText: props.okButtonText || 'Delete',
+    reverseButtons: true,
   });
 };

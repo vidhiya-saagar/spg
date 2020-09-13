@@ -8,7 +8,7 @@ const {
   getLastBook,
   getLastChapter,
   getLastChhand,
-  getlastPauriInChapter,
+  getLastPauriInChapter,
 } = require('../controllers/helpers/queries');
 
 const {
@@ -149,7 +149,7 @@ const createPauriInChhand = async (req, res) => {
     .where('id', req.params.id)
     .first();
 
-  const lastPauri = await getlastPauriInChapter(chhand.chapter_id);
+  const lastPauri = await getLastPauriInChapter(chhand.chapter_id);
   const nextPauriNumber = lastPauri ? lastPauri.number + 1 : 1;
   const pauriId = await db('pauris').insert({
     number: nextPauriNumber,
@@ -197,7 +197,6 @@ const createPauriInChhand = async (req, res) => {
 };
 
 const validateChhand = (action) => {
-  console.log('================validateChhand==================');
   switch (action) {
     case 'createChhand':
       return [
@@ -260,8 +259,6 @@ const validateChhand = (action) => {
       ];
       break;
     case 'createPauriInChhand':
-      let _unicodeTuks = [];
-      let _tukNumbers = [];
       // prettier-ignore
       return [
         // ===== CONTENT =====
@@ -293,26 +290,6 @@ const validateChhand = (action) => {
                 });
               }
             });
-        }),
-        // Roughly validate submitted req.body has Unique content_unicode
-        check('pauri.*.content_unicode').custom((unicode) => {
-          if (_unicodeTuks.includes(unicode)) {
-            return Promise.reject(
-              `The tuk "${unicode}" has already been entered`
-            );
-          } else {
-            _unicodeTuks.push(unicode);
-          }
-        }),
-        // Roughly validate submitted req.body contains no dup. tuk_numbers
-        check('pauri.*.line_number').custom((tukNumber) => {
-          if (_tukNumbers.includes(tukNumber)) {
-            return Promise.reject(
-              `There is a duplicate Tuk number of "${tukNumber}"`
-            );
-          } else {
-            _tukNumbers.push(tukNumber);
-          }
         }),
       ];
       break;

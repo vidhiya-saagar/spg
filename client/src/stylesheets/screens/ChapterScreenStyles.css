@@ -1,10 +1,9 @@
-.ContentContainer {
+.content-container {
   /* background: antiquewhite;
   height: 800px; */
   border-right: 1px solid black;
 }
 
-.PauriContainer {
-  background: lightblue;
-  height: 800px;
+.pauri-container {
+  /* background: #242038; */
 }

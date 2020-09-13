@@ -30,7 +30,7 @@ const getLastChhand = async () => {
     .first();
 };
 
-const getlastPauriInChapter = async (chapterId) => {
+const getLastPauriInChapter = async (chapterId) => {
   if (!chapterId) return null;
   return await db
     .select('*')
@@ -44,5 +44,5 @@ module.exports = {
   getLastBook,
   getLastChapter,
   getLastChhand,
-  getlastPauriInChapter,
+  getLastPauriInChapter,
 };

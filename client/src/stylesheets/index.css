@@ -1,6 +1,37 @@
-@font-face {
+/* @font-face {
   font-family: 'GurAkhar';
   src: local('GURAKHAR'), url(../fonts/GURAKHAR.TTF) format('truetype');
+} */
+
+/* 
+==========================
+*/
+@font-face {
+  font-family: 'Gurbani Akhar';
+  src: local('OpenGurbaniAkhar-Regular.otf'), url(../fonts/OpenGurbaniAkhar/Regular/OpenGurbaniAkhar-Regular.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Gurbani Akhar Bold';
+  font-weight: 800;
+  src: local('OpenGurbaniAkhar-Bold.otf'), url(../fonts/OpenGurbaniAkhar/Bold/OpenGurbaniAkhar-Bold.otf);
+}
+
+@font-face {
+  font-family: 'Gurbani Akhar Black';
+  font-weight: 800;
+  src: local('OpenGurbaniAkhar-Black.otf'), url(../fonts/OpenGurbaniAkhar/Black/OpenGurbaniAkhar-Black.otf);
+}
+
+@font-face {
+  font-family: 'Satluj';
+  src: local('OpenSatlujUni-Regular.otf'), url(../fonts/OpenSatlujUni/Regular/OpenSatlujUni-Regular.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Satluj Bold';
+  font-weight: 800;
+  src: local('OpenSatlujUni-Bold.otf'), url(../fonts/OpenSatlujUni/Bold/OpenSatlujUni-Bold.otf) format('opentype');
 }
 
 body {
@@ -34,7 +65,23 @@ code {
 }
 
 .gurakhar {
-  font-family: 'GurAkhar';
+  font-family: 'Gurbani Akhar';
+}
+
+.gurakhar-bold {
+  font-family: 'Gurbani Akhar Bold';
+}
+
+.gurakhar-black {
+  font-family: 'Gurbani Akhar Black';
+}
+
+.satluj {
+  font-family: 'Satluj';
+}
+
+.satluj-bold {
+  font-family: 'Satluj Bold';
 }
 
 .mtop15 {
