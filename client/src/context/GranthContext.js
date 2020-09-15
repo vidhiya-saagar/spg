@@ -27,19 +27,21 @@ const granthContext = (state, action) => {
   }
 };
 
-const getSpgStatus = (dispatch) => async () => {
+const fetchSpgStatus = (dispatch) => async () => {
   try {
     const res = await fetchGet('/last');
     dispatch({ type: 'UPDATE_LAST', payload: res });
   } catch (error) {
-    console.log(`⚠️ Error! ${console.error} in getSpgStatus().`);
+    console.log(`⚠️ Error! ${console.error} in fetchSpgStatus().`);
   }
 };
+
+const getAllChapters = () => {};
 
 export const { Provider, Context } = createDataContext(
   granthContext,
   {
-    getSpgStatus,
+    fetchSpgStatus,
   },
   {
     lastBook: null,

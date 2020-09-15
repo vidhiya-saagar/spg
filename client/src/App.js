@@ -3,6 +3,7 @@ import './stylesheets/App.css';
 import Header from './components/Header';
 import Menu from './components/Menu';
 import HomeScreen from './screens/HomeScreen';
+import GranthScreen from './screens/GranthScreen';
 import ChaptersIndexScreen from './screens/ChaptersIndexScreen';
 import ChhandTypesIndexScreen from './screens/ChhandTypesIndexScreen';
 import ChhandsIndexScreen from './screens/ChhandsIndexScreen';
@@ -24,6 +25,9 @@ const App = () => {
           <Switch>
             <Route exact path='/'>
               <HomeScreen />
+            </Route>
+            <Route exact path='/granth'>
+              <GranthScreen />
             </Route>
             <Route exact path='/chapters'>
               <ChaptersIndexScreen />
