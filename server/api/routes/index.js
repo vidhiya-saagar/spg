@@ -1,7 +1,9 @@
 const express = require('express');
 
+const { booksIndex } = require('../controllers/books.controller');
+
 const {
-  chapterIndex,
+  chaptersIndex,
   chapterFind,
   chapterChhands,
   chapterTuks,
@@ -28,8 +30,11 @@ const { last } = require('../controllers/application.controller');
 
 const router = express.Router();
 
+// books
+router.get('/books', booksIndex);
+
 // chapters
-router.get('/chapters', chapterIndex);
+router.get('/chapters', chaptersIndex);
 router.get('/chapters/:id', chapterFind);
 router.get('/chapters/:id/chhands', chapterChhands);
 router.get('/chapters/:id/tuks', chapterTuks);

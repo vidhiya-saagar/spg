@@ -22,8 +22,7 @@ const GranthScreen = () => {
               <td>Book ID</td>
               <td>Order Number</td>
               <td>Name</td>
-              <td>Chapter Name</td>
-              <td># of Chhands</td>
+              <td>Description</td>
             </tr>
           </thead>
           {/* 

@@ -1,6 +1,8 @@
 // @brief: Validating Query Params
 const isSafeParam = (table, param) => {
   switch (table.toUpperCase()) {
+    case 'BOOKS':
+      return ['book_order'].includes(param);
     case 'CHAPTERS':
       return [
         'number',
