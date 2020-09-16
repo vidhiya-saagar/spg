@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import Grid from '../components/Grid';
+import { Context as GranthContext } from '../context/GranthContext';
 
 const GranthScreen = () => {
+  const { state: granthState, fetchAllBooks } = useContext(GranthContext);
+
+  useEffect(() => {
+    fetchAllBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <Grid alignItems='center' justify='center'>
@@ -14,34 +22,31 @@ const GranthScreen = () => {
           </h1>
         </Grid>
 
-        <Grid column={true} sm={12} md={10} lg={10}></Grid>
-        <table className='mtop15'>
-          <thead>
-            <tr>
-              <td></td>
-              <td>Book ID</td>
-              <td>Order Number</td>
-              <td>Name</td>
-              <td>Description</td>
-            </tr>
-          </thead>
-          {/* 
-          <tbody>
-            {chhandTypes &&
-              chhandTypes.map((chhandType) => {
-                return (
-                  <tr key={chhandType.id}>
-                    <td>{chhandType.id}</td>
-                    <td>{chhandType.chhand_name_unicode}</td>
-                    <td className='gurakhar'>{chhandType.chhand_name_gs}</td>
-                    <td>{chhandType.chhand_name_english}</td>
-                    <td></td>
-                  </tr>
-                );
-              })}
-          </tbody>
-           */}
-        </table>
+        <Grid column={true} sm={12} md={10} lg={10}>
+          <table className='mtop15'>
+            <thead>
+              <tr>
+                <td>Book ID</td>
+                <td>Order Number</td>
+                <td>Name</td>
+                <td># of Chapters</td>
+              </tr>
+            </thead>
+            <tbody>
+              {granthState.allBooks &&
+                granthState.allBooks.map((book) => {
+                  return (
+                    <tr key={book.id}>
+                      <td>{book.id}</td>
+                      <td>{book.book_order}</td>
+                      <td className='satluj'>{book.title_unicode}</td>
+                      <td></td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </Grid>
       </Grid>
     </>
   );
