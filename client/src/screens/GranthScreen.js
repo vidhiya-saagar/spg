@@ -9,12 +9,12 @@ const GranthScreen = () => {
 
   useEffect(() => {
     fetchAllBooks();
-    fetchAllChaptersForBook(1);
+    // fetchAllChaptersForBook(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchAllChaptersForBook = async (bookId) => {
-    const res = await fetchGet('/books/:id/chapters');
+    const res = await fetchGet(`/books/${bookId}/chapters`);
     setChapters(res.chapters);
   };
 
@@ -47,13 +47,42 @@ const GranthScreen = () => {
                     <tr key={book.id}>
                       <td>{book.id}</td>
                       <td>{book.book_order}</td>
-                      <td className='satluj'>{book.title_unicode}</td>
+                      <td className='satluj'>
+                        <a onClick={() => fetchAllChaptersForBook(book.id)}>
+                          {book.title_unicode}
+                        </a>
+                      </td>
                       <td></td>
                     </tr>
                   );
                 })}
             </tbody>
           </table>
+
+          {chapters && (
+            <table className='mtop15'>
+              <thead>
+                <tr>
+                  <td>Chapter ID</td>
+                  <td>Number</td>
+                  <td>Name</td>
+                  <td># of Chapters</td>
+                </tr>
+              </thead>
+              <tbody>
+                {chapters.map((chapter) => {
+                  return (
+                    <tr key={chapter.id}>
+                      <td>{chapter.id}</td>
+                      <td>{chapter.number}</td>
+                      <td className='satluj'>{chapter.title_unicode}</td>
+                      <td></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </Grid>
       </Grid>
     </>
