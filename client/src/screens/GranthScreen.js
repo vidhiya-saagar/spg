@@ -1,14 +1,22 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Grid from '../components/Grid';
 import { Context as GranthContext } from '../context/GranthContext';
+import { fetchGet } from '../helpers/fetchHelper';
 
 const GranthScreen = () => {
   const { state: granthState, fetchAllBooks } = useContext(GranthContext);
+  const [chapters, setChapters] = useState(null);
 
   useEffect(() => {
     fetchAllBooks();
+    fetchAllChaptersForBook(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const fetchAllChaptersForBook = async (bookId) => {
+    const res = await fetchGet('/books/:id/chapters');
+    setChapters(res.chapters);
+  };
 
   return (
     <>

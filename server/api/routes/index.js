@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { booksIndex } = require('../controllers/books.controller');
+const { booksIndex, bookChapters } = require('../controllers/books.controller');
 
 const {
   chaptersIndex,
@@ -32,6 +32,7 @@ const router = express.Router();
 
 // books
 router.get('/books', booksIndex);
+router.get('/books/:id/chapters', bookChapters);
 
 // chapters
 router.get('/chapters', chaptersIndex);

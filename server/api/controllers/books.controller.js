@@ -24,9 +24,20 @@ const booksIndex = async (req, res) => {
   if (Object.keys(req.query).length > 0) {
     bookQueryParams(books, req.query); // Side Effect
   }
-  res.json({ books: await books });
+  res.status(200).json({ books: await books });
+};
+
+// GET `/books/:id/chapters`
+const bookChapters = async (req, res) => {
+  const chapters = await db
+    .select('*')
+    .from('chapters')
+    .where('book_id', req.params.id)
+    .orderBy('number', 'ASC');
+  res.status(200).json({ chapters });
 };
 
 module.exports = {
   booksIndex,
+  bookChapters,
 };
