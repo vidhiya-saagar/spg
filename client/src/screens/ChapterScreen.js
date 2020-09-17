@@ -6,6 +6,7 @@ import Grid from '../components/Grid';
 import ChapterScreenStyles from '../stylesheets/screens/ChapterScreenStyles.css';
 import Chapter from '../components/Chapter';
 import PauriPreview from '../components/PauriPreview';
+import SideChars from '../components/SideChars';
 import Chhand from '../components/Chhand';
 import AddPauri from '../components/AddPauri';
 import { Context as AddPauriFormContext } from '../context/AddPauriFormContext';
@@ -47,7 +48,7 @@ const ChapterScreen = () => {
           <AddPauri />
         </div>
       </Grid>
-      <Grid column={true} sm={12} md={7} lg={7}>
+      <Grid column={true} sm={12} md={6} lg={6}>
         <div className='pauri-container'>
           <Chapter {...chapter} />
           {chhands &&
@@ -62,6 +63,10 @@ const ChapterScreen = () => {
           </Sticky>
         </div>
       </Grid>
+
+      <Grid column={true} sm={12} md={1} lg={1}></Grid>
+
+      <SideChars />
     </Grid>
   );
 };
