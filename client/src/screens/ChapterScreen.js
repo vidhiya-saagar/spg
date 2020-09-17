@@ -41,30 +41,28 @@ const ChapterScreen = () => {
   }, [id]);
 
   return (
-    <>
-      <Grid alignItems='flex-start' justify='center'>
-        <Grid column={true} sm={12} md={5} lg={5}>
-          <div className='content-container'>
-            <AddPauri />
-          </div>
-        </Grid>
-        <Grid column={true} sm={12} md={7} lg={7}>
-          <div className='pauri-container'>
-            <Chapter {...chapter} />
-            {chhands &&
-              chhands.map((chhand) => {
-                return <Chhand {...chhand} key={chhand.id} />;
-              })}
-            <Sticky>
-              <PauriPreview
-                pauri={formattedTukFormObj(tukForm)}
-                nextPauriNum={lastPauriNumInChapter + 1}
-              />
-            </Sticky>
-          </div>
-        </Grid>
+    <Grid alignItems='flex-start' justify='center'>
+      <Grid column={true} sm={12} md={5} lg={5}>
+        <div className='content-container'>
+          <AddPauri />
+        </div>
       </Grid>
-    </>
+      <Grid column={true} sm={12} md={7} lg={7}>
+        <div className='pauri-container'>
+          <Chapter {...chapter} />
+          {chhands &&
+            chhands.map((chhand) => {
+              return <Chhand {...chhand} key={chhand.id} />;
+            })}
+          <Sticky>
+            <PauriPreview
+              pauri={formattedTukFormObj(tukForm)}
+              nextPauriNum={lastPauriNumInChapter + 1}
+            />
+          </Sticky>
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 
