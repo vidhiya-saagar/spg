@@ -1,12 +1,13 @@
 import React from 'react';
 import SideCharsStyles from '../stylesheets/components/SideCharsStyles.module.css';
 
-const CharBlock = ({ char, english }) => {
+const CharBlock = ({ char, description, sound }) => {
   return (
     <div className={SideCharsStyles.CharItem}>
-      ੍ਯ
-      <br />
-      <span>adhā jəjːɑ</span>
+      <p className={SideCharsStyles.Char}>{char}</p>
+      <p className={SideCharsStyles.Description}>
+        {description} {sound && `- ${sound}`}
+      </p>
     </div>
   );
 };

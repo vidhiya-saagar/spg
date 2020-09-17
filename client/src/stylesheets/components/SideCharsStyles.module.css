@@ -4,15 +4,16 @@
   justify-content: center;
   position: fixed;
   right: 0;
+  top: 0;
 
 }
 
 .CharItem {
-  border: 1px solid red;
+  border: 1px solid #a3b18a;
   border-bottom: none;
-  width: 1em;
-  height: 1em;
-  padding: 1.75em;
+  border-radius: 3px 0 0 3px;
+  width: 3.5em;
+  height: 3.5em;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,5 +24,18 @@
 }
 
 .CharItem:last-child {
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid #a3b18a;
+}
+
+.Char {
+  margin: 0;
+  display: 0;
+}
+
+.Description {
+  font-size: 9px;
+  color: #588157;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
