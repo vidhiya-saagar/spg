@@ -24,7 +24,10 @@ const {
   validateChhand,
 } = require('../controllers/chhands.controller');
 
-const { pauriIndex } = require('../controllers/pauris.controller');
+const {
+  pauriIndex,
+  showFullPauri,
+} = require('../controllers/pauris.controller');
 
 const { last } = require('../controllers/application.controller');
 
@@ -61,6 +64,7 @@ router.post(
 
 // pauris
 router.get('/pauris', pauriIndex);
+router.get('/pauris/:id/full', showFullPauri);
 
 // APPLICATIONS
 router.get('/last', last);

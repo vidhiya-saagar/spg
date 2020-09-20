@@ -9,6 +9,7 @@ const pauriQueryParams = async (pauris, query) => {
     if (!isSafeParam('PAURIS', param)) return false;
 
     switch (param) {
+      case 'id':
       case 'number':
       case 'chhand_id':
       case 'chapter_id':
@@ -33,4 +34,36 @@ const pauriIndex = async (req, res) => {
   res.json({ pauris: await pauris });
 };
 
-module.exports = { pauriIndex };
+// get `pauri/:id/full
+const showFullPauri = async (req, res) => {
+  const pauri = await db
+    .select('*')
+    .from('pauris')
+    .where('id', req.params.id)
+    .first();
+
+  if (!pauri) return res.json({ pauri });
+
+  const chapter = await db
+    .select('*')
+    .from('chapters')
+    .where('id', pauri.chapter_id)
+    .first();
+
+  const chhand = await db
+    .select('*')
+    .from('chhands')
+    .where('id', pauri.chhand_id)
+    .first();
+
+  const tuks = await db
+    .select('*')
+    .from('tuks')
+    .where('pauri_id', pauri.id)
+    .orderBy('line_number', 'ASC');
+  pauri.tuks = tuks;
+
+  res.status(200).json({ pauri, chapter, chhand });
+};
+
+module.exports = { pauriIndex, showFullPauri };
