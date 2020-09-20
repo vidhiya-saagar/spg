@@ -7,6 +7,7 @@ const SideChars = () => {
     <div className={SideCharsStyles.Column}>
       <CharBlock char=' ੍ਯ' description='adhā jəjːɑ' />
       <CharBlock char='੍ਰ' description='adhā ɾɑɾɑ' />
+      <CharBlock char='੍ਵ' description='adhā ʋɑʋːɑ' />
       <CharBlock char='ਸ਼੍ਰੀ' description='Śrī' />
       <CharBlock char='ੰ' description='tippi' sound='ŋ̽' />
       <CharBlock char='ਂ' description='bindi' sound='˜' />

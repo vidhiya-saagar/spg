@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import createDataContext from './createDataContext';
 import * as anvaad from 'anvaad-js';
 import { fetchGet } from '../helpers/fetchHelper';
+import { hasSpaceBeforePeriod } from '../helpers/validationHelper';
 
 const formReducer = (state, action) => {
   let index;
@@ -91,13 +92,21 @@ const findWordIndiciesWith = (str, char) => {
   return arr;
 };
 
+const replaceQuotationMarksWithBindi = (str) => str.trim().replace("'", 'ਂ');
 const handleLineBreaks = (str) => str.trim().replace(/\r?\n|\r/g, '; ');
+
+const replaceSpecialCharacters = (str) => {
+  if (!hasSpaceBeforePeriod(str)) {
+    str = str.slice(0, str.length - 1) + ` ${str[str.length - 1]}`;
+  }
+  return handleLineBreaks(replaceQuotationMarksWithBindi(str));
+};
 const removeSpecialChars = (str) => str.replace(/[,.'”*;]/g, '');
 const keepVishraams = (str) => str.replace(/[.']/g, '');
 
 // When unicodeRaw changes
 const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
-  const unicodeRawSafe = handleLineBreaks(unicodeRaw);
+  const unicodeRawSafe = replaceSpecialCharacters(unicodeRaw);
   const unicodeSafe = removeSpecialChars(unicodeRawSafe);
   const _gurmukhiScript = anvaad.unicode(unicodeSafe, true);
 
