@@ -21,7 +21,7 @@ import {
 } from '../components/SweetAlert.js';
 import * as Yup from 'yup';
 
-const EditPauri = ({ pauri }) => {
+const EditPauri = () => {
   const {
     state: formState,
     updateAddPauriTextFields,
@@ -33,6 +33,10 @@ const EditPauri = ({ pauri }) => {
   } = useContext(EditPauriFormContext);
 
   const tukForm = formState.tukForm;
+
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  console.log(formState);
+
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
   // useEffect(() => {
@@ -160,8 +164,8 @@ const EditPauri = ({ pauri }) => {
       {/* // ! THIS IS WHERE THE FORM BEGINS  */}
       {/* // TODO: REFACTOR LATER */}
 
-      {1 + 1 == 4 &&
-        pauri.tuks.map((tuk) => {
+      {tukForm &&
+        tukForm.map((tuk) => {
           return (
             <div className={AddPauriStyles.Form} key={tuk.tukNumber.toString()}>
               <Grid alignItems='flex-end' justify='center'>

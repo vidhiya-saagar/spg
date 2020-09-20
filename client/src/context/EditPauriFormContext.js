@@ -7,8 +7,20 @@ import { hasSpaceBeforePeriod } from '../helpers/validationHelper';
 const formReducer = (state, action) => {
   let index;
   switch (action.type) {
-    case 'POPULATE_PAURI':
+    case 'POPULATE_TUK':
       debugger;
+      const tuk = action.payload;
+      return updateTukForm(tuk.line_number - 1, state, {
+        unicodeRaw: tuk.content_unicode,
+        unicode: tuk.content_unicode,
+        // unicodeVishraam: '',
+        gurmukhiScript: tuk.content_gs,
+        englishTranslit: tuk.content_transliteration_english,
+        firstLetters: tuk.first_letters,
+        thamki: tuk.thamkis,
+        vishraam: tuk.vishraams,
+        tukNumber: tuk.line_number,
+      });
       break;
 
     case 'UPDATE_FORM_ITEM':
@@ -73,6 +85,7 @@ const findTukIndex = (state, tukNumber) => {
 };
 
 const updateTukForm = (index, oldState, newState) => {
+  debugger;
   return {
     ...oldState,
     tukForm: [
@@ -146,7 +159,9 @@ const updateFormItem = (dispatch) => (formItem) => {
 };
 
 const populateFormState = (dispatch) => (pauri) => {
-  dispatch({ type: 'POPULATE_PAURI', payload: pauri });
+  pauri.tuks.map((tuk) => {
+    dispatch({ type: 'POPULATE_TUK', payload: tuk });
+  });
 };
 
 const addTukForm = (dispatch) => () => {

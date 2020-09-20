@@ -18,7 +18,8 @@ const EditPauriScreen = () => {
       populateFormState(res.pauri);
     };
     fetchPauri();
-  }, [id, populateFormState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -28,7 +29,7 @@ const EditPauriScreen = () => {
         </Grid>
 
         <Grid column={true} sm={12} md={10} lg={10}>
-          <EditPauri pauri />
+          <EditPauri />
         </Grid>
       </Grid>
     </>
