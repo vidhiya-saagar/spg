@@ -7,7 +7,7 @@ import { fetchGet } from '../helpers/fetchHelper';
 import { Context as EditPauriFormContext } from '../context/EditPauriFormContext';
 
 const EditPauriScreen = () => {
-  const { populateFormState } = useContext(EditPauriFormContext);
+  const { initializeFormState } = useContext(EditPauriFormContext);
   const { id } = useParams();
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const EditPauriScreen = () => {
       const res = await fetchGet(`/pauris/${id}/full`);
       console.log(res);
       console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-      populateFormState(res.pauri);
+      initializeFormState(res.pauri);
     };
     fetchPauri();
     // eslint-disable-next-line react-hooks/exhaustive-deps

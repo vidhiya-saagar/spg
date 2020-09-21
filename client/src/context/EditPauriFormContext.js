@@ -10,17 +10,18 @@ const formReducer = (state, action) => {
     case 'POPULATE_TUK':
       debugger;
       const tuk = action.payload;
-      return updateTukForm(tuk.line_number - 1, state, {
+      const newState = {
         unicodeRaw: tuk.content_unicode,
         unicode: tuk.content_unicode,
-        // unicodeVishraam: '',
         gurmukhiScript: tuk.content_gs,
         englishTranslit: tuk.content_transliteration_english,
         firstLetters: tuk.first_letters,
         thamki: tuk.thamkis,
         vishraam: tuk.vishraams,
         tukNumber: tuk.line_number,
-      });
+      };
+      return updateOriginalTukForm(tuk.line_number - 1, state, newState);
+      // return updateTukForm(tuk.line_number - 1, state, newState);
       break;
 
     case 'UPDATE_FORM_ITEM':
@@ -29,7 +30,6 @@ const formReducer = (state, action) => {
       return updateTukForm(index, state, {
         ...state.tukForm[index],
           unicode: action.payload.unicode || state.tukForm[index].unicode,
-          unicodeVishraam: action.payload.unicodeVishraam || state.tukForm[index].unicodeVishraam,
           gurmukhiScript: action.payload.gurmukhiScript || state.tukForm[index].gurmukhiScript,
       });
 
@@ -38,7 +38,6 @@ const formReducer = (state, action) => {
       return updateTukForm(index, state, {
         unicodeRaw: action.payload.unicodeRaw,
         unicode: action.payload.unicode,
-        unicodeVishraam: action.payload.unicodeVishraam,
         gurmukhiScript: action.payload.gurmukhiScript,
         englishTranslit: action.payload.englishTranslit,
         firstLetters: action.payload.firstLetters,
@@ -61,7 +60,6 @@ const formReducer = (state, action) => {
       return updateTukForm(index, state, {
         unicodeRaw: '',
         unicode: '',
-        unicodeVishraam: '',
         gurmukhiScript: '',
         englishTranslit: '',
         firstLetters: '',
@@ -91,6 +89,22 @@ const updateTukForm = (index, oldState, newState) => {
     tukForm: [
       ...oldState.tukForm.slice(0, index), // everything before current post
       { ...oldState.tukForm[index], ...newState },
+      ...oldState.tukForm.slice(index + 1), // everything after current post
+    ],
+  };
+};
+
+const updateOriginalTukForm = (index, oldState, newState) => {
+  return {
+    ...oldState,
+    tukForm: [
+      ...oldState.tukForm.slice(0, index), // everything before current post
+      { ...oldState.tukForm[index], ...newState },
+      ...oldState.tukForm.slice(index + 1), // everything after current post
+    ],
+    originalTukForm: [
+      ...oldState.originalTukForm.slice(0, index), // everything before current post
+      { ...oldState.originalTukForm[index], ...newState },
       ...oldState.tukForm.slice(index + 1), // everything after current post
     ],
   };
@@ -130,7 +144,6 @@ const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
   const payload = {
     unicodeRaw: unicodeRawSafe,
     unicode: unicodeSafe,
-    unicodeVishraam: keepVishraams(unicodeRawSafe),
     gurmukhiScript: _gurmukhiScript,
     englishTranslit: anvaad.translit(_gurmukhiScript),
     firstLetters: anvaad.firstLetters(unicodeSafe),
@@ -153,12 +166,11 @@ const updateUnicode = (dispatch) => (unicode, tukNumber) => {
   dispatch({ type: 'UPDATE_UNICODE', payload });
 };
 
-// When unicode/gurmukhiScript/unicodeVishraam changes
 const updateFormItem = (dispatch) => (formItem) => {
   dispatch({ type: 'UPDATE_FORM_ITEM', payload: formItem });
 };
 
-const populateFormState = (dispatch) => (pauri) => {
+const initializeFormState = (dispatch) => (pauri) => {
   pauri.tuks.map((tuk) => {
     dispatch({ type: 'POPULATE_TUK', payload: tuk });
   });
@@ -180,14 +192,25 @@ export const { Provider, Context } = createDataContext(
     updateUnicode,
     addTukForm,
     removeLastTukForm,
-    populateFormState,
+    initializeFormState,
   },
   {
+    originalTukForm: [
+      {
+        unicodeRaw: '',
+        unicode: '',
+        gurmukhiScript: '',
+        englishTranslit: '',
+        firstLetters: '',
+        thamki: [],
+        vishraam: [],
+        tukNumber: 1,
+      },
+    ],
     tukForm: [
       {
         unicodeRaw: '',
         unicode: '',
-        unicodeVishraam: '',
         gurmukhiScript: '',
         englishTranslit: '',
         firstLetters: '',

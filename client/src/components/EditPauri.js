@@ -20,6 +20,7 @@ import {
   SweetConfirm,
 } from '../components/SweetAlert.js';
 import * as Yup from 'yup';
+import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
 const EditPauri = () => {
   const {
@@ -33,9 +34,27 @@ const EditPauri = () => {
   } = useContext(EditPauriFormContext);
 
   const tukForm = formState.tukForm;
+  const originalTukForm = formState.originalTukForm;
 
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  console.log(formState);
+  const oldCode = `
+const a = 10
+const b = 10
+const c = () => console.log('foo')
+
+if(a > 10) {
+  console.log('bar')
+}
+
+console.log('done')
+`;
+  const newCode = `
+const a = 10
+const boo = 10
+
+if(a === 10) {
+  console.log('bar')
+}
+`;
 
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
@@ -163,6 +182,18 @@ const EditPauri = () => {
 
       {/* // ! THIS IS WHERE THE FORM BEGINS  */}
       {/* // TODO: REFACTOR LATER */}
+
+      {tukForm && (
+        <ReactDiffViewer
+          oldValue={JSON.stringify(originalTukForm, null, 2)}
+          newValue={JSON.stringify(tukForm, null, 2)}
+          splitView={true}
+          showDiffOnly={true}
+          hideLineNumbers={true}
+          extraLinesSurroundingDiff={1}
+          // compareMethods={DiffMethod.WORDS}
+        />
+      )}
 
       {tukForm &&
         tukForm.map((tuk) => {
