@@ -36,26 +36,6 @@ const EditPauri = () => {
   const tukForm = formState.tukForm;
   const originalTukForm = formState.originalTukForm;
 
-  const oldCode = `
-const a = 10
-const b = 10
-const c = () => console.log('foo')
-
-if(a > 10) {
-  console.log('bar')
-}
-
-console.log('done')
-`;
-  const newCode = `
-const a = 10
-const boo = 10
-
-if(a === 10) {
-  console.log('bar')
-}
-`;
-
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
   // useEffect(() => {
@@ -183,60 +163,65 @@ if(a === 10) {
       {/* // ! THIS IS WHERE THE FORM BEGINS  */}
       {/* // TODO: REFACTOR LATER */}
 
-      {tukForm && (
-        <ReactDiffViewer
-          oldValue={JSON.stringify(originalTukForm, null, 2)}
-          newValue={JSON.stringify(tukForm, null, 2)}
-          splitView={true}
-          showDiffOnly={true}
-          hideLineNumbers={true}
-          extraLinesSurroundingDiff={1}
-          // compareMethods={DiffMethod.WORDS}
-        />
-      )}
-
       {tukForm &&
         tukForm.map((tuk) => {
           return (
-            <div className={AddPauriStyles.Form} key={tuk.tukNumber.toString()}>
-              <Grid alignItems='flex-end' justify='center'>
-                <Grid column={true} sm={12} md={12} lg={12}>
-                  <form onSubmit={submitForm} className='spg-form'>
-                    <div className='form-element'>
-                      <label htmlFor='unicode_raw'>
-                        Gurmukhi Unicode (Raw)
-                      </label>
+            <>
+              <ReactDiffViewer
+                oldValue={JSON.stringify(
+                  originalTukForm[tuk.tukNumber - 1],
+                  null,
+                  2
+                )}
+                newValue={JSON.stringify(tuk, null, 2)}
+                splitView={true}
+                showDiffOnly={true}
+                hideLineNumbers={true}
+                extraLinesSurroundingDiff={1}
+              />
 
-                      <textarea
-                        id='unicode_raw'
-                        name='unicode_raw'
-                        type='text'
-                        rows='3'
-                        onChange={(e) => {
-                          updateUnicodeRaw(e.target.value, tuk.tukNumber);
-                        }}
-                        placeholder={`#${tuk.tukNumber}`}
-                        spellCheck='false'
-                        value={tuk.unicodeRaw}
-                      />
-                    </div>
+              <div
+                className={AddPauriStyles.Form}
+                key={tuk.tukNumber.toString()}
+              >
+                <Grid alignItems='flex-end' justify='center'>
+                  <Grid column={true} sm={12} md={12} lg={12}>
+                    <form onSubmit={submitForm} className='spg-form'>
+                      <div className='form-element'>
+                        <label htmlFor='unicode_raw'>
+                          Gurmukhi Unicode (Raw)
+                        </label>
 
-                    <div className='form-element'>
-                      <label htmlFor='unicode'>Gurmukhi Unicode</label>
-                      <textarea
-                        id='unicode'
-                        name='unicode'
-                        type='text'
-                        rows='3'
-                        onChange={(e) => {
-                          updateUnicode(e.target.value, tuk.tukNumber);
-                        }}
-                        spellCheck='false'
-                        value={tuk.unicode}
-                      />
-                    </div>
+                        <textarea
+                          id='unicode_raw'
+                          name='unicode_raw'
+                          type='text'
+                          rows='3'
+                          onChange={(e) => {
+                            updateUnicodeRaw(e.target.value, tuk.tukNumber);
+                          }}
+                          placeholder={`#${tuk.tukNumber}`}
+                          spellCheck='false'
+                          value={tuk.unicodeRaw}
+                        />
+                      </div>
 
-                    {/*  
+                      <div className='form-element'>
+                        <label htmlFor='unicode'>Gurmukhi Unicode</label>
+                        <textarea
+                          id='unicode'
+                          name='unicode'
+                          type='text'
+                          rows='3'
+                          onChange={(e) => {
+                            updateUnicode(e.target.value, tuk.tukNumber);
+                          }}
+                          spellCheck='false'
+                          value={tuk.unicode}
+                        />
+                      </div>
+
+                      {/*  
                     <div className='form-element'>
                       <label htmlFor='unicodeVishraam'>
                         Gurmukhi (With Vishraams)
@@ -258,110 +243,111 @@ if(a === 10) {
                     </div>
                     */}
 
-                    <div className='form-element'>
-                      <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
-                      <textarea
-                        id='gurmukhiScript'
-                        name='gurmukhiScript'
-                        type='text'
-                        rows='3'
-                        onChange={(e) =>
-                          updateFormItem({
-                            gurmukhiScript: e.target.value,
-                            tukNumber: tuk.tukNumber,
-                          })
-                        }
-                        spellCheck='false'
-                        value={tuk.gurmukhiScript} // state is imported from Context
-                      />
-                    </div>
+                      <div className='form-element'>
+                        <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
+                        <textarea
+                          id='gurmukhiScript'
+                          name='gurmukhiScript'
+                          type='text'
+                          rows='3'
+                          onChange={(e) =>
+                            updateFormItem({
+                              gurmukhiScript: e.target.value,
+                              tukNumber: tuk.tukNumber,
+                            })
+                          }
+                          spellCheck='false'
+                          value={tuk.gurmukhiScript} // state is imported from Context
+                        />
+                      </div>
 
-                    <div className='form-element'>
-                      <label className='disabled' htmlFor='englishTranslit'>
-                        English Transliteration
-                      </label>
-                      <input
-                        id='englishTranslit'
-                        name='englishTranslit'
-                        readOnly
-                        disabled
-                        type='text'
-                        spellCheck='false'
-                        value={tuk.englishTranslit}
-                      />
-                    </div>
+                      <div className='form-element'>
+                        <label className='disabled' htmlFor='englishTranslit'>
+                          English Transliteration
+                        </label>
+                        <input
+                          id='englishTranslit'
+                          name='englishTranslit'
+                          readOnly
+                          disabled
+                          type='text'
+                          spellCheck='false'
+                          value={tuk.englishTranslit}
+                        />
+                      </div>
 
-                    <div className='form-element'>
-                      <label className='disabled' htmlFor='firstLetters'>
-                        First Letters
-                      </label>
-                      <input
-                        id='firstLetters'
-                        name='firstLetters'
-                        readOnly
-                        disabled
-                        type='text'
-                        spellCheck='false'
-                        value={tuk.firstLetters}
-                      />
-                    </div>
+                      <div className='form-element'>
+                        <label className='disabled' htmlFor='firstLetters'>
+                          First Letters
+                        </label>
+                        <input
+                          id='firstLetters'
+                          name='firstLetters'
+                          readOnly
+                          disabled
+                          type='text'
+                          spellCheck='false'
+                          value={tuk.firstLetters}
+                        />
+                      </div>
 
-                    <div className='form-element'>
-                      <label className='disabled' htmlFor='thamki'>
-                        Thamkis
-                      </label>
-                      <input
-                        id='thamki'
-                        name='thamki'
-                        readOnly
-                        disabled
-                        type='text'
-                        spellCheck='false'
-                        value={tuk.thamki}
-                      />
-                    </div>
+                      <div className='form-element'>
+                        <label className='disabled' htmlFor='thamki'>
+                          Thamkis
+                        </label>
+                        <input
+                          id='thamki'
+                          name='thamki'
+                          readOnly
+                          disabled
+                          type='text'
+                          spellCheck='false'
+                          value={tuk.thamki}
+                        />
+                      </div>
 
-                    <div className='form-element'>
-                      <label className='disabled' htmlFor='vishraam'>
-                        Vishraam
-                      </label>
-                      <input
-                        id='vishraam'
-                        name='vishraam'
-                        readOnly
-                        disabled
-                        type='text'
-                        spellCheck='false'
-                        value={tuk.vishraam}
-                      />
-                    </div>
+                      <div className='form-element'>
+                        <label className='disabled' htmlFor='vishraam'>
+                          Vishraam
+                        </label>
+                        <input
+                          id='vishraam'
+                          name='vishraam'
+                          readOnly
+                          disabled
+                          type='text'
+                          spellCheck='false'
+                          value={tuk.vishraam}
+                        />
+                      </div>
 
-                    <div className='form-element'>
-                      <label className='disabled' htmlFor='number'>
-                        Tuk Number
-                      </label>
-                      <input
-                        id='tukNumber'
-                        name='tukNumber'
-                        readOnly
-                        disabled
-                        type='number'
-                        spellCheck='false'
-                        value={tuk.tukNumber}
-                      />
-                    </div>
-                    {tuk.tukNumber > 1 && (
-                      <button
-                        onClick={() => confirmRemoveTuk(tuk.tukNumber)}
-                        type='button'
-                      >
-                        Remove Tuk
-                      </button>
-                    )}
-                  </form>
+                      <div className='form-element'>
+                        <label className='disabled' htmlFor='number'>
+                          Tuk Number
+                        </label>
+                        <input
+                          id='tukNumber'
+                          name='tukNumber'
+                          readOnly
+                          disabled
+                          type='number'
+                          spellCheck='false'
+                          value={tuk.tukNumber}
+                        />
+                      </div>
+                      {tuk.tukNumber > 1 && (
+                        <button
+                          onClick={() => confirmRemoveTuk(tuk.tukNumber)}
+                          type='button'
+                        >
+                          Remove Tuk
+                        </button>
+                      )}
+                    </form>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </div>
+              </div>
+            </>
           );
         })}
       <button
