@@ -10,9 +10,7 @@ Make sure you have the following setup:
 * Knex JS
 
 
-1. **Clone the repo**:
-
-`git clone git@github.com:dsomel21/spg.git`
+1. **Clone the repo**: `git clone git@github.com:dsomel21/spg.git`
 
 2. **Install dependencies**: 
 
@@ -24,7 +22,7 @@ cd client && yarn
 3. **Create the Database** and create a `.ENV` file in the root directory of the repo and paste the following details: 
 
 ```
-DATABASE_HOST="locaolhost"
+DATABASE_HOST="localhost"
 DATABASE_USER="YOUR_MYSQL_USERNAME"
 DATABASE_PASSWORD="YOUR_MYSQL_PASSWORD"
 DEVELOPMENT_DATABASE="THE_DATABASE_YOU_JUST_CREATED"
@@ -37,7 +35,8 @@ knex migrate:latest
 knex seed:run
 ```
 
-5. **Run Server**
+5. **Run Server**:
+
 Run `yarn start` in the root directroy and this will bootup the API in `localhost:1469/`. Then run `yarn start` in `client/` directory to run the admin section. You can now run the app in `localhost:3000/`
 
 
@@ -65,12 +64,9 @@ Run `yarn start` in the root directroy and this will bootup the API in `localhos
 
 > *Baba Sumer Singh - 'Gurpad Prem Prakash' (1880), page 527.⁣ (Translation by [Manglacharan](https://www.manglacharan.com/))*
 
-This project is dedicated to the Great Poet, Kavi Santokh Singh and to _the selfless warriors who ate steel ensuring our unbridled access
-to the knowledge of our Gurus and ancestors_ ( - Manglacharan 2017).
-
-Kavi Ji has contributed his life to poetically documenting the life of the Sikh Guru's. This project strives to create a central database for Kavi Ji's *Gurprataap Sooraj Granth* (also known as *Sooraj Prakash Granth*)
+Kavi Santokh Singh Ji has contributed his life to poetically documenting the life of the Sikh Guru's. This project strives to create a central database for Kavi Ji's *Gurprataap Sooraj Granth* (also known as *Sooraj Prakash Granth*) using the admin tools in this application.
 
 Recommended Links: 
-* [Suraj Podcast](https://www.surajpocast.com/) - An amazing podcast in English that goes through chapters of *SPG* 
+* [Suraj Podcast](https://www.surajpodcast.com/) - An amazing podcast in English that goes through chapters of *SPG* 
 * [Rara Sahib - ik13.com](https://www.ik13.com/bhai-daya-singh-ji-online-library/) - Amazing service of publishing volumentric documents on *SPG*
 * [Anvaad JS](https://github.com/KhalisFoundation/anvaad-js) - Very useful tool to for when dealing with transliteration/ASCII/unicode converting in the context of the Gurmukhi language.
