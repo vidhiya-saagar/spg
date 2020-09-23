@@ -2,16 +2,23 @@
 
 ## [Unreleased](https://github.com/dsomel21/spg/tree/HEAD)
 
-[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.8...HEAD)
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.9...HEAD)
 
 **Implemented enhancements:**
 
 - Live preview of what the pauri would look like before submitting. [\#10](https://github.com/dsomel21/spg/issues/10)
-- Ability to “un-add” the last Tuk form when adding a pauri [\#9](https://github.com/dsomel21/spg/issues/9)
 
 **Closed issues:**
 
 - Front-end validation on Add Pauri form [\#14](https://github.com/dsomel21/spg/issues/14)
+
+## [0.0.9](https://github.com/dsomel21/spg/tree/0.0.9) (2020-09-13)
+
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.8...0.0.9)
+
+**Implemented enhancements:**
+
+- Ability to “un-add” the last Tuk form when adding a pauri [\#9](https://github.com/dsomel21/spg/issues/9)
 
 ## [0.0.8](https://github.com/dsomel21/spg/tree/0.0.8) (2020-09-09)
 
