@@ -6,6 +6,7 @@ import Grid from '../components/Grid';
 import ChapterScreenStyles from '../stylesheets/screens/ChapterScreenStyles.css';
 import Chapter from '../components/Chapter';
 import PauriPreview from '../components/PauriPreview';
+import SideChars from '../components/SideChars';
 import Chhand from '../components/Chhand';
 import AddPauri from '../components/AddPauri';
 import { Context as AddPauriFormContext } from '../context/AddPauriFormContext';
@@ -41,30 +42,32 @@ const ChapterScreen = () => {
   }, [id]);
 
   return (
-    <>
-      <Grid alignItems='flex-start' justify='center'>
-        <Grid column={true} sm={12} md={5} lg={5}>
-          <div className='content-container'>
-            <AddPauri />
-          </div>
-        </Grid>
-        <Grid column={true} sm={12} md={7} lg={7}>
-          <div className='pauri-container'>
-            <Chapter {...chapter} />
-            {chhands &&
-              chhands.map((chhand) => {
-                return <Chhand {...chhand} key={chhand.id} />;
-              })}
-            <Sticky>
-              <PauriPreview
-                pauri={formattedTukFormObj(tukForm)}
-                nextPauriNum={lastPauriNumInChapter + 1}
-              />
-            </Sticky>
-          </div>
-        </Grid>
+    <Grid alignItems='flex-start' justify='center'>
+      <Grid column={true} sm={12} md={5} lg={5}>
+        <div className='content-container'>
+          <AddPauri />
+        </div>
       </Grid>
-    </>
+      <Grid column={true} sm={12} md={6} lg={6}>
+        <div className='pauri-container'>
+          <Chapter {...chapter} />
+          {chhands &&
+            chhands.map((chhand) => {
+              return <Chhand {...chhand} key={chhand.id} />;
+            })}
+          <Sticky>
+            <PauriPreview
+              pauri={formattedTukFormObj(tukForm)}
+              nextPauriNum={lastPauriNumInChapter + 1}
+            />
+          </Sticky>
+        </div>
+      </Grid>
+
+      <Grid column={true} sm={12} md={1} lg={1}></Grid>
+
+      <SideChars />
+    </Grid>
   );
 };
 

@@ -44,7 +44,7 @@ const chapterQueryParams = async (chapters, query) => {
 };
 
 // GET `/chapters`
-const chapterIndex = async (req, res) => {
+const chaptersIndex = async (req, res) => {
   let chapters = db.select('*').from('chapters');
   if (Object.keys(req.query).length > 0) {
     chapterQueryParams(chapters, req.query); // Side Effect
@@ -93,10 +93,18 @@ const chapterTuks = async (req, res) => {
       .first();
 
     let pauris =
-      (await db.select('*').from('pauris').where('chhand_id', chhand.id)) || [];
+      (await db
+        .select('*')
+        .from('pauris')
+        .where('chhand_id', chhand.id)
+        .orderBy('number', 'ASC')) || [];
     for (let pauri of pauris) {
       let tuks =
-        (await db.select('*').from('tuks').where('pauri_id', pauri.id)) || [];
+        (await db
+          .select('*')
+          .from('tuks')
+          .where('pauri_id', pauri.id)
+          .orderBy('line_number', 'ASC')) || [];
       pauri.tuks = tuks;
     }
     chhand.pauris = pauris;
@@ -112,7 +120,7 @@ const lastPauri = async (req, res) => {
 };
 
 module.exports = {
-  chapterIndex,
+  chaptersIndex,
   chapterFind,
   chapterChhands,
   chapterTuks,

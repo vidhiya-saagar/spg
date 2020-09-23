@@ -1,0 +1,46 @@
+.Column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: fixed;
+  right: 0;
+  top: 0;
+
+}
+
+.CharItem {
+  border: 1px solid #a3b18a;
+  border-bottom: none;
+  border-radius: 3px 0 0 3px;
+  width: 3.5em;
+  height: 3.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  
+  font-family: 'Satluj Bold';
+  color: #718096;
+  margin: 0;
+}
+
+.CharItem:last-child {
+  border-bottom: 1px solid #a3b18a;
+}
+
+.Char {
+  margin: 0;
+  display: 0;
+}
+
+.Description {
+  font-size: 9px;
+  color: #588157;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

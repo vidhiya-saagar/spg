@@ -6,7 +6,7 @@ const Menu = () => {
   return (
     <ul className={MenuStyles.Menu}>
       <li className={MenuStyles.MenuItem}>
-        <Link to='/books'>Books</Link>
+        <Link to='/granth'>Granth</Link>
       </li>
       <li className={MenuStyles.MenuItem}>
         <Link to='/chapters'>Chapters</Link>

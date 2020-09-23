@@ -33,10 +33,10 @@ const AddPauri = () => {
   } = useContext(AddPauriFormContext);
 
   const tukForm = formState.tukForm;
-  const { state: granthState, getSpgStatus } = useContext(GranthContext);
+  const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
   useEffect(() => {
-    getSpgStatus();
+    fetchSpgStatus();
     updateUnicodeRaw(tukForm[0].unicodeRaw, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -31,7 +31,7 @@ const selectStyles = {
 
 const AddChhand = () => {
   const [chhandTypeOptions, setChhandTypeOptions] = useState([]);
-  const { state: granthState, getSpgStatus } = useContext(GranthContext);
+  const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
   const [unicode, setUnicode] = useState('');
   const [selectedChhandType, setSelectedChhandType] = useState(null);
@@ -72,13 +72,13 @@ const AddChhand = () => {
         res.chhand_types.map((chhandType) => {
           return {
             value: chhandType.id,
-            label: chhandType.chhand_name_english,
+            label: `${chhandType.chhand_name_english} (${chhandType.chhand_name_unicode})`,
           };
         })
       );
     };
 
-    getSpgStatus();
+    fetchSpgStatus();
     fetchAllChhandTypes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

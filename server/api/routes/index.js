@@ -1,7 +1,9 @@
 const express = require('express');
 
+const { booksIndex, bookChapters } = require('../controllers/books.controller');
+
 const {
-  chapterIndex,
+  chaptersIndex,
   chapterFind,
   chapterChhands,
   chapterTuks,
@@ -22,14 +24,21 @@ const {
   validateChhand,
 } = require('../controllers/chhands.controller');
 
-const { pauriIndex } = require('../controllers/pauris.controller');
+const {
+  pauriIndex,
+  showFullPauri,
+} = require('../controllers/pauris.controller');
 
 const { last } = require('../controllers/application.controller');
 
 const router = express.Router();
 
+// books
+router.get('/books', booksIndex);
+router.get('/books/:id/chapters', bookChapters);
+
 // chapters
-router.get('/chapters', chapterIndex);
+router.get('/chapters', chaptersIndex);
 router.get('/chapters/:id', chapterFind);
 router.get('/chapters/:id/chhands', chapterChhands);
 router.get('/chapters/:id/tuks', chapterTuks);
@@ -55,6 +64,7 @@ router.post(
 
 // pauris
 router.get('/pauris', pauriIndex);
+router.get('/pauris/:id/full', showFullPauri);
 
 // APPLICATIONS
 router.get('/last', last);

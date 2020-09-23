@@ -22,24 +22,38 @@ const granthContext = (state, action) => {
         lastPauri: _lastPauri,
         lastTuk: _lastTuk,
       };
+    case 'UPDATE_ALL_BOOKS':
+      return {
+        ...state,
+        allBooks: action.payload.allBooks,
+      };
+
     default:
       console.log(`⚠️ Warning! Action ${action.type} not found!`);
   }
 };
 
-const getSpgStatus = (dispatch) => async () => {
+const fetchSpgStatus = (dispatch) => async () => {
   try {
     const res = await fetchGet('/last');
     dispatch({ type: 'UPDATE_LAST', payload: res });
   } catch (error) {
-    console.log(`⚠️ Error! ${console.error} in getSpgStatus().`);
+    console.log(`⚠️ Error! ${console.error} in fetchSpgStatus().`);
   }
+};
+
+const fetchAllChapters = async () => {};
+
+const fetchAllBooks = (dispatch) => async () => {
+  const res = await fetchGet('/books');
+  dispatch({ type: 'UPDATE_ALL_BOOKS', payload: { allBooks: res.books } });
 };
 
 export const { Provider, Context } = createDataContext(
   granthContext,
   {
-    getSpgStatus,
+    fetchSpgStatus,
+    fetchAllBooks,
   },
   {
     lastBook: null,
@@ -47,5 +61,6 @@ export const { Provider, Context } = createDataContext(
     lastChhand: null,
     lastPauri: null,
     lastTuk: null,
+    allChapters: [],
   }
 );
