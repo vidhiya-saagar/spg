@@ -152,21 +152,13 @@ const EditPauri = () => {
               {granthState.lastChhand?.order_number || 'N/A'}
             </div>
           </Grid>
-          <p
-            className={`${AddPauriStyles.Warning} ${AddPauriStyles.Bold} mtop15`}
-          >
-            Do not skip tuks!
-          </p>
         </Grid>
       </div>
-
-      {/* // ! THIS IS WHERE THE FORM BEGINS  */}
-      {/* // TODO: REFACTOR LATER */}
 
       {tukForm &&
         tukForm.map((tuk) => {
           return (
-            <>
+            <Grid column={true} sm={12} md={6} lg={6}>
               <ReactDiffViewer
                 oldValue={JSON.stringify(
                   originalTukForm[tuk.tukNumber - 1],
@@ -347,7 +339,7 @@ const EditPauri = () => {
                   </Grid>
                 </Grid>
               </div>
-            </>
+            </Grid>
           );
         })}
       <button
