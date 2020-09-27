@@ -1,7 +1,9 @@
 .Column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: center; */
+  height: 100vh;
+  overflow-y: auto;
   position: fixed;
   right: 0;
   top: 0;
