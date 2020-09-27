@@ -22,7 +22,7 @@ import {
 import * as Yup from 'yup';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
-const EditPauri = () => {
+const EditPauri = ({ pauriId }) => {
   const {
     state: formState,
     updateAddPauriTextFields,
@@ -49,22 +49,18 @@ const EditPauri = () => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
     SweetSuccess();
-    const res = await fetchPost(
-      `/chhands/${granthState.lastChhand.id}/pauris`,
-      {
-        pauri: formattedTukFormObj(tukForm),
-        last_pauri_id: granthState.lastPauri?.id,
-      }
-    );
-    handleCreatePauriInChhandResponse(res);
+    const res = await fetchPost(`/pauris/${pauriId}`, {
+      pauri: formattedTukFormObj(tukForm),
+    });
+    handleEditPauriResponse(res);
   };
 
-  const handleCreatePauriInChhandResponse = (res) => {
+  const handleEditPauriResponse = (res) => {
     if (res.errors?.length > 0) {
       SweetError({ text: JSON.stringify(res.errors, null, 2) });
     } else {
       SweetSuccess({
-        title: `Pauri Saved!`,
+        title: `Pauri Updated!`,
         text: JSON.stringify(res.pauri, null, 2),
       });
     }

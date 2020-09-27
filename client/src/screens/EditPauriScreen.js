@@ -29,7 +29,7 @@ const EditPauriScreen = () => {
         </Grid>
 
         <Grid column={true} sm={12} md={10} lg={10}>
-          <EditPauri />
+          <EditPauri pauriId={id} />
         </Grid>
       </Grid>
     </>
