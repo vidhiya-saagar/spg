@@ -45,13 +45,11 @@ const AddPauri = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-    const res = await fetchPost(
-      `/chhands/${granthState.lastChhand.id}/pauris`,
-      {
-        pauri: formattedTukFormObj(tukForm),
-        last_pauri_id: granthState.lastPauri?.id,
-      }
-    );
+    const res = await fetchPost('/pauris', {
+      chhand_id: granthState.lastChhand.id,
+      pauri: formattedTukFormObj(tukForm),
+      last_pauri_id: granthState.lastPauri?.id,
+    });
     handleCreatePauriInChhandResponse(res);
   };
 

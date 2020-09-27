@@ -127,76 +127,6 @@ const createChhand = async (req, res) => {
   res.status(200).json({ chhand });
 };
 
-// POST `/chhands/:id/pauris`
-/** TODO:
- * Test for adding pauri to an existing chhand ❓
- * Test for adding pauri to a new Chhand ❓
- * Test for adding pauri to a new Chhand in NEW chapter ❓
- * Test for adding pauri to a new Chhand in NEW chapter + book ❓
- * Before Validation for invalid entries (null values, empty strings) ✅
- * Before Validation for duplicate/similar tuks ✅
- * Before/During Validation for non-duplicate pauri numbers and tuk numbers ✅
- */
-const createPauriInChhand = async (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-
-  const chhand = await db
-    .select('*')
-    .from('chhands')
-    .where('id', req.params.id)
-    .first();
-
-  const lastPauri = await getLastPauriInChapter(chhand.chapter_id);
-  const nextPauriNumber = lastPauri ? lastPauri.number + 1 : 1;
-  const pauriId = await db('pauris').insert({
-    number: nextPauriNumber,
-    ...getFormattedSignatureObj(nextPauriNumber),
-    chapter_id: chhand.chapter_id,
-    chhand_id: chhand.id,
-  });
-
-  const pauri = await db
-    .select('*')
-    .from('pauris')
-    .where('id', pauriId)
-    .first();
-
-  // prettier-ignore
-  Promise.all(
-    req.body.pauri.map((tuk) => {
-      return db('tuks').insert({
-        ...tuk,
-        chhand_id: chhand.id,
-        chhand_type_id: chhand.chhand_type_id,
-        chapter_id: chhand.chapter_id,
-        pauri_id: pauri.id,
-        vishraams: JSON.stringify(tuk.vishraams), /* NOTE: Knex cannot handle [] out the box */
-        thamkis: JSON.stringify(tuk.thamkis), /* NOTE: Knex cannot handle [] out the box */
-      });
-    })
-  )
-    .then((val) => {
-      // TODO: Figure out if I need to put my res.json() in here
-    })
-    .catch((err) => {
-      console.log(`⚠️ Error: ${err}`);
-    });
-
-  const tuks = await db
-    .select('*')
-    .from('tuks')
-    .where('chhand_id', chhand.id)
-    .where('pauri_id', pauri.id);
-
-  pauri.tuks = tuks;
-
-  res.status(200).json({ pauri });
-};
-
 const validateChhand = (action) => {
   switch (action) {
     case 'createChhand':
@@ -259,7 +189,6 @@ const validateChhand = (action) => {
         }),
       ];
       break;
-    case 'createPauriInChhand':
       // prettier-ignore
       return [
         // ===== CONTENT =====
@@ -303,7 +232,6 @@ const validateChhand = (action) => {
 module.exports = {
   chhandIndex,
   chhandScreen,
-  createPauriInChhand,
   createChhand,
   validateChhand,
 };
