@@ -143,6 +143,7 @@ const createPauriInChhand = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
+
   const chhand = await db
     .select('*')
     .from('chhands')
@@ -262,11 +263,11 @@ const validateChhand = (action) => {
       // prettier-ignore
       return [
         // ===== CONTENT =====
-        body('pauri.*.content_unicode').isString().not().isEmpty().trim().escape(),
+        body('pauri.*.content_unicode').isString().not().isEmpty().trim(),
         body('pauri.*.content_unicode').custom(isGurmukhi),
-        body('pauri.*.content_gs').isString().not().isEmpty().trim().escape(),
-        body('pauri.*.content_transliteration_english').isString().not().isEmpty().trim().escape(),
-        body('pauri.*.first_letters').isString().not().isEmpty().trim().escape(),
+        body('pauri.*.content_gs').isString().not().isEmpty().trim(),
+        body('pauri.*.content_transliteration_english').isString().not().isEmpty().trim(),
+        body('pauri.*.first_letters').isString().not().isEmpty().trim(),
         // ===== END OF CONTENT =====
         // ===== VISHRAAM INFO =====
         body('pauri.*.thamkis').isArray(),
