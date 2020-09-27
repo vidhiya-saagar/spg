@@ -8,7 +8,6 @@ const formReducer = (state, action) => {
   let index;
   switch (action.type) {
     case 'POPULATE_TUK':
-      debugger;
       const tuk = action.payload;
       const newState = {
         unicodeRaw: tuk.content_unicode,
@@ -83,7 +82,6 @@ const findTukIndex = (state, tukNumber) => {
 };
 
 const updateTukForm = (index, oldState, newState) => {
-  debugger;
   return {
     ...oldState,
     tukForm: [

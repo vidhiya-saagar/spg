@@ -1,7 +1,7 @@
-const fetch = require('node-fetch');
+import * as fetch from 'node-fetch';
 const baseUrl = 'http://localhost:1469/api/v1';
 
-const fetchPost = async (url = '', data = {}) => {
+export const fetchPost = async (url = '', data = {}) => {
   console.log('POST', url);
   const response = await fetch(baseUrl + url, {
     method: 'POST',
@@ -13,7 +13,7 @@ const fetchPost = async (url = '', data = {}) => {
   return await response.json();
 };
 
-const fetchGet = async (url = '', data = {}) => {
+export const fetchGet = async (url = '', data = {}) => {
   console.log('GET', url);
   const response = await fetch(baseUrl + url, {
     method: 'GET',
@@ -23,5 +23,3 @@ const fetchGet = async (url = '', data = {}) => {
   });
   return await response.json();
 };
-
-module.exports = { fetchPost, fetchGet };

@@ -45,7 +45,6 @@ const AddPauri = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-    SweetSuccess();
     const res = await fetchPost(
       `/chhands/${granthState.lastChhand.id}/pauris`,
       {
