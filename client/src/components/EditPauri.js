@@ -154,26 +154,13 @@ const EditPauri = ({ pauriId }) => {
       {tukForm &&
         tukForm.map((tuk) => {
           return (
-            <Grid column={true} sm={12} md={6} lg={6}>
-              <ReactDiffViewer
-                oldValue={JSON.stringify(
-                  originalTukForm[tuk.tukNumber - 1],
-                  null,
-                  2
-                )}
-                newValue={JSON.stringify(tuk, null, 2)}
-                splitView={true}
-                showDiffOnly={true}
-                hideLineNumbers={true}
-                extraLinesSurroundingDiff={1}
-              />
-
-              <div
-                className={AddPauriStyles.Form}
-                key={tuk.tukNumber.toString()}
-              >
-                <Grid alignItems='flex-end' justify='center'>
-                  <Grid column={true} sm={12} md={12} lg={12}>
+            <Grid column={true} sm={12} md={12} lg={12}>
+              <Grid>
+                <Grid column={true} sm={12} md={6} lg={6}>
+                  <div
+                    className={AddPauriStyles.Form}
+                    key={tuk.tukNumber.toString()}
+                  >
                     <form onSubmit={submitForm} className='spg-form'>
                       <div className='form-element'>
                         <label htmlFor='unicode_raw'>
@@ -332,9 +319,24 @@ const EditPauri = ({ pauriId }) => {
                         </button>
                       )}
                     </form>
-                  </Grid>
+                  </div>
                 </Grid>
-              </div>
+
+                <Grid column={true} sm={12} md={6} lg={6}>
+                  <ReactDiffViewer
+                    oldValue={JSON.stringify(
+                      originalTukForm[tuk.tukNumber - 1],
+                      null,
+                      2
+                    )}
+                    newValue={JSON.stringify(tuk, null, 2)}
+                    splitView={true}
+                    showDiffOnly={true}
+                    hideLineNumbers={true}
+                    extraLinesSurroundingDiff={1}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           );
         })}
