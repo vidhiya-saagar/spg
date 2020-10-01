@@ -10,6 +10,7 @@ const formReducer = (state, action) => {
     case 'POPULATE_TUK':
       const tuk = action.payload;
       const newState = {
+        id: tuk.id,
         unicodeRaw: generateUnicodeRaw(
           tuk.content_unicode,
           tuk.vishraams,
