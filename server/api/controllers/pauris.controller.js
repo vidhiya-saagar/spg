@@ -104,15 +104,15 @@ const createPauri = async (req, res) => {
 
   // prettier-ignore
   Promise.all(
-    req.body.pauri.map((tuk) => {
+    req.body.pauri.map((_tuk) => {
       return db('tuks').insert({
-        ...tuk,
+        ..._tuk,
         chhand_id: chhand.id,
         chhand_type_id: chhand.chhand_type_id,
         chapter_id: chhand.chapter_id,
         pauri_id: pauri.id,
-        vishraams: JSON.stringify(tuk.vishraams), /* NOTE: Knex cannot handle [] out the box */
-        thamkis: JSON.stringify(tuk.thamkis), /* NOTE: Knex cannot handle [] out the box */
+        vishraams: JSON.stringify(_tuk.vishraams), /* NOTE: Knex cannot handle [] out the box */
+        thamkis: JSON.stringify(_tuk.thamkis), /* NOTE: Knex cannot handle [] out the box */
       });
     })
   )
@@ -129,8 +129,7 @@ const createPauri = async (req, res) => {
     .where('chhand_id', chhand.id)
     .where('pauri_id', pauri.id);
 
-  // pauri.tuks = tuks;
-  const pauris = { p: true };
+  pauri.tuks = tuks;
   res.status(200).json({ pauri });
 };
 
@@ -147,30 +146,48 @@ const editPauri = async (req, res) => {
     .where('id', req.params.id)
     .first();
 
-  //  Promise.all(
-  //    req.body.pauri.map((tuk) => {
-  //      return db('tuks').insert({
-  //        ...tuk,
-  //        chhand_id: chhand.id,
-  //        chhand_type_id: chhand.chhand_type_id,
-  //        chapter_id: chhand.chapter_id,
-  //        pauri_id: pauri.id,
-  //        vishraams: JSON.stringify(
-  //          tuk.vishraams
-  //        ) /* NOTE: Knex cannot handle [] out the box */,
-  //        thamkis: JSON.stringify(
-  //          tuk.thamkis
-  //        ) /* NOTE: Knex cannot handle [] out the box */,
-  //      });
-  //    })
-  //  )
-  //    .then((val) => {
-  //      // TODO: Figure out if I need to put my res.json() in here
-  //    })
-  //    .catch((err) => {
-  //      console.log(`⚠️ Error: ${err}`);
-  //    });
-  debugger;
+  await Promise.all(
+    req.body.pauri.map(async (_tuk) => {
+      const tuk = db
+        .select('*')
+        .from('tuks')
+        .where('pauri_id', pauri.id)
+        .where('line_number', _tuk.line_number)
+        .first();
+
+      if (tuk) {
+        // UPDATE TUK
+        debugger;
+        return await tuk.update({
+          ..._tuk,
+          vishraams: JSON.stringify(_tuk.vishraams),
+          thamkis: JSON.stringify(_tuk.thamkis),
+        });
+      } else {
+        debugger;
+        // INSERT NEW TUK
+        const tt = await db('tuks').insert({
+          ..._tuk,
+          chhand_id: pauri.chhand_id,
+          chhand_type_id: pauri.chhand_type_id,
+          chapter_id: pauri.chapter_id,
+          pauri_id: pauri.id,
+          vishraams: JSON.stringify(_tuk.vishraams),
+          thamkis: JSON.stringify(_tuk.thamkis),
+        });
+      }
+    })
+  )
+    .then((val) => {
+      // TODO: Figure out if I need to put my res.json() in here
+    })
+    .catch((err) => {
+      console.log(`⚠️ Error: ${err}`);
+    });
+
+  const tuks = await db.select('*').from('tuks').where('pauri_id', pauri.id);
+  pauri.tuks = tuks;
+  res.status(200).json({ pauri });
 };
 
 // VALIDATIONS

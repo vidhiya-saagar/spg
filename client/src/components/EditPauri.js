@@ -69,6 +69,7 @@ const EditPauri = ({ pauriId }) => {
   const confirmRemoveTuk = (tukNumber) => {
     SweetConfirm({
       title: `Are you sure you want to delete Tuk #${tukNumber}`,
+      text: 'This will delete it from the database immediately!',
     }).then((result) => {
       if (result.isConfirmed) {
         removeLastTukForm();
@@ -310,7 +311,7 @@ const EditPauri = ({ pauriId }) => {
                           value={tuk.tukNumber}
                         />
                       </div>
-                      {tuk.tukNumber > 1 && (
+                      {tuk.tukNumber > 1 && tuk.tukNumber === tukForm.length && (
                         <button
                           onClick={() => confirmRemoveTuk(tuk.tukNumber)}
                           type='button'
