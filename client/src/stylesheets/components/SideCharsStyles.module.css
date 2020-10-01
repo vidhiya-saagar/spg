@@ -1,7 +1,9 @@
 .Column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: center; */
+  height: 100vh;
+  overflow-y: auto;
   position: fixed;
   right: 0;
   top: 0;
@@ -21,6 +23,17 @@
   font-family: 'Satluj Bold';
   color: #718096;
   margin: 0;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
+  transition: box-shadow 0.3s, color 0.3s;
+}
+
+.CharItem:active {
+	box-shadow: inset 0px 0px 30px 45px #a3b18a;
+	color: #FFF;
 }
 
 .CharItem:last-child {
@@ -38,9 +51,10 @@
   text-align: center;
   margin: 0;
   padding: 0;
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
   user-select: none;
+}
+
+.Scroll {
+  background: beige;
+  height: 100vh;
 }

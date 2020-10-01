@@ -8,10 +8,14 @@ const formReducer = (state, action) => {
   let index;
   switch (action.type) {
     case 'POPULATE_TUK':
-      debugger;
       const tuk = action.payload;
       const newState = {
-        unicodeRaw: tuk.content_unicode,
+        id: tuk.id,
+        unicodeRaw: generateUnicodeRaw(
+          tuk.content_unicode,
+          tuk.vishraams,
+          tuk.thamkis
+        ),
         unicode: tuk.content_unicode,
         gurmukhiScript: tuk.content_gs,
         englishTranslit: tuk.content_transliteration_english,
@@ -83,7 +87,6 @@ const findTukIndex = (state, tukNumber) => {
 };
 
 const updateTukForm = (index, oldState, newState) => {
-  debugger;
   return {
     ...oldState,
     tukForm: [
@@ -92,6 +95,24 @@ const updateTukForm = (index, oldState, newState) => {
       ...oldState.tukForm.slice(index + 1), // everything after current post
     ],
   };
+};
+
+const generateUnicodeRaw = (unicode, vishraams, thamkis) => {
+  const unicodeArr = unicode.split(' ');
+  vishraams = JSON.parse(vishraams);
+  thamkis = JSON.parse(thamkis);
+
+  for (let i = 0; i < unicodeArr.length; i++) {
+    if (vishraams && vishraams[0] === i) {
+      unicodeArr[i] += ';';
+      vishraams.shift();
+    }
+    if (thamkis && thamkis[0] === i) {
+      unicodeArr[i] += ',';
+      thamkis.shift();
+    }
+  }
+  return unicodeArr.join(' ');
 };
 
 const updateOriginalTukForm = (index, oldState, newState) => {

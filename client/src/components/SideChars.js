@@ -5,7 +5,7 @@ import CharBlock from '../components/CharBlock';
 const SideChars = () => {
   return (
     <div className={SideCharsStyles.Column}>
-      <CharBlock char=' ੍ਯ' description='adhā jəjːɑ' />
+      <CharBlock char='੍ਯ' description='adhā jəjːɑ' />
       <CharBlock char='੍ਰ' description='adhā ɾɑɾɑ' />
       <CharBlock char='੍ਵ' description='adhā ʋɑʋːɑ' />
       <CharBlock char='ਸ਼੍ਰੀ' description='Śrī' />

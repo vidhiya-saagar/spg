@@ -41,18 +41,14 @@ const AddPauri = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-    SweetSuccess();
-    const res = await fetchPost(
-      `/chhands/${granthState.lastChhand.id}/pauris`,
-      {
-        pauri: formattedTukFormObj(tukForm),
-        last_pauri_id: granthState.lastPauri?.id,
-      }
-    );
+    const res = await fetchPost('/pauris', {
+      chhand_id: granthState.lastChhand.id,
+      pauri: formattedTukFormObj(tukForm),
+      last_pauri_id: granthState.lastPauri?.id,
+    });
     handleCreatePauriInChhandResponse(res);
   };
 
@@ -67,9 +63,9 @@ const AddPauri = () => {
     }
   };
 
-  const confirmRemoveTuk = (tukNumber) => {
+  const confirmRemoveTuk = (tuk) => {
     SweetConfirm({
-      title: `Are you sure you want to delete Tuk #${tukNumber}`,
+      title: `Are you sure you want to delete Tuk #${tuk.tukNumber}`,
     }).then((result) => {
       if (result.isConfirmed) {
         removeLastTukForm();
@@ -317,7 +313,7 @@ const AddPauri = () => {
                     </div>
                     {tuk.tukNumber > 1 && (
                       <button
-                        onClick={() => confirmRemoveTuk(tuk.tukNumber)}
+                        onClick={() => confirmRemoveTuk(tuk)}
                         type='button'
                       >
                         Remove Tuk

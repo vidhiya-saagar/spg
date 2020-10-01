@@ -20,14 +20,18 @@ const {
   chhandIndex,
   createChhand,
   chhandScreen,
-  createPauriInChhand,
   validateChhand,
 } = require('../controllers/chhands.controller');
 
 const {
   pauriIndex,
   showFullPauri,
+  createPauri,
+  editPauri,
+  validatePauri,
 } = require('../controllers/pauris.controller');
+
+const { deleteTuk, validateTuk } = require('../controllers/tuks.controller');
 
 const { last } = require('../controllers/application.controller');
 
@@ -56,15 +60,15 @@ router.post(
 router.get('/chhands', chhandIndex);
 router.post('/chhands', validateChhand('createChhand'), createChhand);
 router.get('/chhands-screen', chhandScreen);
-router.post(
-  '/chhands/:id/pauris',
-  validateChhand('createPauriInChhand'),
-  createPauriInChhand
-);
 
 // pauris
 router.get('/pauris', pauriIndex);
 router.get('/pauris/:id/full', showFullPauri);
+router.post('/pauris', validatePauri('createPauri'), createPauri);
+router.post('/pauris/:id', validatePauri('editPauri'), editPauri);
+
+// tuks
+router.delete('/tuks/:id', validateTuk('deleteTuk'), deleteTuk);
 
 // APPLICATIONS
 router.get('/last', last);
