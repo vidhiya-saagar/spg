@@ -101,16 +101,16 @@ const generateUnicodeRaw = (unicode, vishraams, thamkis) => {
   const unicodeArr = unicode.split(' ');
   vishraams = JSON.parse(vishraams);
   thamkis = JSON.parse(thamkis);
+
   for (let i = 0; i < unicodeArr.length; i++) {
-    if (vishraams[0] === i) {
+    if (vishraams && vishraams[0] === i) {
       unicodeArr[i] += ';';
       vishraams.shift();
     }
-    if (thamkis[0] === i) {
+    if (thamkis && thamkis[0] === i) {
       unicodeArr[i] += ',';
       thamkis.shift();
     }
-    debugger;
   }
   return unicodeArr.join(' ');
 };

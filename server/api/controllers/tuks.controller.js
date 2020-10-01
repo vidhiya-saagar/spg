@@ -1,5 +1,5 @@
 const db = require('../db');
-const { check, body, validationResult } = require('express-validator');
+const { check, param, validationResult } = require('express-validator');
 
 // DELETE `/tuk/:id`
 const deleteTuk = (req, res) => {
@@ -9,17 +9,18 @@ const deleteTuk = (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  db('tuks')
+  return db
+    .select('tuks')
     .where('id', req.params.id)
     .first()
     .del()
-    .then(() => {
-      res.status(204).json({
+    .then((tuk) => {
+      return res.status(204).json({
         _deleted: tuk,
       });
     })
     .error((err) => {
-      res.send({
+      return res.send({
         error: err,
         message: 'Tuk could not be deleted.',
       });
@@ -30,7 +31,7 @@ const validateTuk = (action) => {
   switch (action) {
     case 'deleteTuk':
       return [
-        body('id').isNumeric().not().isEmpty(),
+        param('id').not().isEmpty(),
         // Make sure this Tuk doesn't exist already
         check('id').custom((id) => {
           return db

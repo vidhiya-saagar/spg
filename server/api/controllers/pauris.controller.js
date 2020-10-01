@@ -146,9 +146,11 @@ const editPauri = async (req, res) => {
     .where('id', req.params.id)
     .first();
 
+  let chhandTypeId;
+
   await Promise.all(
     req.body.pauri.map(async (_tuk) => {
-      const tuk = db
+      const tuk = await db
         .select('*')
         .from('tuks')
         .where('pauri_id', pauri.id)
@@ -157,19 +159,26 @@ const editPauri = async (req, res) => {
 
       if (tuk) {
         // UPDATE TUK
-        debugger;
         return await tuk.update({
           ..._tuk,
           vishraams: JSON.stringify(_tuk.vishraams),
           thamkis: JSON.stringify(_tuk.thamkis),
         });
       } else {
-        debugger;
         // INSERT NEW TUK
+        if (!chhandTypeId) {
+          chhandTypeId = await db
+            .select('chhand_type_id')
+            .from('chhands')
+            .where('id', pauri.chhand_id)
+            .first();
+          // omg this is so bad
+          chhandTypeId = chhandTypeId.chhand_type_id;
+        }
         const tt = await db('tuks').insert({
           ..._tuk,
           chhand_id: pauri.chhand_id,
-          chhand_type_id: pauri.chhand_type_id,
+          chhand_type_id: chhandTypeId,
           chapter_id: pauri.chapter_id,
           pauri_id: pauri.id,
           vishraams: JSON.stringify(_tuk.vishraams),
@@ -230,7 +239,6 @@ const validatePauri = (action) => {
       break;
 
     case 'editPauri':
-      // debugger;
       // prettier-ignore
       return [
           // ===== CONTENT =====
@@ -241,10 +249,10 @@ const validatePauri = (action) => {
           body('pauri.*.first_letters').isString().not().isEmpty().trim(),
           // ===== END OF CONTENT =====
           // ===== VISHRAAM INFO =====
-          body('pauri.*.thamkis').isArray(),
-          body('pauri.*.thamkis').optional(),
-          body('pauri.*.vishraams').isArray(),
-          body('pauri.*.vishraams').optional(),
+          // body('pauri.*.thamkis').isArray(),
+          // body('pauri.*.thamkis').optional(),
+          // body('pauri.*.vishraams').isArray(),
+          // body('pauri.*.vishraams').optional(),
           // ===== END OF VISHRAAM INFO =====
           body('pauri.*.line_number').isInt(),
         ];

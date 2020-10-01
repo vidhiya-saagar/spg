@@ -5,7 +5,7 @@ import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
 import { Context as EditPauriFormContext } from '../context/EditPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
-import { fetchPost } from '../helpers/fetchHelper';
+import { fetchPost, fetchDelete } from '../helpers/fetchHelper';
 import {
   isGurmukhi,
   hasSpaceBeforePeriod,
@@ -48,7 +48,6 @@ const EditPauri = ({ pauriId }) => {
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-    SweetSuccess();
     const res = await fetchPost(`/pauris/${pauriId}`, {
       pauri: formattedTukFormObj(tukForm),
     });
@@ -73,16 +72,22 @@ const EditPauri = ({ pauriId }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         removeLastTukForm();
-
-        SweetSuccess({
-          title: 'Deleted!',
-          text: 'The Tuk has been removed.',
-        });
+        deleteTuk(tuk.id);
       }
     });
   };
 
-  const deleteTuk = (tukId) => {};
+  const deleteTuk = async (tukId) => {
+    const res = await fetchDelete(`/tuks/${tukId}`);
+    console.log('deleteTuk:', res);
+    debugger;
+    if (res._deleted) {
+      SweetSuccess({
+        title: 'Deleted!',
+        text: 'The Tuk has been removed.',
+      });
+    }
+  };
 
   const isValidInput = () => {
     const valid = EditPauriSchema.validate(tukForm, { abortEarly: false })
