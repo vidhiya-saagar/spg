@@ -66,13 +66,14 @@ const EditPauri = ({ pauriId }) => {
     }
   };
 
-  const confirmRemoveTuk = (tukNumber) => {
+  const confirmRemoveTuk = (tuk) => {
     SweetConfirm({
-      title: `Are you sure you want to delete Tuk #${tukNumber}`,
+      title: `Are you sure you want to delete Tuk #${tuk.tukNumber}`,
       text: 'This will delete it from the database immediately!',
     }).then((result) => {
       if (result.isConfirmed) {
         removeLastTukForm();
+
         SweetSuccess({
           title: 'Deleted!',
           text: 'The Tuk has been removed.',
@@ -80,6 +81,8 @@ const EditPauri = ({ pauriId }) => {
       }
     });
   };
+
+  const deleteTuk = (tukId) => {};
 
   const isValidInput = () => {
     const valid = EditPauriSchema.validate(tukForm, { abortEarly: false })
@@ -313,7 +316,7 @@ const EditPauri = ({ pauriId }) => {
                       </div>
                       {tuk.tukNumber > 1 && tuk.tukNumber === tukForm.length && (
                         <button
-                          onClick={() => confirmRemoveTuk(tuk.tukNumber)}
+                          onClick={() => confirmRemoveTuk(tuk)}
                           type='button'
                         >
                           Remove Tuk

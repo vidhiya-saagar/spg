@@ -31,6 +31,8 @@ const {
   validatePauri,
 } = require('../controllers/pauris.controller');
 
+const { deleteTuk, validateTuk } = require('../controllers/tuks.controller');
+
 const { last } = require('../controllers/application.controller');
 
 const router = express.Router();
@@ -64,6 +66,9 @@ router.get('/pauris', pauriIndex);
 router.get('/pauris/:id/full', showFullPauri);
 router.post('/pauris', validatePauri('createPauri'), createPauri);
 router.post('/pauris/:id', validatePauri('editPauri'), editPauri);
+
+// tuks
+router.delete('/tuks/:id', validateTuk('deleteTuk'), deleteTuk);
 
 // APPLICATIONS
 router.get('/last', last);
