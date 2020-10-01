@@ -5,7 +5,7 @@ import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
 import { Context as EditPauriFormContext } from '../context/EditPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
-import { fetchPost } from '../helpers/fetchHelper';
+import { fetchPost, fetchDelete } from '../helpers/fetchHelper';
 import {
   isGurmukhi,
   hasSpaceBeforePeriod,
@@ -22,7 +22,7 @@ import {
 import * as Yup from 'yup';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
-const EditPauri = () => {
+const EditPauri = ({ pauriId }) => {
   const {
     state: formState,
     updateAddPauriTextFields,
@@ -38,50 +38,46 @@ const EditPauri = () => {
 
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
-  // useEffect(() => {
-  //   fetchSpgStatus();
-  //   updateUnicodeRaw(tukForm[0].unicodeRaw, 1);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-    SweetSuccess();
-    const res = await fetchPost(
-      `/chhands/${granthState.lastChhand.id}/pauris`,
-      {
-        pauri: formattedTukFormObj(tukForm),
-        last_pauri_id: granthState.lastPauri?.id,
-      }
-    );
-    handleCreatePauriInChhandResponse(res);
+    const res = await fetchPost(`/pauris/${pauriId}`, {
+      pauri: formattedTukFormObj(tukForm),
+    });
+    handleEditPauriResponse(res);
   };
 
-  const handleCreatePauriInChhandResponse = (res) => {
+  const handleEditPauriResponse = (res) => {
     if (res.errors?.length > 0) {
       SweetError({ text: JSON.stringify(res.errors, null, 2) });
     } else {
       SweetSuccess({
-        title: `Pauri Saved!`,
+        title: `Pauri Updated!`,
         text: JSON.stringify(res.pauri, null, 2),
       });
     }
   };
 
-  const confirmRemoveTuk = (tukNumber) => {
+  const confirmRemoveTuk = (tuk) => {
     SweetConfirm({
-      title: `Are you sure you want to delete Tuk #${tukNumber}`,
+      title: `Are you sure you want to delete Tuk #${tuk.tukNumber}`,
+      text: 'This will delete it from the database immediately!',
     }).then((result) => {
       if (result.isConfirmed) {
         removeLastTukForm();
-        SweetSuccess({
-          title: 'Deleted!',
-          text: 'The Tuk has been removed.',
-        });
+        deleteTuk(tuk.id);
       }
     });
+  };
+
+  const deleteTuk = async (tukId) => {
+    const res = await fetchDelete(`/tuks/${tukId}`);
+    if (res._deleted) {
+      SweetSuccess({
+        title: 'Deleted!',
+        text: `The Tuk ID ${res.id} has been removed.`,
+      });
+    }
   };
 
   const isValidInput = () => {
@@ -94,7 +90,6 @@ const EditPauri = () => {
     return valid;
   };
 
-  // TODO: Figure out a way to display the errors better
   const EditPauriSchema = Yup.array().of(
     Yup.object().shape({
       unicode: Yup.string()
@@ -158,26 +153,13 @@ const EditPauri = () => {
       {tukForm &&
         tukForm.map((tuk) => {
           return (
-            <Grid column={true} sm={12} md={6} lg={6}>
-              <ReactDiffViewer
-                oldValue={JSON.stringify(
-                  originalTukForm[tuk.tukNumber - 1],
-                  null,
-                  2
-                )}
-                newValue={JSON.stringify(tuk, null, 2)}
-                splitView={true}
-                showDiffOnly={true}
-                hideLineNumbers={true}
-                extraLinesSurroundingDiff={1}
-              />
-
-              <div
-                className={AddPauriStyles.Form}
-                key={tuk.tukNumber.toString()}
-              >
-                <Grid alignItems='flex-end' justify='center'>
-                  <Grid column={true} sm={12} md={12} lg={12}>
+            <Grid column={true} sm={12} md={12} lg={12}>
+              <Grid>
+                <Grid column={true} sm={12} md={6} lg={6}>
+                  <div
+                    className={AddPauriStyles.Form}
+                    key={tuk.tukNumber.toString()}
+                  >
                     <form onSubmit={submitForm} className='spg-form'>
                       <div className='form-element'>
                         <label htmlFor='unicode_raw'>
@@ -327,18 +309,33 @@ const EditPauri = () => {
                           value={tuk.tukNumber}
                         />
                       </div>
-                      {tuk.tukNumber > 1 && (
+                      {tuk.tukNumber > 1 && tuk.tukNumber === tukForm.length && (
                         <button
-                          onClick={() => confirmRemoveTuk(tuk.tukNumber)}
+                          onClick={() => confirmRemoveTuk(tuk)}
                           type='button'
                         >
                           Remove Tuk
                         </button>
                       )}
                     </form>
-                  </Grid>
+                  </div>
                 </Grid>
-              </div>
+
+                <Grid column={true} sm={12} md={6} lg={6}>
+                  <ReactDiffViewer
+                    oldValue={JSON.stringify(
+                      originalTukForm[tuk.tukNumber - 1],
+                      null,
+                      2
+                    )}
+                    newValue={JSON.stringify(tuk, null, 2)}
+                    splitView={true}
+                    showDiffOnly={true}
+                    hideLineNumbers={true}
+                    extraLinesSurroundingDiff={1}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           );
         })}

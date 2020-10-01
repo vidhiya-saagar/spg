@@ -29,7 +29,6 @@ const AddChhandType = () => {
     handleCreateChhandTypeResponse(res);
   };
 
-  // TODO: The Yup library is... Not gonna say anything... But wtf is this
   const isValidInput = () => {
     const valid = AddChhandTypeSchema.validate(
       {

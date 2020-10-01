@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { fetchGet } from '../helpers/fetchHelper';
 import Grid from '../components/Grid';
 import ChapterScreenStyles from '../stylesheets/screens/ChapterScreenStyles.css';
+import SideCharsStyles from '../stylesheets/components/SideCharsStyles.module.css';
 import Chapter from '../components/Chapter';
 import PauriPreview from '../components/PauriPreview';
 import SideChars from '../components/SideChars';
@@ -64,9 +65,9 @@ const ChapterScreen = () => {
         </div>
       </Grid>
 
-      <Grid column={true} sm={12} md={1} lg={1}></Grid>
-
-      <SideChars />
+      <Grid column={true} sm={12} md={1} lg={1}>
+        <SideChars />
+      </Grid>
     </Grid>
   );
 };

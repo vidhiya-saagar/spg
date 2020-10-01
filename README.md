@@ -66,7 +66,9 @@ Run `yarn start` in the root directroy and this will bootup the API in `localhos
 
 Kavi Santokh Singh Ji has contributed his life to poetically documenting the life of the Sikh Guru's. This project strives to create a central database for Kavi Ji's *Gurprataap Sooraj Granth* (also known as *Sooraj Prakash Granth*) using the admin tools in this application.
 
-Recommended Links: 
+## Recommended Links: 
 * [Suraj Podcast](https://www.surajpodcast.com/) - An amazing podcast in English that goes through chapters of *SPG* 
 * [Rara Sahib - ik13.com](https://www.ik13.com/bhai-daya-singh-ji-online-library/) - Amazing service of publishing volumentric documents on *SPG*
 * [Anvaad JS](https://github.com/KhalisFoundation/anvaad-js) - Very useful tool to for when dealing with transliteration/ASCII/unicode converting in the context of the Gurmukhi language.
+
+## Images:
