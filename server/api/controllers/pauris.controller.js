@@ -41,7 +41,7 @@ const pauriIndex = async (req, res) => {
   res.json({ pauris: await pauris });
 };
 
-// get `pauri/:id/full
+// GET `pauri/:id/full
 const showFullPauri = async (req, res) => {
   const pauri = await db
     .select('*')

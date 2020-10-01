@@ -72,8 +72,6 @@ const EditPauri = ({ pauriId }) => {
 
   const deleteTuk = async (tukId) => {
     const res = await fetchDelete(`/tuks/${tukId}`);
-    debugger;
-    console.log('deleteTuk:', res);
     if (res._deleted) {
       SweetSuccess({
         title: 'Deleted!',
@@ -92,7 +90,6 @@ const EditPauri = ({ pauriId }) => {
     return valid;
   };
 
-  // TODO: Figure out a way to display the errors better
   const EditPauriSchema = Yup.array().of(
     Yup.object().shape({
       unicode: Yup.string()

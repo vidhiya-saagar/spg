@@ -41,7 +41,6 @@ const AddPauri = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
