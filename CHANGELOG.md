@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/dsomel21/spg/tree/HEAD)
 
-[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.9...HEAD)
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.11...HEAD)
+
+**Merged pull requests:**
+
+- Release 0.0.11 [\#22](https://github.com/dsomel21/spg/pull/22) ([dsomel21](https://github.com/dsomel21))
+
+## [0.0.11](https://github.com/dsomel21/spg/tree/0.0.11) (2020-10-01)
+
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.9...0.0.11)
 
 **Implemented enhancements:**
 
@@ -10,6 +18,9 @@
 
 **Closed issues:**
 
+- Create edit pauri feature [\#21](https://github.com/dsomel21/spg/issues/21)
+- Fix encoding issue when submitting special characters [\#20](https://github.com/dsomel21/spg/issues/20)
+- Create a fixed cheatsheet menu for easy copy/paste for common complex characters [\#19](https://github.com/dsomel21/spg/issues/19)
 - Front-end validation on Add Pauri form [\#14](https://github.com/dsomel21/spg/issues/14)
 
 ## [0.0.9](https://github.com/dsomel21/spg/tree/0.0.9) (2020-09-13)
