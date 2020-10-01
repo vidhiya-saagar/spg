@@ -38,13 +38,6 @@ const EditPauri = ({ pauriId }) => {
 
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
-  // useEffect(() => {
-  //   fetchSpgStatus();
-  //   updateUnicodeRaw(tukForm[0].unicodeRaw, 1);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // TODO: Finish this properly when ready
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
@@ -79,12 +72,12 @@ const EditPauri = ({ pauriId }) => {
 
   const deleteTuk = async (tukId) => {
     const res = await fetchDelete(`/tuks/${tukId}`);
-    console.log('deleteTuk:', res);
     debugger;
+    console.log('deleteTuk:', res);
     if (res._deleted) {
       SweetSuccess({
         title: 'Deleted!',
-        text: 'The Tuk has been removed.',
+        text: `The Tuk ID ${res.id} has been removed.`,
       });
     }
   };

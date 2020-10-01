@@ -2,29 +2,25 @@ const db = require('../db');
 const { check, param, validationResult } = require('express-validator');
 
 // DELETE `/tuk/:id`
-const deleteTuk = (req, res) => {
+const deleteTuk = async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  return db
-    .select('tuks')
-    .where('id', req.params.id)
-    .first()
-    .del()
-    .then((tuk) => {
-      return res.status(204).json({
-        _deleted: tuk,
-      });
-    })
-    .error((err) => {
-      return res.send({
-        error: err,
-        message: 'Tuk could not be deleted.',
-      });
+  try {
+    const _deleted = await db('tuks').where('id', req.params.id).first().del();
+    return res.json({
+      id: req.params.id,
+      _deleted: _deleted,
     });
+  } catch (error) {
+    return res.send({
+      error,
+      message: 'Tuk could not be deleted.',
+    });
+  }
 };
 
 const validateTuk = (action) => {
