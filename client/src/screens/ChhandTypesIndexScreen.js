@@ -52,14 +52,6 @@ const ChhandTypesIndexScreen = () => {
         </Grid>
       </Grid>
 
-      <Grid alignItems='center' justify='center'>
-        <Grid sm={12} md={12} lg={12}>
-          <button class='spg-btn'>
-            <Link to='/chhand-types/new'>New</Link>
-          </button>
-        </Grid>
-      </Grid>
-
       <AddChhandType />
     </>
   );

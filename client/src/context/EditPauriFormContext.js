@@ -153,13 +153,12 @@ const replaceSpecialCharacters = (str) => {
   }
   return handleLineBreaks(replaceQuotationMarksWithBindi(str));
 };
-const removeSpecialChars = (str) => str.replace(/[,.'”*;]/g, '');
-const keepVishraams = (str) => str.replace(/[.']/g, '');
+const removeAllSpecialChars = (str) => str.replace(/[,.'”*;]/g, '');
 
 // When unicodeRaw changes
 const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
   const unicodeRawSafe = replaceSpecialCharacters(unicodeRaw);
-  const unicodeSafe = removeSpecialChars(unicodeRawSafe);
+  const unicodeSafe = removeAllSpecialChars(unicodeRawSafe);
   const _gurmukhiScript = anvaad.unicode(unicodeSafe, true);
 
   const payload = {
