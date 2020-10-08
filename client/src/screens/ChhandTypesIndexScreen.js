@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '../components/Grid';
 import AddChhandType from '../components/AddChhandType';
-import { Link } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import { fetchGet } from '../helpers/fetchHelper';
 

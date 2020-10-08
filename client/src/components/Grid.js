@@ -12,6 +12,7 @@ const Grid = (props) => {
     md,
     row,
     sm,
+    customClass,
   } = props;
 
   const isRow = row || !column;
@@ -25,7 +26,9 @@ const Grid = (props) => {
     // Column styling
     (!isRow && sm ? ` ${styles['sm-' + sm]}` : '') +
     (!isRow && md ? ` ${styles['md-' + md]}` : '') +
-    (!isRow && lg ? ` ${styles['lg-' + lg]}` : '');
+    (!isRow && lg ? ` ${styles['lg-' + lg]}` : '') +
+    // customClass stlying
+    (customClass ? ` ${styles[customClass]}` : '');
 
   return <div className={classes}>{children}</div>;
 };
