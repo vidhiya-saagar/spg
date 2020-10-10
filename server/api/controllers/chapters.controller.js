@@ -1,6 +1,10 @@
 const db = require('../db');
-const { isSafeParam } = require('../controllers/helpers/validations');
-const { getLastPauriInChapter } = require('./helpers/queries');
+const { check, body, validationResult } = require('express-validator');
+const {
+  isSafeParam,
+  isGurmukhi,
+} = require('../controllers/helpers/validations');
+const { getLastPauriInChapter, getLastChapter } = require('./helpers/queries');
 /*
  * TODO: Separate these concerns:
  * Use controllers for only reading, parsing, validating input
@@ -52,11 +56,33 @@ const chaptersIndex = async (req, res) => {
   res.json({ chapters: await chapters });
 };
 
+// POST `/chapters`
+const createChapter = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  const lastChapter = await getLastChapter();
+  const { title_unicode, title_gs, title_transliteration_english } = req.body;
+  const chapterId = await db('chapters').insert({
+    title_unicode,
+    title_gs,
+    title_transliteration_english,
+    book_id: lastChapter.book_id,
+    number: lastChapter.number + 1,
+    order_number: lastChapter.order_number + 1,
+  });
+  const chapter = await db('chapters').where('id', chapterId).first();
+  res.status(200).json({ chapter });
+};
+
 // GET `/chapters/:id`
 const chapterFind = async (req, res) => {
   const id = req.params.id;
   const chapter = await db.select('*').from('chapters').where('id', id).first();
-  res.json({ chapter });
+  res.status(200).json({ chapter });
 };
 
 // GET `/chapters/:id/chhands`
@@ -119,10 +145,38 @@ const lastPauri = async (req, res) => {
   res.json({ last_pauri: await getLastPauriInChapter(req.params.id) });
 };
 
+const validateChapter = (action) => {
+  switch (action) {
+    case 'createChapter':
+      return [
+        body('title_unicode').isString().not().isEmpty().trim(),
+        body('title_unicode').custom(isGurmukhi),
+        body('title_gs').isString().not().isEmpty().trim(),
+        body('title_transliteration_english').isString().not().isEmpty().trim(),
+        // Make sure this name doesn't exist already
+        check('title_unicode').custom((unicode) => {
+          return db
+            .select('*')
+            .from('chapters')
+            .where('title_unicode', unicode)
+            .first()
+            .then((chhandType) => {
+              if (chhandType) return Promise.reject('Chapter already exists');
+            });
+        }),
+      ];
+      break;
+
+    default:
+      break;
+  }
+};
 module.exports = {
   chaptersIndex,
+  createChapter,
   chapterFind,
   chapterChhands,
   chapterTuks,
   lastPauri,
+  validateChapter,
 };

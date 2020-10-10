@@ -48,8 +48,8 @@ const AddChhand = () => {
     if (!selectedChhandType) return SweetInputWarning();
     const res = await fetchPost('/chhands', {
       chhand_type_id: selectedChhandType.value,
-      chapter_id: granthState.lastChapter.id,
-      order_number: granthState.lastChhand.order_number + 1,
+      chapter_id: granthState.lastChapter?.id,
+      order_number: 1,
     });
     handleCreateChhandResponse(res);
   };
