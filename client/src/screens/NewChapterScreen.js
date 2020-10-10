@@ -135,7 +135,6 @@ const NewChapterScreen = () => {
               onChange={(e) => {
                 setUnicode(e.target.value);
                 setGurmukhiScript(anvaad.unicode(e.target.value, true));
-                setEnglishTranslit(anvaad.translit(e.target.value));
               }}
               value={unicode}
             />

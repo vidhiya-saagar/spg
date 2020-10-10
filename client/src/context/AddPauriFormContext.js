@@ -93,7 +93,7 @@ const findWordIndiciesWith = (str, char) => {
 };
 
 const replaceQuotationMarksWithBindi = (str) => str.trim().replace("'", 'ਂ');
-const handleLineBreaks = (str) => str.trim().replace(/\r?\n|\r/g, '');
+const handleLineBreaks = (str) => str.trim().replace(/\r?\n|\r/g, '; ');
 
 const handleUnicodeRaw = (str) => {
   // str = replaceQuotationMarksWithBindi(str);
