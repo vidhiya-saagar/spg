@@ -109,7 +109,7 @@ const createChhand = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const lastChhand = await getLastChhand();
+  const lastChapter = await getLastChapter();
   const chhandType = await db
     .select('*')
     .from('chhand_types')
@@ -120,10 +120,9 @@ const createChhand = async (req, res) => {
     order_number: req.body.order_number,
     chhand_name_english: chhandType.chhand_name_english,
     chhand_type_id: chhandType.id,
-    chapter_id: lastChhand.chapter_id,
+    chapter_id: lastChapter.id,
   });
   const chhand = await db('chhands').where('id', chhandId).first();
-
   res.status(200).json({ chhand });
 };
 
@@ -147,7 +146,7 @@ const validateChhand = (action) => {
         }),
         check('order_number').custom((orderNum) => {
           return getLastChhand().then((chhand) => {
-            if (orderNum !== chhand.order_number + 1) {
+            if (orderNum > 1 && orderNum !== chhand.order_number + 1) {
               return Promise.reject(
                 `Chhand out of order. Expected ${chhand.order_number + 1}`
               );

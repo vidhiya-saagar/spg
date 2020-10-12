@@ -159,11 +159,14 @@ const editPauri = async (req, res) => {
 
       if (tuk) {
         // UPDATE TUK
-        return await tuk.update({
-          ..._tuk,
-          vishraams: JSON.stringify(_tuk.vishraams),
-          thamkis: JSON.stringify(_tuk.thamkis),
-        });
+        return await db('tuks')
+          .where('id', tuk.id)
+          .first()
+          .update({
+            ..._tuk,
+            vishraams: JSON.stringify(_tuk.vishraams),
+            thamkis: JSON.stringify(_tuk.thamkis),
+          });
       } else {
         // INSERT NEW TUK
         if (!chhandTypeId) {
@@ -175,7 +178,7 @@ const editPauri = async (req, res) => {
           // omg this is so bad
           chhandTypeId = chhandTypeId.chhand_type_id;
         }
-        const tt = await db('tuks').insert({
+        return await db('tuks').insert({
           ..._tuk,
           chhand_id: pauri.chhand_id,
           chhand_type_id: chhandTypeId,

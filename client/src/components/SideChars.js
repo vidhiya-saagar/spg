@@ -22,6 +22,10 @@ const SideChars = () => {
       <CharBlock char='ੈ' description='dulāvā̃' sound='ɛ' />
       <CharBlock char='ੋ' description='hōṛā' sound='o' />
       <CharBlock char='ੌ' description='kanōṛā' sound='ɔ' />
+      <CharBlock char='ਹ' description='ɦɑɦɑ' sound='h' />
+      <CharBlock char='ਤ' description='ɲəɲːɑ̃' sound='ɲ' />
+      <CharBlock char='ਙ' description='ŋɑŋːɑ̃' sound='ŋ' />
+      <CharBlock char='ਞ' description='t̪ət̪ːɑ' sound='t' />
     </div>
   );
 };

@@ -95,25 +95,33 @@ const findWordIndiciesWith = (str, char) => {
 const replaceQuotationMarksWithBindi = (str) => str.trim().replace("'", 'ਂ');
 const handleLineBreaks = (str) => str.trim().replace(/\r?\n|\r/g, '; ');
 
-const replaceSpecialCharacters = (str) => {
+const handleUnicodeRaw = (str) => {
+  // str = replaceQuotationMarksWithBindi(str);
+
+  str = keepVishraamChars(str);
+  str = str.trim();
+  // replaceQuotationMarksWithBindi(replaceSpecialCharacters(unicodeRaw))
+  // );
+
   if (!hasSpaceBeforePeriod(str)) {
     str = str.slice(0, str.length - 1) + ` ${str[str.length - 1]}`;
   }
-  return handleLineBreaks(replaceQuotationMarksWithBindi(str));
+  // return str;
+  return handleLineBreaks(str);
 };
-const removeSpecialChars = (str) => str.replace(/[,.'”*;]/g, '');
-const keepVishraams = (str) => str.replace(/[.']/g, '');
+
+const removeAllSpecialChars = (str) => str.replace(/[,.'”“"*;?-_]/g, '');
+const keepVishraamChars = (str) => str.replace(/[.'”“"*?-_?]/g, '');
 
 // When unicodeRaw changes
 const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
-  const unicodeRawSafe = replaceSpecialCharacters(unicodeRaw);
-  const unicodeSafe = removeSpecialChars(unicodeRawSafe);
+  const unicodeRawSafe = handleUnicodeRaw(unicodeRaw);
+  const unicodeSafe = removeAllSpecialChars(unicodeRawSafe);
   const _gurmukhiScript = anvaad.unicode(unicodeSafe, true);
 
   const payload = {
     unicodeRaw: unicodeRawSafe,
     unicode: unicodeSafe,
-    unicodeVishraam: keepVishraams(unicodeRawSafe),
     gurmukhiScript: _gurmukhiScript,
     englishTranslit: anvaad.translit(_gurmukhiScript),
     firstLetters: anvaad.firstLetters(unicodeSafe),

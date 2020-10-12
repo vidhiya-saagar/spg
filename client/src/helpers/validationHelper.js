@@ -1,7 +1,7 @@
 export const isGurmukhi = (str) => /[\u0A00-\u0A7F]/.test(str);
 
 export const isValidGurbaniAkhar = (str) => {
-  return /^[a-zA-Z &<>@|~¡¤§®°`´µ¿ÅÆæÇÍÎÏÒœˆ˜†₈^¨\[]+$/.test(str);
+  return /^[a-zA-Z &<>@|~¡¤§®°`´µ¿ÅÆæÇÍÎÏÒœˆ˜†₈ü^¨\[]+$/.test(str);
 };
 
 export const hasSpaceBeforePeriod = (str) => {

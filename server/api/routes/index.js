@@ -4,10 +4,12 @@ const { booksIndex, bookChapters } = require('../controllers/books.controller');
 
 const {
   chaptersIndex,
+  createChapter,
   chapterFind,
   chapterChhands,
   chapterTuks,
   lastPauri,
+  validateChapter,
 } = require('../controllers/chapters.controller');
 
 const {
@@ -43,6 +45,7 @@ router.get('/books/:id/chapters', bookChapters);
 
 // chapters
 router.get('/chapters', chaptersIndex);
+router.post('/chapters', validateChapter('createChapter'), createChapter);
 router.get('/chapters/:id', chapterFind);
 router.get('/chapters/:id/chhands', chapterChhands);
 router.get('/chapters/:id/tuks', chapterTuks);

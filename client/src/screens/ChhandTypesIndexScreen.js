@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '../components/Grid';
 import AddChhandType from '../components/AddChhandType';
-import { Link } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import { fetchGet } from '../helpers/fetchHelper';
 
@@ -49,14 +48,6 @@ const ChhandTypesIndexScreen = () => {
                 })}
             </tbody>
           </table>
-        </Grid>
-      </Grid>
-
-      <Grid alignItems='center' justify='center'>
-        <Grid sm={12} md={12} lg={12}>
-          <button class='spg-btn'>
-            <Link to='/chhand-types/new'>New</Link>
-          </button>
         </Grid>
       </Grid>
 

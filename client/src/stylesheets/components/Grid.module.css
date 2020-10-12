@@ -126,6 +126,10 @@
   max-width: 100%;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
 @media screen and (min-width: 40em) {
   .md-1 {
     flex: 0 0 8.33333%;
