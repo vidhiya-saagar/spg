@@ -4,6 +4,11 @@
 
 [Full Changelog](https://github.com/dsomel21/spg/compare/0.0.11...HEAD)
 
+**Closed issues:**
+
+- Create the NewChapter screen [\#25](https://github.com/dsomel21/spg/issues/25)
+- Backend for creating a new chapter [\#24](https://github.com/dsomel21/spg/issues/24)
+
 **Merged pull requests:**
 
 - Release 0.0.11 [\#22](https://github.com/dsomel21/spg/pull/22) ([dsomel21](https://github.com/dsomel21))
