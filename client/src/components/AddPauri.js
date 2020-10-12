@@ -43,6 +43,11 @@ const AddPauri = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
+    if (!granthState.lastChhand) {
+      return SweetInputWarning({
+        title: 'chhand_id is null. Refresh the page.',
+      });
+    }
     if (!(await isValidInput())) return SweetInputWarning();
     const res = await fetchPost('/pauris', {
       chhand_id: granthState.lastChhand.id,

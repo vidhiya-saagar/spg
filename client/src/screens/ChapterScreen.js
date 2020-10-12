@@ -35,7 +35,7 @@ const ChapterScreen = () => {
 
     const fetchLastPauriNumInChapter = async () => {
       const res = await fetchGet(`/chapters/${id}/last-pauri`);
-      setLastPauriNumInChapter(res.last_pauri?.number);
+      setLastPauriNumInChapter(res.last_pauri?.number || 0); // If NULL, set pauriNum to 0
     };
 
     fetchAllChapterChhands();
