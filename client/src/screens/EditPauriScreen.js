@@ -13,8 +13,6 @@ const EditPauriScreen = () => {
   useEffect(() => {
     const fetchPauri = async () => {
       const res = await fetchGet(`/pauris/${id}/full`);
-      console.log(res);
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
       initializeFormState(res.pauri);
     };
     fetchPauri();
