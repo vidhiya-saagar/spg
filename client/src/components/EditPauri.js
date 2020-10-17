@@ -38,6 +38,10 @@ const EditPauri = ({ pauriId }) => {
 
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
+  useEffect(() => {
+    if (!granthState.lastPauri?.id) fetchSpgStatus();
+  }, [fetchSpgStatus, granthState.lastPauri]);
+
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
@@ -45,6 +49,10 @@ const EditPauri = ({ pauriId }) => {
       pauri: formattedTukFormObj(tukForm),
     });
     handleEditPauriResponse(res);
+  };
+
+  const deletePauri = async (e) => {
+    e.preventDefault();
   };
 
   const handleEditPauriResponse = (res) => {
@@ -353,6 +361,13 @@ const EditPauri = ({ pauriId }) => {
       <button onClick={submitForm} type='submit'>
         Submit
       </button>
+      {console.log(granthState)}
+      {console.log(granthState.lastPauri?.id, pauriId)}
+      {granthState.lastPauri?.id === pauriId && (
+        <button onClick={deletePauri} type='button'>
+          Delete
+        </button>
+      )}
     </>
   );
 };
