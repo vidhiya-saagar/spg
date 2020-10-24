@@ -15,7 +15,8 @@ const Chhand = (props) => {
       <p className={TukStyles.EnglishTranslit}>
         {chhandType.chhand_name_english}
       </p>
-      {pauris.map((pauri) => {
+      {pauris.length > 2 && <span>....</span>}
+      {pauris.slice(pauris.length - 2, pauris.length).map((pauri) => {
         return <Pauri {...pauri} key={pauri.id} />;
       })}
     </>
