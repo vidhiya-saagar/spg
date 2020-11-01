@@ -94,6 +94,7 @@ const findWordIndiciesWith = (str, char) => {
 
 const replaceQuotationMarksWithBindi = (str) => str.trim().replace("'", 'ਂ');
 const handleLineBreaks = (str) => str.trim().replace(/\r?\n|\r/g, ' ');
+const handleHalfYayya = (str) => str.trim().replace('ਜਯੋ', '੍ਯੋ');
 
 const handleUnicodeRaw = (str) => {
   // str = replaceQuotationMarksWithBindi(str);
@@ -106,6 +107,7 @@ const handleUnicodeRaw = (str) => {
   if (!hasSpaceBeforePeriod(str)) {
     str = str.slice(0, str.length - 1) + ` ${str[str.length - 1]}`;
   }
+  str = handleHalfYayya(str);
   // return str;
   return handleLineBreaks(str);
 };
