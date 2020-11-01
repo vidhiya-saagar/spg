@@ -112,8 +112,8 @@ const handleUnicodeRaw = (str) => {
   return handleLineBreaks(str);
 };
 
-const removeAllSpecialChars = (str) => str.replace(/[,.'”“"*;?-_]/g, '');
-const keepVishraamChars = (str) => str.replace(/[.'”“"*?-_?]/g, '');
+const removeAllSpecialChars = (str) => str.replace(/[,.'”“"*;:?!-_]/g, '');
+const keepVishraamChars = (str) => str.replace(/[.'”“"*?-_:?!]/g, '');
 
 // When unicodeRaw changes
 const updateUnicodeRaw = (dispatch) => (unicodeRaw, tukNumber) => {
