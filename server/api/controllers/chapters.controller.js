@@ -109,7 +109,8 @@ const chapterTuks = async (req, res) => {
   let chhands = await db
     .select('*')
     .from('chhands')
-    .where('chapter_id', chapterId);
+    .where('chapter_id', chapterId)
+    .orderBy('order_number', 'ASC');
 
   for (let chhand of chhands) {
     let chhandType = await db
