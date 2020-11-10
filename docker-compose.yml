@@ -1,0 +1,18 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: spg_development
+
+  api:
+    image: spg-api
+    build: .
+    volumes: ./:/usr/src/app
+    ports: 
+      - 4040:1469
