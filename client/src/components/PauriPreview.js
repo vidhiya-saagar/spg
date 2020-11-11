@@ -9,7 +9,6 @@ const PauriPreview = (props) => {
   return (
     <div className={TukStyles.Bold}>
       {pauri.map((tuk) => {
-        console.log(granthState);
         return (
           <div key={tuk.id}>
             {/* 

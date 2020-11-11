@@ -3,7 +3,6 @@ import TukStyles from '../stylesheets/TukStyles.module.css';
 import AddPauriStyles from '../stylesheets/components/AddPauriStyles.module.css';
 import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
-import SideChars from '../components/SideChars';
 import { Context as EditPauriFormContext } from '../context/EditPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost, fetchDelete } from '../helpers/fetchHelper';
@@ -127,42 +126,6 @@ const EditPauri = ({ pauriId }) => {
 
   return (
     <>
-      <div className={AddPauriStyles.Info}>
-        <Grid alignItems='flex-end' justify='center'>
-          <Grid column={true} sm={8} md={7} lg={7}>
-            <div className={`${AddPauriStyles.TableData}`}>
-              Next Pauri # (Not created yet)
-            </div>
-            <div className={`${AddPauriStyles.TableData}`}>Current Chhand</div>
-            <div className={`${AddPauriStyles.TableData}`}>
-              Current Chhand Order
-            </div>
-          </Grid>
-
-          <Grid column={true} sm={4} md={4} lg={4}>
-            <div
-              className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
-            >
-              {granthState.lastPauri?.number + 1 || 'Potentially New Pauri'}
-            </div>
-            <div
-              className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
-            >
-              {granthState.lastChhand?.chhand_name_english || 'N/A'}
-            </div>
-            <div
-              className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
-            >
-              {granthState.lastChhand?.order_number || 'N/A'}
-            </div>
-          </Grid>
-
-          <Grid column={true} sm={12} md={1} lg={1}>
-            <SideChars />
-          </Grid>
-        </Grid>
-      </div>
-
       {tukForm &&
         tukForm.map((tuk) => {
           return (
@@ -369,8 +332,6 @@ const EditPauri = ({ pauriId }) => {
       <button onClick={submitForm} type='submit'>
         Submit
       </button>
-      {console.log(granthState)}
-      {console.log(granthState.lastPauri?.id, pauriId)}
       {granthState.lastPauri?.id === pauriId && (
         <button onClick={deletePauri} type='button'>
           Delete
