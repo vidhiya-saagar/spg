@@ -101,7 +101,10 @@ const EditPauriScreen = () => {
             <div className='form-element'>
               <label htmlFor='chhand'>Chhand Type</label>
               <Select
-                defaultValue='Hey'
+                defaultValue={{
+                  value: selectedChhand,
+                  label: `#${selectedChhand?.order_number} (${selectedChhand?.chhand_name_english})`,
+                }}
                 onChange={(sel) => setSelectedChhand(sel.value)}
                 options={chhandOptions}
                 styles={selectStyles}
