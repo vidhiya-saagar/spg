@@ -330,6 +330,9 @@ const EditPauri = ({ pauriId }) => {
                 </Grid>
 
                 <Grid column={true} sm={12} md={6} lg={6}>
+                  <p className={`gurakhar ${TukStyles.Large}`}>
+                    {tuk.gurmukhiScript}
+                  </p>
                   <ReactDiffViewer
                     oldValue={JSON.stringify(
                       originalTukForm[tuk.tukNumber - 1],
