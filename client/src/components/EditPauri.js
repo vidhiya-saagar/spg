@@ -3,6 +3,7 @@ import TukStyles from '../stylesheets/TukStyles.module.css';
 import AddPauriStyles from '../stylesheets/components/AddPauriStyles.module.css';
 import '../stylesheets/components/AddPauriStyles.css';
 import Grid from './Grid';
+import SideChars from '../components/SideChars';
 import { Context as EditPauriFormContext } from '../context/EditPauriFormContext';
 import { Context as GranthContext } from '../context/GranthContext';
 import { fetchPost, fetchDelete } from '../helpers/fetchHelper';
@@ -128,7 +129,7 @@ const EditPauri = ({ pauriId }) => {
     <>
       <div className={AddPauriStyles.Info}>
         <Grid alignItems='flex-end' justify='center'>
-          <Grid column={true} sm={8} md={8} lg={8}>
+          <Grid column={true} sm={8} md={7} lg={7}>
             <div className={`${AddPauriStyles.TableData}`}>
               Next Pauri # (Not created yet)
             </div>
@@ -154,6 +155,10 @@ const EditPauri = ({ pauriId }) => {
             >
               {granthState.lastChhand?.order_number || 'N/A'}
             </div>
+          </Grid>
+
+          <Grid column={true} sm={12} md={1} lg={1}>
+            <SideChars />
           </Grid>
         </Grid>
       </div>
