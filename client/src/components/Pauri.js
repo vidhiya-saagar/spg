@@ -15,7 +15,7 @@ const Pauri = (props) => {
           </div>
         );
       })}
-      <p>{props.signature_unicode}</p>
+      <Link to={`/pauris/${props.id}/edit`}>{props.signature_unicode}</Link>
     </>
   );
 };

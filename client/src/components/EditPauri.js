@@ -24,7 +24,7 @@ import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
 const EditPauri = ({ pauriId }) => {
   const {
-    state: formState,
+    state: editFormState,
     updateAddPauriTextFields,
     updateFormItem,
     updateUnicodeRaw,
@@ -33,18 +33,27 @@ const EditPauri = ({ pauriId }) => {
     removeLastTukForm,
   } = useContext(EditPauriFormContext);
 
-  const tukForm = formState.tukForm;
-  const originalTukForm = formState.originalTukForm;
+  const tukForm = editFormState.tukForm;
+  const originalTukForm = editFormState.originalTukForm;
 
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
+
+  useEffect(() => {
+    if (!granthState.lastPauri?.id) fetchSpgStatus();
+  }, [fetchSpgStatus, granthState.lastPauri]);
 
   const submitForm = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
     const res = await fetchPost(`/pauris/${pauriId}`, {
       pauri: formattedTukFormObj(tukForm),
+      chhand_id: editFormState.selectedChhand?.id,
     });
     handleEditPauriResponse(res);
+  };
+
+  const deletePauri = async (e) => {
+    e.preventDefault();
   };
 
   const handleEditPauriResponse = (res) => {
@@ -118,38 +127,6 @@ const EditPauri = ({ pauriId }) => {
 
   return (
     <>
-      <div className={AddPauriStyles.Info}>
-        <Grid alignItems='flex-end' justify='center'>
-          <Grid column={true} sm={8} md={8} lg={8}>
-            <div className={`${AddPauriStyles.TableData}`}>
-              Next Pauri # (Not created yet)
-            </div>
-            <div className={`${AddPauriStyles.TableData}`}>Current Chhand</div>
-            <div className={`${AddPauriStyles.TableData}`}>
-              Current Chhand Order
-            </div>
-          </Grid>
-
-          <Grid column={true} sm={4} md={4} lg={4}>
-            <div
-              className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
-            >
-              {granthState.lastPauri?.number + 1 || 'Potentially New Pauri'}
-            </div>
-            <div
-              className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
-            >
-              {granthState.lastChhand?.chhand_name_english || 'N/A'}
-            </div>
-            <div
-              className={`${AddPauriStyles.TableData} ${AddPauriStyles.TableDataRight}`}
-            >
-              {granthState.lastChhand?.order_number || 'N/A'}
-            </div>
-          </Grid>
-        </Grid>
-      </div>
-
       {tukForm &&
         tukForm.map((tuk) => {
           return (
@@ -322,6 +299,9 @@ const EditPauri = ({ pauriId }) => {
                 </Grid>
 
                 <Grid column={true} sm={12} md={6} lg={6}>
+                  <p className={`gurakhar ${TukStyles.Large}`}>
+                    {tuk.gurmukhiScript}
+                  </p>
                   <ReactDiffViewer
                     oldValue={JSON.stringify(
                       originalTukForm[tuk.tukNumber - 1],
@@ -353,6 +333,11 @@ const EditPauri = ({ pauriId }) => {
       <button onClick={submitForm} type='submit'>
         Submit
       </button>
+      {granthState.lastPauri?.id === pauriId && (
+        <button onClick={deletePauri} type='button'>
+          Delete
+        </button>
+      )}
     </>
   );
 };

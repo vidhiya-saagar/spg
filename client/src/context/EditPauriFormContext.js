@@ -77,6 +77,12 @@ const formReducer = (state, action) => {
         ...state,
         tukForm: [...state.tukForm.slice(0, -1)],
       };
+    case 'UPDATE_SELECTED_CHHAND':
+      return {
+        ...state,
+        selectedChhand: action.payload.chhand,
+      };
+
     default:
       console.log(`⚠️ Warning! Action ${action.type} not found!`);
   }
@@ -204,6 +210,10 @@ const removeLastTukForm = (dispatch) => () => {
   dispatch({ type: 'REMOVE_LAST_TUK_FORM' });
 };
 
+const updateSelectedChhand = (dispatch) => (chhand) => {
+  dispatch({ type: 'UPDATE_SELECTED_CHHAND', payload: { chhand } });
+};
+
 export const { Provider, Context } = createDataContext(
   formReducer,
   {
@@ -213,6 +223,7 @@ export const { Provider, Context } = createDataContext(
     addTukForm,
     removeLastTukForm,
     initializeFormState,
+    updateSelectedChhand,
   },
   {
     originalTukForm: [
@@ -239,5 +250,6 @@ export const { Provider, Context } = createDataContext(
         tukNumber: 1,
       },
     ],
+    selectedChhand: null,
   }
 );
