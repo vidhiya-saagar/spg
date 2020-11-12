@@ -1,8 +1,22 @@
 # Changelog
 
-## [Unreleased](https://github.com/dsomel21/spg/tree/HEAD)
+## [0.0.13](https://github.com/dsomel21/spg/tree/0.0.13) (2020-11-12)
 
-[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.11...HEAD)
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.12...0.0.13)
+
+**Closed issues:**
+
+- Backend for moving pauris to other chhands within chapter [\#33](https://github.com/dsomel21/spg/issues/33)
+- Add ability to move a pauri to a different chhand [\#32](https://github.com/dsomel21/spg/issues/32)
+
+![Improvements](https://i.imgur.com/1g3LYnCl.png "Updated EditPauriScreen")
+![Editing Chhand](https://i.imgur.com/wlt0fXB.gif "Editing the Parent Chhand")
+
+- Write up a better README [\#13](https://github.com/dsomel21/spg/issues/13)
+
+## [0.0.12](https://github.com/dsomel21/spg/tree/0.0.12) (2020-10-12)
+
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.11...0.0.12)
 
 **Closed issues:**
 
