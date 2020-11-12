@@ -43,13 +43,13 @@ const EditPauri = ({ pauriId }) => {
   }, [fetchSpgStatus, granthState.lastPauri]);
 
   const submitForm = async (e) => {
-    debugger;
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-    // const res = await fetchPost(`/pauris/${pauriId}`, {
-    //   pauri: formattedTukFormObj(tukForm),
-    // });
-    // handleEditPauriResponse(res);
+    const res = await fetchPost(`/pauris/${pauriId}`, {
+      pauri: formattedTukFormObj(tukForm),
+      chhand_id: editFormState.selectedChhand?.id,
+    });
+    handleEditPauriResponse(res);
   };
 
   const deletePauri = async (e) => {

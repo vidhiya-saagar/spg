@@ -140,11 +140,18 @@ const editPauri = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const pauri = await db
-    .select('*')
-    .from('pauris')
-    .where('id', req.params.id)
-    .first();
+  console.log('----------------------------------');
+  console.log('----------------------------------');
+  console.log('----------------------------------');
+  console.log('----------------------------------');
+  console.log('----------------------------------');
+
+  // Update the chhand_id (if it was changed, but whatevs for now)
+  await db('pauris')
+    .update('chhand_id', req.body.chhand_id)
+    .where('id', req.params.id);
+
+  const pauri = await db('pauris').where('id', req.params.id).first();
 
   let chhandTypeId;
 
@@ -153,7 +160,7 @@ const editPauri = async (req, res) => {
       const tuk = await db
         .select('*')
         .from('tuks')
-        .where('pauri_id', pauri.id)
+        .where('pauri_id', req.params.id)
         .where('line_number', _tuk.line_number)
         .first();
 
@@ -164,6 +171,7 @@ const editPauri = async (req, res) => {
           .first()
           .update({
             ..._tuk,
+            chhand_id: req.body.chhand_id,
             vishraams: JSON.stringify(_tuk.vishraams),
             thamkis: JSON.stringify(_tuk.thamkis),
           });
@@ -173,17 +181,17 @@ const editPauri = async (req, res) => {
           chhandTypeId = await db
             .select('chhand_type_id')
             .from('chhands')
-            .where('id', pauri.chhand_id)
+            .where('id', req.body.chhand_id)
             .first();
           // omg this is so bad
           chhandTypeId = chhandTypeId.chhand_type_id;
         }
         return await db('tuks').insert({
           ..._tuk,
-          chhand_id: pauri.chhand_id,
+          chhand_id: req.body.chhand_id,
           chhand_type_id: chhandTypeId,
           chapter_id: pauri.chapter_id,
-          pauri_id: pauri.id,
+          pauri_id: req.params.id,
           vishraams: JSON.stringify(_tuk.vishraams),
           thamkis: JSON.stringify(_tuk.thamkis),
         });
@@ -232,6 +240,7 @@ const validatePauri = (action) => {
             .then((tuk) => {
               if (tuk) {
                 return Promise.reject({
+                  allow_force: true,
                   message: 'This tuk may already exist',
                   tuk,
                 });
