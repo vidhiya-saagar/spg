@@ -57,11 +57,6 @@ const EditPauriScreen = () => {
   }
   `;
 
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  console.log(editPauriState);
-  console.log(editPauriState?.selectedChhand);
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-
   const selectStyles = {
     control: (provided) => ({
       ...provided,
