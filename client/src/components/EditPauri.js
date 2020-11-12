@@ -24,7 +24,7 @@ import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
 const EditPauri = ({ pauriId }) => {
   const {
-    state: formState,
+    state: editFormState,
     updateAddPauriTextFields,
     updateFormItem,
     updateUnicodeRaw,
@@ -33,8 +33,8 @@ const EditPauri = ({ pauriId }) => {
     removeLastTukForm,
   } = useContext(EditPauriFormContext);
 
-  const tukForm = formState.tukForm;
-  const originalTukForm = formState.originalTukForm;
+  const tukForm = editFormState.tukForm;
+  const originalTukForm = editFormState.originalTukForm;
 
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
 
@@ -43,12 +43,13 @@ const EditPauri = ({ pauriId }) => {
   }, [fetchSpgStatus, granthState.lastPauri]);
 
   const submitForm = async (e) => {
+    debugger;
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-    const res = await fetchPost(`/pauris/${pauriId}`, {
-      pauri: formattedTukFormObj(tukForm),
-    });
-    handleEditPauriResponse(res);
+    // const res = await fetchPost(`/pauris/${pauriId}`, {
+    //   pauri: formattedTukFormObj(tukForm),
+    // });
+    // handleEditPauriResponse(res);
   };
 
   const deletePauri = async (e) => {

@@ -14,17 +14,20 @@ import { Context as EditPauriFormContext } from '../context/EditPauriFormContext
 import { Context as GranthContext } from '../context/GranthContext';
 
 const EditPauriScreen = () => {
-  const { initializeFormState } = useContext(EditPauriFormContext);
+  const {
+    state: editPauriState,
+    initializeFormState,
+    updateSelectedChhand,
+  } = useContext(EditPauriFormContext);
   const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
   const { id } = useParams();
-  const [selectedChhand, setSelectedChhand] = useState(null);
   const [chhandOptions, setChhandOptions] = useState([]);
+
   useEffect(() => {
     const fetchPauri = async () => {
       const res = await fetchGet(`/pauris/${id}/full`);
-      debugger;
       initializeFormState(res.pauri);
-      setSelectedChhand(res.chhand);
+      updateSelectedChhand(res.chhand);
       fetchAllChhandsForChapterId(res.chapter.id);
     };
 
@@ -46,16 +49,17 @@ const EditPauriScreen = () => {
 
   const chapterCode = `
   {
-    id: ${selectedChhand?.id},
+  id: ${editPauriState?.selectedChhand?.id},
     chhand_type: {
-      chhand_name_english: "${selectedChhand?.chhand_name_english}"
+    chhand_name_english: "${editPauriState?.selectedChhand?.chhand_name_english}"
     },
-    order_number: ${selectedChhand?.order_number}
+  order_number: ${editPauriState?.selectedChhand?.order_number}
   }
   `;
 
   console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  console.log(selectedChhand);
+  console.log(editPauriState);
+  console.log(editPauriState?.selectedChhand);
   console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 
   const selectStyles = {
@@ -102,10 +106,10 @@ const EditPauriScreen = () => {
               <label htmlFor='chhand'>Chhand Type</label>
               <Select
                 defaultValue={{
-                  value: selectedChhand,
-                  label: `#${selectedChhand?.order_number} (${selectedChhand?.chhand_name_english})`,
+                  value: editPauriState?.selectedChhand,
+                  label: `#${editPauriState?.selectedChhand?.order_number} (${editPauriState?.selectedChhand?.chhand_name_english})`,
                 }}
-                onChange={(sel) => setSelectedChhand(sel.value)}
+                onChange={(sel) => updateSelectedChhand(sel.value)}
                 options={chhandOptions}
                 styles={selectStyles}
               />
