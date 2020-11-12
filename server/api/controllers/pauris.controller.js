@@ -140,12 +140,6 @@ const editPauri = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  console.log('----------------------------------');
-  console.log('----------------------------------');
-  console.log('----------------------------------');
-  console.log('----------------------------------');
-  console.log('----------------------------------');
-
   // Update the chhand_id (if it was changed, but whatevs for now)
   await db('pauris')
     .update('chhand_id', req.body.chhand_id)
