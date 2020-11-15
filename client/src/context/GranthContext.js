@@ -27,6 +27,16 @@ const granthContext = (state, action) => {
         ...state,
         allBooks: action.payload.allBooks,
       };
+    case 'UPDATE_ALL_CHAPTERS':
+      return {
+        ...state,
+        allChapters: action.payload.allChapters,
+      };
+    case 'UPDATE_ALL_CHAPTERS_FOR_BOOK':
+      return {
+        ...state,
+        allChaptersForBook: action.payload.allChaptersForBook,
+      };
 
     default:
       console.log(`⚠️ Warning! Action ${action.type} not found!`);
@@ -42,11 +52,24 @@ const fetchSpgStatus = (dispatch) => async () => {
   }
 };
 
-const fetchAllChapters = async () => {};
-
 const fetchAllBooks = (dispatch) => async () => {
   const res = await fetchGet('/books');
   dispatch({ type: 'UPDATE_ALL_BOOKS', payload: { allBooks: res.books } });
+};
+
+const fetchAllChaptersForBookId = (dispatch) => async (bookId) => {
+  const res = await fetchGet(`/chapters?book_id=${bookId}`);
+  dispatch({
+    type: 'UPDATE_ALL_CHAPTERS_FOR_BOOK',
+    payload: { allChaptersForBook: res.chapters },
+  });
+};
+const fetchAllChapters = (dispatch) => async () => {
+  const res = await fetchGet('/chapters');
+  dispatch({
+    type: 'UPDATE_ALL_CHAPTERS',
+    payload: { allChapters: res.chapters },
+  });
 };
 
 export const { Provider, Context } = createDataContext(
@@ -61,6 +84,8 @@ export const { Provider, Context } = createDataContext(
     lastChhand: null,
     lastPauri: null,
     lastTuk: null,
+    allBooks: [],
     allChapters: [],
+    allChaptersForBook: [],
   }
 );
