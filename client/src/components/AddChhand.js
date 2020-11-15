@@ -3,6 +3,7 @@ import Grid from '../components/Grid';
 import * as anvaad from 'anvaad-js';
 import { fetchGet } from '../helpers/fetchHelper';
 import { CodeBlock, a11yLight } from 'react-code-blocks';
+import ReactSelectStyles from '../stylesheets/components/ReactSelectStyles';
 import Select from 'react-select';
 import Submit from '../components/Submit';
 import {
@@ -12,22 +13,6 @@ import {
 } from '../components/SweetAlert.js';
 import { fetchPost } from '../helpers/fetchHelper';
 import { Context as GranthContext } from '../context/GranthContext';
-
-const selectStyles = {
-  control: (provided) => ({
-    ...provided,
-    borderRadius: 20,
-    fontFamily: 'Josefin Sans',
-    borderWidth: 1.4,
-    borderColor: '#e1e1e1',
-    letterSpacing: 1,
-    color: '#242424',
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: '0.75rem',
-    paddingRight: '0.75rem',
-  }),
-};
 
 const AddChhand = () => {
   const [chhandTypeOptions, setChhandTypeOptions] = useState([]);
@@ -120,7 +105,7 @@ const AddChhand = () => {
               defaultValue={selectedChhandType}
               onChange={setSelectedChhandType}
               options={chhandTypeOptions}
-              styles={selectStyles}
+              styles={ReactSelectStyles}
             />
           </div>
           <Submit />
