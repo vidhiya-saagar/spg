@@ -37,6 +37,11 @@ const granthContext = (state, action) => {
         ...state,
         allChaptersForBook: action.payload.allChaptersForBook,
       };
+    case 'UPDATE_CURRENT_BOOK':
+      return {
+        ...state,
+        currentBook: action.payload.currentBook,
+      };
 
     default:
       console.log(`⚠️ Warning! Action ${action.type} not found!`);
@@ -72,11 +77,19 @@ const fetchAllChapters = (dispatch) => async () => {
   });
 };
 
+const updateCurrentBook = (dispatch) => (book) => {
+  dispatch({
+    type: 'UPDATE_CURRENT_BOOK',
+    payload: { currentBook: book },
+  });
+};
+
 export const { Provider, Context } = createDataContext(
   granthContext,
   {
     fetchSpgStatus,
     fetchAllBooks,
+    fetchAllChaptersForBookId,
   },
   {
     lastBook: null,
@@ -84,6 +97,7 @@ export const { Provider, Context } = createDataContext(
     lastChhand: null,
     lastPauri: null,
     lastTuk: null,
+    currentBook: null,
     allBooks: [],
     allChapters: [],
     allChaptersForBook: [],
