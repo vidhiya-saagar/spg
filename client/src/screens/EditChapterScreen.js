@@ -32,8 +32,6 @@ const EditChapterScreen = () => {
   useEffect(() => {
     const fetchChapter = async () => {
       const res = await fetchGet(`/chapters/${id}`);
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-      console.log(res);
       setChapter(res.chapter);
       setUnicode(res.chapter.title_unicode);
     };
@@ -123,7 +121,8 @@ const EditChapterScreen = () => {
         <Grid column={true} sm={12} md={8} lg={8}>
           <Grid sm={12} lg={6}>
             <h1 className={ChapterStyles.ChapterTitle}>
-              Chapter {chapter?.number}: {chapter?.title_unicode}
+              Chapter {chapter?.number}:{' '}
+              <span className='gurakhar'>{gurmukhiScript}</span>
             </h1>
           </Grid>
         </Grid>
@@ -202,6 +201,10 @@ const EditChapterScreen = () => {
 
             <Submit />
           </form>
+        </Grid>
+
+        <Grid column={true} sm={12} md={1} lg={1}>
+          <SideChars />
         </Grid>
       </Grid>
     </>
