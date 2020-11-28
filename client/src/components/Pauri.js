@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useParams } from 'react-router-dom';
 import TukStyles from '../stylesheets/TukStyles.module.css';
 const Pauri = (props) => {
   const { tuks } = props;

@@ -14,7 +14,7 @@ const Chapter = (props) => {
   } = props;
 
   return (
-    <Router>
+    <>
       <Grid sm={12}>
         <h1 className={ChapterStyles.ChapterTitle}>
           <Link to={`/chapters/${id}`}>Chapter {number}: </Link>
@@ -35,7 +35,7 @@ const Chapter = (props) => {
         <Route path='/chapters/:id' children={<ChapterScreen />} />
       </Switch>
       */}
-    </Router>
+    </>
   );
 };
 
