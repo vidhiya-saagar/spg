@@ -8,6 +8,7 @@ import ChapterStyles from '../stylesheets/components/ChapterStyles.module.css';
 import Submit from '../components/Submit';
 import * as anvaad from 'anvaad-js';
 import { isGurmukhi } from '../helpers/validationHelper';
+import ImageUploader from 'react-images-upload';
 
 import {
   SweetError,
@@ -25,6 +26,8 @@ const EditChapterScreen = () => {
   const [unicode, setUnicode] = useState('');
   const [gurmukhiScript, setGurmukhiScript] = useState('');
   const [englishTranslit, setEnglishTranslit] = useState('');
+  const [englishSummary, setEnglishSummary] = useState('');
+  const [pictures, setPictures] = useState([]);
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -110,6 +113,10 @@ const EditChapterScreen = () => {
       .required('Required'),
   });
 
+  const dropImage = (picture) => {
+    setPictures([picture]);
+  };
+
   return (
     <>
       <Grid alignItems='center' justify='center'>
@@ -164,6 +171,33 @@ const EditChapterScreen = () => {
                 value={englishTranslit}
               />
               <p>{formErrors?.englishTranslit && formErrors.EnglishTranslit}</p>
+            </div>
+
+            {/* English Summary */}
+            <div className='form-element'>
+              <label htmlFor='englishSummary'>English Summary</label>
+              <textarea
+                id='englishSummary'
+                name='englishSummary'
+                type='text'
+                rows={15}
+                spellcheck={true}
+                onChange={(e) => {
+                  setEnglishSummary(e.target.value);
+                }}
+                value={englishSummary}
+              />
+
+              <ImageUploader
+                withIcon={true}
+                withLabel={true}
+                buttonText='Upload Artwork'
+                onChange={dropImage}
+                imgExtension={['.jpg', '.jpeg', '.png', '.gif']}
+                maxFileSize={5242880}
+                singleImage={true}
+                withPreview={true}
+              />
             </div>
 
             <Submit />
