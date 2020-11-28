@@ -3,6 +3,8 @@ import Grid from '../components/Grid';
 import * as anvaad from 'anvaad-js';
 import AddChhandTypeStyles from '../stylesheets/components/AddChhandTypeStyles.module.css';
 import Submit from '../components/Submit';
+import Select from 'react-select';
+import ReactSelectStyles from '../stylesheets/components/ReactSelectStyles';
 import { fetchPost } from '../helpers/fetchHelper';
 import * as Yup from 'yup';
 import { CodeBlock, a11yLight } from 'react-code-blocks';
@@ -20,7 +22,9 @@ const NewChapterScreen = () => {
   const [englishTranslit, setEnglishTranslit] = useState('');
   const [formErrors, setFormErrors] = useState(null);
 
-  const { state: granthState, fetchSpgStatus } = useContext(GranthContext);
+  const { state: granthState, fetchSpgStatus, fetchAllBooks } = useContext(
+    GranthContext
+  );
 
   // prettier-ignore
   const chapterCode = `{
@@ -37,6 +41,7 @@ const NewChapterScreen = () => {
 
   useEffect(() => {
     fetchSpgStatus();
+    fetchAllBooks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
