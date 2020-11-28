@@ -160,7 +160,7 @@ const EditChapterScreen = () => {
                 id='englishTranslit'
                 name='englishTranslit'
                 type='text'
-                placeholder='Chamkaur Yudh Aarambh'
+                placeholder='chamakauar yudh aara(n)bh'
                 value={englishTranslit}
               />
               <p>{formErrors?.englishTranslit && formErrors.EnglishTranslit}</p>
