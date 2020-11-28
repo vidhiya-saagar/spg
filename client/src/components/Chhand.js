@@ -10,13 +10,18 @@ const Chhand = (props) => {
 
   return (
     <>
-      <p>{chhandType.chhand_name_unicode}</p>
-      <p className='gurakhar'>{chhandType.chhand_name_gs}</p>
-      <p className={TukStyles.EnglishTranslit}>
-        {chhandType.chhand_name_english}
+      <p className='faded-text'>
+        <span>{chhandType.chhand_name_unicode} </span>
+        <span className='gurakhar-black'>{chhandType.chhand_name_gs} </span>
+        <span className={TukStyles.EnglishTranslit}>
+          {chhandType.chhand_name_english}
+        </span>
       </p>
+      {/* 
       {pauris.length > 2 && <span>....</span>}
       {pauris.slice(pauris.length - 2, pauris.length).map((pauri) => {
+       */}
+      {pauris.map((pauri) => {
         return <Pauri {...pauri} key={pauri.id} />;
       })}
     </>

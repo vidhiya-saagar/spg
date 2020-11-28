@@ -29,7 +29,8 @@ const ChapterScreen = () => {
       const res = await fetchGet(`/chapters/${id}/tuks`);
       setChapter(res.chapter);
       setChhands(
-        res.chhands.splice(res.chhands.length - 2, res.chhands.length)
+        // res.chhands.splice(res.chhands.length - 2, res.chhands.length)
+        res.chhands
       );
     };
 

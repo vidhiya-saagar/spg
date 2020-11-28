@@ -87,3 +87,11 @@ code {
 .mtop15 {
   margin-top: 15px;
 }
+
+.faded-text {
+  opacity: 0.4;
+}
+
+.extra-faded-text {
+  opacity: 0.2;
+}
