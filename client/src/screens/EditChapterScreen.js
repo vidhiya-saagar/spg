@@ -3,7 +3,7 @@ import Grid from '../components/Grid';
 import { Link, useParams } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import SideChars from '../components/SideChars';
-import { fetchGet, fetchPut } from '../helpers/fetchHelper';
+import { fetchGet, fetchPost, fetchPut } from '../helpers/fetchHelper';
 import ChapterStyles from '../stylesheets/components/ChapterStyles.module.css';
 import Submit from '../components/Submit';
 import * as anvaad from 'anvaad-js';
@@ -72,6 +72,16 @@ const EditChapterScreen = () => {
         text: JSON.stringify(res.chhand, null, 2),
       });
     }
+  };
+
+  const addKatha = async (katha) => {
+    debugger;
+    const res = await fetchPost(`/chapters/${id}/kathas`, {
+      ...katha,
+      title: katha.file.name,
+    });
+    debugger;
+    setKathaFiles([...kathaFiles, res]);
   };
 
   const isValidInput = () => {
@@ -214,24 +224,11 @@ const EditChapterScreen = () => {
                       signingUrl: '/s3/sign',
                     }}
                     accept='.mp3,.m4a'
-                    onError={(e) => {
-                      console.log('onError: ');
-                      console.log(e);
-                    }}
+                    onError={(e) => console.log(`Error: ${e}`)}
                     onProgress={(progressInPercent, uploadStatusText) => {
-                      console.log('onProgress');
-                      console.log('progressInPercent', progressInPercent);
                       setKathaUploadProgress(progressInPercent);
-                      console.log('uploadStatusText', uploadStatusText);
                     }}
-                    onFinish={(uploadDetails) => {
-                      console.log('onFinish: ');
-                      setKathaFiles([...kathaFiles, uploadDetails]);
-                      console.log(kathaFiles);
-                    }}
-                    onSignedUrl={(signature) => {
-                      console.log('onSignedUrl:', signature);
-                    }}
+                    onFinish={addKatha}
                   />
                 </div>
               </Grid>
