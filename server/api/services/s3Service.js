@@ -7,7 +7,7 @@ const s3 = new AWS.S3({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: 'us-east-1',
   s3ForcePathStyle: true,
-  signatureVersion: 'v4',
+  // signatureVersion: 'v4',
   headers: { 'Access-Control-Allow-Origin': '*' },
 });
 

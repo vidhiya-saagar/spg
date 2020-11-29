@@ -10,7 +10,7 @@ import * as anvaad from 'anvaad-js';
 import { isGurmukhi } from '../helpers/validationHelper';
 import ImageUploader from 'react-images-upload';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
-import KathaUploads from '../components/KathaUploads';
+import KathaUploadForm from '../components/KathaUploadForm';
 import { Circle } from 'rc-progress';
 
 import {
@@ -243,13 +243,18 @@ const EditChapterScreen = () => {
                 />
               </Grid>
             </Grid>
+
+            {kathaFiles?.map((katha) => (
+              <KathaUploadForm
+                publicUrl={katha.publicUrl}
+                fileName={katha.filename}
+                fileKey={katha.fileKey}
+              />
+            ))}
+
             <Submit />
           </form>
         </Grid>
-
-        {kathaFiles?.map((katha) => (
-          <div>{JSON.stringify(katha)}</div>
-        ))}
 
         <Grid column={true} sm={12} md={1} lg={1}>
           <SideChars />
