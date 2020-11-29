@@ -10,6 +10,7 @@ import * as anvaad from 'anvaad-js';
 import { isGurmukhi } from '../helpers/validationHelper';
 import ImageUploader from 'react-images-upload';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
+import KathaUploads from '../components/KathaUploads';
 import { Circle } from 'rc-progress';
 
 import {
@@ -30,8 +31,8 @@ const EditChapterScreen = () => {
   const [englishTranslit, setEnglishTranslit] = useState('');
   const [englishSummary, setEnglishSummary] = useState('');
   const [pictures, setPictures] = useState([]);
-
-  const [audio, setaudio] = useState();
+  const [kathaUploadProgress, setKathaUploadProgress] = useState(null);
+  const [kathaFiles, setKathaFiles] = useState([]);
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -133,7 +134,6 @@ const EditChapterScreen = () => {
             </h1>
           </Grid>
         </Grid>
-
         <Grid column={true} sm={12} md={8} lg={6}>
           <form className='spg-form' onSubmit={updateChapter}>
             {/* Unicode */}
@@ -202,36 +202,54 @@ const EditChapterScreen = () => {
                 withPreview={true}
               />
             </div>
-            <div className='form-element'>
-              <label>S3 File Upload Test</label>
 
-              <DropzoneS3Uploader
-                s3Url='https://s3.console.aws.amazon.com/s3/buckets/shaheedi-spg'
-                upload={{
-                  server: 'http://localhost:1469',
-                  signingUrl: '/s3/sign',
-                  accept: '.mp3,.m4a',
-                }}
-                onError={(e) => {
-                  console.log('onError: ');
-                  console.log(e);
-                }}
-                onProgress={(progressInPercent, uploadStatusText) => {
-                  console.log('onProgress');
-                  console.log('progressInPercent', progressInPercent);
-                  console.log('uploadStatusText', uploadStatusText);
-                }}
-                onFinish={(uploadDetails) => {
-                  console.log('onFinish: ', uploadDetails);
-                }}
-                onSignedUrl={(signature) => {
-                  console.log('onSignedUrl:', signature);
-                }}
-              />
-            </div>
+            <Grid alignItems='center' justify='space-between'>
+              <Grid column={true} sm={2} md={4} lg={4}>
+                <div className='form-element'>
+                  <label>S3 File Upload Test</label>
+                  <DropzoneS3Uploader
+                    s3Url='https://s3.console.aws.amazon.com/s3/buckets/shaheedi-spg'
+                    upload={{
+                      server: 'http://localhost:1469',
+                      signingUrl: '/s3/sign',
+                    }}
+                    accept='.mp3,.m4a'
+                    onError={(e) => {
+                      console.log('onError: ');
+                      console.log(e);
+                    }}
+                    onProgress={(progressInPercent, uploadStatusText) => {
+                      console.log('onProgress');
+                      console.log('progressInPercent', progressInPercent);
+                      setKathaUploadProgress(progressInPercent);
+                      console.log('uploadStatusText', uploadStatusText);
+                    }}
+                    onFinish={(uploadDetails) => {
+                      console.log('onFinish: ');
+                      setKathaFiles([...kathaFiles, uploadDetails]);
+                      console.log(kathaFiles);
+                    }}
+                    onSignedUrl={(signature) => {
+                      console.log('onSignedUrl:', signature);
+                    }}
+                  />
+                </div>
+              </Grid>
+              <Grid column={true} sm={2} md={4} lg={4}>
+                <Circle
+                  percent={kathaUploadProgress}
+                  strokeWidth='4'
+                  strokeColor='#D3D3D3'
+                />
+              </Grid>
+            </Grid>
             <Submit />
           </form>
         </Grid>
+
+        {kathaFiles?.map((katha) => (
+          <div>{JSON.stringify(katha)}</div>
+        ))}
 
         <Grid column={true} sm={12} md={1} lg={1}>
           <SideChars />
