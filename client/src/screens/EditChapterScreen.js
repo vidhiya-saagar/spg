@@ -9,7 +9,8 @@ import Submit from '../components/Submit';
 import * as anvaad from 'anvaad-js';
 import { isGurmukhi } from '../helpers/validationHelper';
 import ImageUploader from 'react-images-upload';
-import ReactS3Uploader from 'react-s3-uploader';
+import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
+import { Circle } from 'rc-progress';
 
 import {
   SweetError,
@@ -29,7 +30,8 @@ const EditChapterScreen = () => {
   const [englishTranslit, setEnglishTranslit] = useState('');
   const [englishSummary, setEnglishSummary] = useState('');
   const [pictures, setPictures] = useState([]);
-  const [file, setFile] = useState(null);
+
+  const [audio, setaudio] = useState();
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -51,15 +53,11 @@ const EditChapterScreen = () => {
     debugger;
     if (!(await isValidInput())) return SweetInputWarning();
 
-    var formData = new FormData();
-    formData.append('artwork', file);
-
     const res = await fetchPut(`/chapters/${id}/edit`, {
       title_unicode: unicode,
       title_gs: gurmukhiScript,
       title_transliteration_english: englishTranslit,
       english_summary: englishSummary,
-      formData,
     });
     handleUpdateChapterResponse(res);
   };
@@ -207,12 +205,14 @@ const EditChapterScreen = () => {
             <div className='form-element'>
               <label>S3 File Upload Test</label>
 
-              <ReactS3Uploader
-                server='http://localhost:1469'
-                signingUrl='/s3/sign'
-                accept='.mp3,.m4a'
+              <DropzoneS3Uploader
+                s3Url='https://s3.console.aws.amazon.com/s3/buckets/shaheedi-spg'
+                upload={{
+                  server: 'http://localhost:1469',
+                  signingUrl: '/s3/sign',
+                  accept: '.mp3,.m4a',
+                }}
                 onError={(e) => {
-                  debugger;
                   console.log('onError: ');
                   console.log(e);
                 }}
