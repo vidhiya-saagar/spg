@@ -10,6 +10,7 @@ const {
   chapterTuks,
   lastPauri,
   validateChapter,
+  editChapter,
 } = require('../controllers/chapters.controller');
 
 const {
@@ -33,6 +34,12 @@ const {
   validatePauri,
 } = require('../controllers/pauris.controller');
 
+const {
+  createKatha,
+  createChapterKatha,
+  validateKatha,
+} = require('../controllers/kathas.controller');
+
 const { deleteTuk, validateTuk } = require('../controllers/tuks.controller');
 
 const { last } = require('../controllers/application.controller');
@@ -50,6 +57,7 @@ router.get('/chapters/:id', chapterFind);
 router.get('/chapters/:id/chhands', chapterChhands);
 router.get('/chapters/:id/tuks', chapterTuks);
 router.get('/chapters/:id/last-pauri', lastPauri);
+router.put('/chapters/:id/edit', validateChapter('editChapter'), editChapter);
 
 // chhand_types
 router.get('/chhand-types', chhandTypeIndex);
@@ -72,6 +80,14 @@ router.post('/pauris/:id', validatePauri('editPauri'), editPauri);
 
 // tuks
 router.delete('/tuks/:id', validateTuk('deleteTuk'), deleteTuk);
+
+// kathas
+router.post('/kathas', validateKatha('createKatha'), createKatha);
+router.post(
+  '/chapters/:id/kathas',
+  validateKatha('createChapterKatha'),
+  createChapterKatha
+);
 
 // APPLICATIONS
 router.get('/last', last);

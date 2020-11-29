@@ -9,6 +9,7 @@ import ChhandTypesIndexScreen from './screens/ChhandTypesIndexScreen';
 import ChhandsIndexScreen from './screens/ChhandsIndexScreen';
 import ChapterScreen from './screens/ChapterScreen';
 import EditPauriScreen from './screens/EditPauriScreen';
+import EditChapterScreen from './screens/EditChapterScreen';
 import NewChapterScreen from './screens/NewChapterScreen';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Provider as AddPauriFormContext } from './context/AddPauriFormContext';
@@ -43,6 +44,9 @@ const App = () => {
               </Route>
               <Route exact path='/chapters/new'>
                 <NewChapterScreen />
+              </Route>
+              <Route path='/chapters/:id/edit'>
+                <EditChapterScreen />
               </Route>
               <Route path='/chapters/:id'>
                 <ChapterScreen />

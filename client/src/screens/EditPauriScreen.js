@@ -3,6 +3,7 @@ import Grid from '../components/Grid';
 import { Link, useParams } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import AddPauriStyles from '../stylesheets/components/AddPauriStyles.module.css';
+import ReactSelectStyles from '../stylesheets/components/ReactSelectStyles';
 import EditPauri from '../components/EditPauri';
 import SideChars from '../components/SideChars';
 import { fetchGet } from '../helpers/fetchHelper';
@@ -57,22 +58,6 @@ const EditPauriScreen = () => {
   }
   `;
 
-  const selectStyles = {
-    control: (provided) => ({
-      ...provided,
-      borderRadius: 20,
-      fontFamily: 'Josefin Sans',
-      borderWidth: 1.4,
-      borderColor: '#e1e1e1',
-      letterSpacing: 1,
-      color: '#242424',
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingLeft: '0.75rem',
-      paddingRight: '0.75rem',
-    }),
-  };
-
   return (
     <>
       <Grid alignItems='center' justify='center'>
@@ -98,15 +83,11 @@ const EditPauriScreen = () => {
 
             {/* Selected Chhand  */}
             <div className='form-element'>
-              <label htmlFor='chhand'>Chhand Type</label>
+              <label htmlFor='chhand'>Chhand Order & Chhand Parent</label>
               <Select
-                defaultValue={{
-                  value: editPauriState?.selectedChhand,
-                  label: `#${editPauriState?.selectedChhand?.order_number} (${editPauriState?.selectedChhand?.chhand_name_english})`,
-                }}
                 onChange={(sel) => updateSelectedChhand(sel.value)}
                 options={chhandOptions}
-                styles={selectStyles}
+                styles={ReactSelectStyles}
               />
             </div>
           </div>

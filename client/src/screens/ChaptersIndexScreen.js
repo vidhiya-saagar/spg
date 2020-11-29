@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGet } from '../helpers/fetchHelper';
 import { Link } from 'react-router-dom';
-import Chapter from '../components/Chapter';
+import ChapterHeading from '../components/ChapterHeading';
 import Grid from '../components/Grid';
 
 const ChaptersIndexScreen = () => {
@@ -20,7 +20,7 @@ const ChaptersIndexScreen = () => {
     <Grid alignItems='center' justify='center'>
       <Grid column={true} sm={12} md={8} lg={8}>
         {chapters.map((chapter) => {
-          return <Chapter {...chapter} key={chapter.id} />;
+          return <ChapterHeading {...chapter} key={chapter.id} />;
         })}
       </Grid>
 

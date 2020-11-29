@@ -5,7 +5,7 @@ import { fetchGet } from '../helpers/fetchHelper';
 import Grid from '../components/Grid';
 import ChapterScreenStyles from '../stylesheets/screens/ChapterScreenStyles.css';
 import SideCharsStyles from '../stylesheets/components/SideCharsStyles.module.css';
-import Chapter from '../components/Chapter';
+import ChapterHeading from '../components/ChapterHeading';
 import PauriPreview from '../components/PauriPreview';
 import SideChars from '../components/SideChars';
 import Chhand from '../components/Chhand';
@@ -29,7 +29,8 @@ const ChapterScreen = () => {
       const res = await fetchGet(`/chapters/${id}/tuks`);
       setChapter(res.chapter);
       setChhands(
-        res.chhands.splice(res.chhands.length - 2, res.chhands.length)
+        // res.chhands.splice(res.chhands.length - 2, res.chhands.length)
+        res.chhands
       );
     };
 
@@ -51,7 +52,7 @@ const ChapterScreen = () => {
       </Grid>
       <Grid column={true} sm={12} md={6} lg={6}>
         <div className='pauri-container'>
-          <Chapter {...chapter} />
+          <ChapterHeading {...chapter} />
           {chhands &&
             chhands.map((chhand) => {
               return <Chhand {...chhand} key={chhand.id} />;

@@ -35,3 +35,8 @@ npm-debug.log
 .DS_Store
 
 *.pem
+
+server/createRut6.js
+server/r6.json
+server/r6_best.json
+server/r6_gurakhar.json
