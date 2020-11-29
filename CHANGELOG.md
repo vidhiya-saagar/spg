@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.0.14](https://github.com/dsomel21/spg/tree/0.0.14) (2020-11-29)
+
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.13...0.0.14)
+
+**Closed issues:**
+
+- Setup S3 uploading in the backend [\#39](https://github.com/dsomel21/spg/issues/39)
+- Add a button that lets you edit pauri [\#26](https://github.com/dsomel21/spg/issues/26)
+- Add a "Granth" screen to preview everything [\#16](https://github.com/dsomel21/spg/issues/16)
+
 ## [0.0.13](https://github.com/dsomel21/spg/tree/0.0.13) (2020-11-12)
 
 [Full Changelog](https://github.com/dsomel21/spg/compare/0.0.12...0.0.13)
@@ -8,10 +18,6 @@
 
 - Backend for moving pauris to other chhands within chapter [\#33](https://github.com/dsomel21/spg/issues/33)
 - Add ability to move a pauri to a different chhand [\#32](https://github.com/dsomel21/spg/issues/32)
-
-![Improvements](https://i.imgur.com/1g3LYnCl.png "Updated EditPauriScreen")
-![Editing Chhand](https://i.imgur.com/wlt0fXB.gif "Editing the Parent Chhand")
-
 - Write up a better README [\#13](https://github.com/dsomel21/spg/issues/13)
 
 ## [0.0.12](https://github.com/dsomel21/spg/tree/0.0.12) (2020-10-12)
