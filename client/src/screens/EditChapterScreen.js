@@ -3,12 +3,13 @@ import Grid from '../components/Grid';
 import { Link, useParams } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import SideChars from '../components/SideChars';
-import { fetchGet, fetchPost } from '../helpers/fetchHelper';
+import { fetchGet, fetchPut } from '../helpers/fetchHelper';
 import ChapterStyles from '../stylesheets/components/ChapterStyles.module.css';
 import Submit from '../components/Submit';
 import * as anvaad from 'anvaad-js';
 import { isGurmukhi } from '../helpers/validationHelper';
 import ImageUploader from 'react-images-upload';
+import ReactS3Uploader from 'react-s3-uploader';
 
 import {
   SweetError,
@@ -28,6 +29,7 @@ const EditChapterScreen = () => {
   const [englishTranslit, setEnglishTranslit] = useState('');
   const [englishSummary, setEnglishSummary] = useState('');
   const [pictures, setPictures] = useState([]);
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -46,11 +48,18 @@ const EditChapterScreen = () => {
 
   const updateChapter = async (e) => {
     e.preventDefault();
+    debugger;
     if (!(await isValidInput())) return SweetInputWarning();
-    const res = await fetchPost(`/chapters/${id}`, {
+
+    var formData = new FormData();
+    formData.append('artwork', file);
+
+    const res = await fetchPut(`/chapters/${id}/edit`, {
       title_unicode: unicode,
       title_gs: gurmukhiScript,
       title_transliteration_english: englishTranslit,
+      english_summary: englishSummary,
+      formData,
     });
     handleUpdateChapterResponse(res);
   };
@@ -144,7 +153,6 @@ const EditChapterScreen = () => {
               />
               <p>{formErrors?.unicode && formErrors.unicode}</p>
             </div>
-
             {/* Gurmukhi Script */}
             <div className='form-element'>
               <label htmlFor='gurmukhiScript'>Gurmukhi Script</label>
@@ -154,11 +162,10 @@ const EditChapterScreen = () => {
                 name='gurmukhiScript'
                 type='text'
                 placeholder='cmkOr Xu`D AwrMB'
-                value={gurmukhiScript}
+                defaultValue={gurmukhiScript}
               />
               <p>{formErrors?.gurmukhiScript && formErrors.gurmukhiScript}</p>
             </div>
-
             {/* English */}
             <div className='form-element'>
               <label htmlFor='englishTranslit'>English Transliteration</label>
@@ -167,11 +174,10 @@ const EditChapterScreen = () => {
                 name='englishTranslit'
                 type='text'
                 placeholder='chamakauar yudh aara(n)bh'
-                value={englishTranslit}
+                defaultValue={englishTranslit}
               />
               <p>{formErrors?.englishTranslit && formErrors.EnglishTranslit}</p>
             </div>
-
             {/* English Summary */}
             <div className='form-element'>
               <label htmlFor='englishSummary'>English Summary</label>
@@ -180,7 +186,7 @@ const EditChapterScreen = () => {
                 name='englishSummary'
                 type='text'
                 rows={15}
-                spellcheck={true}
+                spellCheck={true}
                 onChange={(e) => {
                   setEnglishSummary(e.target.value);
                 }}
@@ -198,7 +204,31 @@ const EditChapterScreen = () => {
                 withPreview={true}
               />
             </div>
+            <div className='form-element'>
+              <label>S3 File Upload Test</label>
 
+              <ReactS3Uploader
+                server='http://localhost:1469'
+                signingUrl='/s3/sign'
+                accept='.mp3,.m4a'
+                onError={(e) => {
+                  debugger;
+                  console.log('onError: ');
+                  console.log(e);
+                }}
+                onProgress={(progressInPercent, uploadStatusText) => {
+                  console.log('onProgress');
+                  console.log('progressInPercent', progressInPercent);
+                  console.log('uploadStatusText', uploadStatusText);
+                }}
+                onFinish={(uploadDetails) => {
+                  console.log('onFinish: ', uploadDetails);
+                }}
+                onSignedUrl={(signature) => {
+                  console.log('onSignedUrl:', signature);
+                }}
+              />
+            </div>
             <Submit />
           </form>
         </Grid>

@@ -18,6 +18,7 @@
     "react-jss": "^10.4.0",
     "react-navigation": "^4.4.3",
     "react-router-dom": "^5.2.0",
+    "react-s3-uploader": "^5.0.0",
     "react-scripts": "3.4.3",
     "react-select": "^3.1.0",
     "react-stickynode": "^3.0.3",

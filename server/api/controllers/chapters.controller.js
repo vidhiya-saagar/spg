@@ -5,6 +5,7 @@ const {
   isGurmukhi,
 } = require('../controllers/helpers/validations');
 const { getLastPauriInChapter, getLastChapter } = require('./helpers/queries');
+
 /*
  * TODO: Separate these concerns:
  * Use controllers for only reading, parsing, validating input
@@ -146,6 +147,28 @@ const lastPauri = async (req, res) => {
   res.json({ last_pauri: await getLastPauriInChapter(req.params.id) });
 };
 
+// PUT `/chapters/:id/edit`
+const editChapter = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  const { title_unicode, title_gs, title_transliteration_english } = req.body;
+
+  const chapterId = await db('chapters')
+    .update({
+      title_unicode,
+      title_gs,
+      title_transliteration_english,
+    })
+    .where('id', req.params.id);
+
+  const chapter = await db('chapters').where('id', chapterId).first();
+  res.status(200).json({ chapter });
+};
+
 const validateChapter = (action) => {
   switch (action) {
     case 'createChapter':
@@ -167,6 +190,26 @@ const validateChapter = (action) => {
         }),
       ];
       break;
+    case 'editChapter':
+      return [
+        body('title_unicode').isString().not().isEmpty().trim(),
+        body('title_unicode').custom(isGurmukhi),
+        body('title_gs').isString().not().isEmpty().trim(),
+        body('title_transliteration_english').isString().not().isEmpty().trim(),
+        // Make sure this name doesn't exist already
+        // check('title_unicode').custom((unicode) => {
+        //   return db
+        //     .select('*')
+        //     .from('chapters')
+        //     .where('title_unicode', unicode);
+        //   whereNotIn('id', req.params.id) // Will not work since I can't access req here
+        //     .first()
+        //     .then((chhandType) => {
+        //       if (chhandType) return Promise.reject('Chapter already exists');
+        //     });
+        // }),
+      ];
+      break;
 
     default:
       break;
@@ -180,4 +223,5 @@ module.exports = {
   chapterTuks,
   lastPauri,
   validateChapter,
+  editChapter,
 };

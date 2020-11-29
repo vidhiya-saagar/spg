@@ -20,6 +20,16 @@ export const fetchPost = async (url = '', data = {}) => {
   return await response.json();
 };
 
+export const fetchPut = async (url = '', data = {}) => {
+  console.log('PUT', url);
+  const response = await fetch(baseUrl + url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return await response.json();
+};
+
 export const fetchDelete = async (url = '') => {
   console.log('DELETE', url);
   const response = await fetch(baseUrl + url, {
