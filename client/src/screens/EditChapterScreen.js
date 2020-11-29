@@ -75,7 +75,6 @@ const EditChapterScreen = () => {
   };
 
   const addKatha = async (katha) => {
-    debugger;
     const res = await fetchPost(`/chapters/${id}/kathas`, {
       ...katha,
       title: katha.file.name,
