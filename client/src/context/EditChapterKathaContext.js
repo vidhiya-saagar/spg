@@ -100,12 +100,13 @@ export const { Provider, Context } = createDataContext(
   },
   {
     kathaForm: [
-      // {
-      //   title: '0034 Leaving-Anandpur.mp3',
-      //   gianiId: null,
-      //   year: 1992,
-      //   publicUrl: 'soundcloud.com',
-      // },
+      {
+        id: 1,
+        title: 'Sooraj Parkash Katha - Rut 06 Adhyai 31 - Anandpur Chorna',
+        gianiId: 1,
+        year: 1992,
+        publicUrl: 'https://shaheedi-spg.s3.amazonaws.com/',
+      },
     ],
   }
 );

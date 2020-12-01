@@ -89,6 +89,11 @@ router.post(
   createChapterKatha
 );
 
+const gianis = require('../../db/giani');
+router.get('/gianis', (req, res) => {
+  res.json(gianis);
+});
+
 // APPLICATIONS
 router.get('/last', last);
 
