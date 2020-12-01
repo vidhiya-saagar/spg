@@ -79,8 +79,7 @@ const EditChapterScreen = () => {
       ...katha,
       title: katha.file.name,
     });
-    debugger;
-    setKathaFiles([...kathaFiles, res]);
+    setKathaFiles([...kathaFiles, res.katha]);
   };
 
   const isValidInput = () => {
@@ -211,7 +210,6 @@ const EditChapterScreen = () => {
                 withPreview={true}
               />
             </div>
-
             <Grid alignItems='center' justify='space-between'>
               <Grid column={true} sm={2} md={4} lg={4}>
                 <div className='form-element'>
@@ -239,15 +237,8 @@ const EditChapterScreen = () => {
                 />
               </Grid>
             </Grid>
-
-            {kathaFiles?.map((katha) => (
-              <KathaUploadForm
-                publicUrl={katha.publicUrl}
-                fileName={katha.filename}
-                fileKey={katha.fileKey}
-              />
-            ))}
-
+            initializeKathaFormState()
+            <KathaUploadForm />
             <Submit />
           </form>
         </Grid>
