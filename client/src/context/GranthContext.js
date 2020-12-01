@@ -40,7 +40,6 @@ const granthContext = (state, action) => {
     case 'UPDATE_CURRENT_BOOK':
       console.log(action.payload);
       console.log(action.payload.currentBook);
-      debugger;
       return {
         ...state,
         currentBook: action.payload.currentBook,

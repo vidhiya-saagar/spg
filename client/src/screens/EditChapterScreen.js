@@ -51,7 +51,6 @@ const EditChapterScreen = () => {
 
   const updateChapter = async (e) => {
     e.preventDefault();
-    debugger;
     if (!(await isValidInput())) return SweetInputWarning();
 
     const res = await fetchPut(`/chapters/${id}/edit`, {

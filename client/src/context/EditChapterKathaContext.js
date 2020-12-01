@@ -20,12 +20,14 @@ const chapterKathaFormReducer = (state, action) => {
 
     case 'UPDATE_KATHA_FORM_ITEM':
       index = findKathaIndex(state, action.payload.id);
-      // prettier-ignore
+      console.log('action', action);
+      console.log('index', index);
+      debugger;
       return updateKathaForm(index, state, {
-          ...state.kathaForm[index],
-            gianiId: action.payload.gianiId || state.kathaForm[index].gianiId,
-            title: action.payload.title || state.kathaForm[index].title,
-            year: action.payload.year || state.kathaForm[index].year,
+        ...state.kathaForm[index],
+        gianiId: action.payload.gianiId,
+        title: action.payload.title,
+        year: action.payload.year,
       });
 
     case 'ADD_KATHA_FORM':
@@ -50,7 +52,26 @@ const chapterKathaFormReducer = (state, action) => {
   }
 };
 
-const updateKathaForm = (dispatch) => (formItem) => {
+const updateKathaForm = (index, oldState, newState) => {
+  return {
+    ...oldState,
+    kathaForm: [
+      ...oldState.kathaForm.slice(0, index), // everything before current post
+      { ...oldState.kathaForm[index], ...newState },
+      ...oldState.kathaForm.slice(index + 1), // everything after current post
+    ],
+  };
+};
+
+/*
+ * @params: Must include formItem Object
+ *  {
+ *    [key]: value,
+ *    id: gianiId
+ *  }
+ * [key] => title, gianiId, year, etc.
+ */
+const updateKathaFormItem = (dispatch) => (formItem) => {
   dispatch({ type: 'UPDATE_KATHA_FORM_ITEM', payload: formItem });
 };
 
@@ -95,7 +116,7 @@ export const { Provider, Context } = createDataContext(
   chapterKathaFormReducer,
   {
     initializeKathaFormState,
-    updateKathaForm,
+    updateKathaFormItem,
     addKathaForm,
   },
   {

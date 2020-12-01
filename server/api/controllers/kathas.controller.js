@@ -10,7 +10,6 @@ const createKatha = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  debugger;
   const kathaId = await db('kathas').insert({
     title: req.body.title,
     public_url: req.body.publicUrl,
