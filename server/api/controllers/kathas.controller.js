@@ -20,6 +20,20 @@ const createKatha = async (req, res) => {
   res.status(200).json({ katha });
 };
 
+const getChapterKatha = async (req, res) => {
+  let kathaIds = await db
+    .select('katha_id')
+    .from('chapter_kathas')
+    .where('chapter_id', req.params.id);
+
+  kathaIds = kathaIds.map((row) => parseInt(row.katha_id));
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  console.log(kathaIds);
+  const kathas = await db('kathas').whereIn('id', kathaIds);
+
+  res.status(200).json({ kathas });
+};
+
 // POST `/chapters/:id/kathas`
 // This is will create a `kathas` record AND the `chapter_kathas` relationship
 const createChapterKatha = async (req, res) => {
@@ -40,7 +54,6 @@ const createChapterKatha = async (req, res) => {
     chapter_id: req.params.id,
   });
 
-  // debugger;
   const chapterKatha = await db('chapter_kathas')
     .where('id', chapterKathaId)
     .first();
@@ -67,4 +80,9 @@ const validateKatha = (action) => {
   }
 };
 
-module.exports = { createKatha, createChapterKatha, validateKatha };
+module.exports = {
+  createKatha,
+  getChapterKatha,
+  createChapterKatha,
+  validateKatha,
+};

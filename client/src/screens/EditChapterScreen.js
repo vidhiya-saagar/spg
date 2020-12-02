@@ -11,6 +11,7 @@ import { isGurmukhi } from '../helpers/validationHelper';
 import ImageUploader from 'react-images-upload';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 import KathaUploadForm from '../components/KathaUploadForm';
+import { Context as EditChapterKathaContext } from '../context/EditChapterKathaContext';
 import { Circle } from 'rc-progress';
 
 import {
@@ -25,6 +26,12 @@ const EditChapterScreen = () => {
   const { id } = useParams();
   const [formErrors, setFormErrors] = useState(null);
 
+  const {
+    state: kathaState,
+    addKathaForm,
+    initializeKathaFormState,
+  } = useContext(EditChapterKathaContext);
+
   const [chapter, setChapter] = useState(null);
   const [unicode, setUnicode] = useState('');
   const [gurmukhiScript, setGurmukhiScript] = useState('');
@@ -32,7 +39,6 @@ const EditChapterScreen = () => {
   const [englishSummary, setEnglishSummary] = useState('');
   const [pictures, setPictures] = useState([]);
   const [kathaUploadProgress, setKathaUploadProgress] = useState(null);
-  const [kathaFiles, setKathaFiles] = useState([]);
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -43,7 +49,16 @@ const EditChapterScreen = () => {
     fetchChapter();
   }, []);
 
-  // When Unicode is udpated
+  // Get all Kathas
+  useEffect(() => {
+    const fetchChapterKathas = async (id) => {
+      const res = await fetchGet(`/chapters/${id}/kathas`);
+      initializeKathaFormState(res.kathas);
+    };
+    fetchChapterKathas(id);
+  }, []);
+
+  // When Unicode is updated
   useEffect(() => {
     setGurmukhiScript(anvaad.unicode(unicode, true));
     setEnglishTranslit(anvaad.translit(gurmukhiScript));
@@ -78,7 +93,13 @@ const EditChapterScreen = () => {
       ...katha,
       title: katha.file.name,
     });
-    setKathaFiles([...kathaFiles, res.katha]);
+    addKathaForm({
+      id: res.katha.id,
+      title: res.katha.title,
+      gianiId: res.katha.giani_id || null,
+      year: res.katha.year,
+      publicUrl: res.katha.public_url,
+    });
   };
 
   const isValidInput = () => {
@@ -236,7 +257,7 @@ const EditChapterScreen = () => {
                 />
               </Grid>
             </Grid>
-            initializeKathaFormState()
+
             <KathaUploadForm />
             <Submit />
           </form>

@@ -19,9 +19,6 @@ const CurrentBookSelector = () => {
     const getInitialBookState = async () => {
       await fetchSpgStatus();
       await fetchAllBooks();
-      // debugger;
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-      console.log(granthState.currentBook);
       if (!granthState.currentBook) updateCurrentBook(granthState.lastBook);
     };
     getInitialBookState();

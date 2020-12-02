@@ -36,6 +36,7 @@ const {
 
 const {
   createKatha,
+  getChapterKatha,
   createChapterKatha,
   validateKatha,
 } = require('../controllers/kathas.controller');
@@ -83,6 +84,7 @@ router.delete('/tuks/:id', validateTuk('deleteTuk'), deleteTuk);
 
 // kathas
 router.post('/kathas', validateKatha('createKatha'), createKatha);
+router.get('/chapters/:id/kathas', getChapterKatha);
 router.post(
   '/chapters/:id/kathas',
   validateKatha('createChapterKatha'),
