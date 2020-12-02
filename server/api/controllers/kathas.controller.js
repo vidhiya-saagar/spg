@@ -27,8 +27,6 @@ const getChapterKatha = async (req, res) => {
     .where('chapter_id', req.params.id);
 
   kathaIds = kathaIds.map((row) => parseInt(row.katha_id));
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  console.log(kathaIds);
   const kathas = await db('kathas').whereIn('id', kathaIds);
 
   res.status(200).json({ kathas });

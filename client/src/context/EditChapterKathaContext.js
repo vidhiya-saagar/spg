@@ -7,14 +7,12 @@ const chapterKathaFormReducer = (state, action) => {
     // When LOADING the existing chapter_kathas.
     case 'POPULATE_KATHA':
       const katha = action.payload;
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-      console.log(katha);
       const newState = {
         id: katha.id,
         title: katha.title,
         gianiId: katha.giani?.id || null,
         year: katha.year,
-        publicUrl: katha.public_url,
+        publicUrl: katha.publicUrl,
       };
       // Use `state.kathaForm.length` to update at a specific index
       return updateKathaForm(state.kathaForm.length, state, newState);
