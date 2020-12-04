@@ -20,6 +20,29 @@ const createKatha = async (req, res) => {
   res.status(200).json({ katha });
 };
 
+// PUT `/kathas/:id
+const editKatha = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  const { title, year, giani_id } = req.body;
+
+  const kathaId = await db('kathas')
+    .update({
+      title,
+      year,
+      giani_id,
+    })
+    .where('id', req.params.id);
+
+  const katha = await db('kathas').where('id', req.params.id).first();
+
+  res.json({ katha });
+};
+
 const getChapterKatha = async (req, res) => {
   let kathaIds = await db
     .select('katha_id')
@@ -80,6 +103,7 @@ const validateKatha = (action) => {
 
 module.exports = {
   createKatha,
+  editKatha,
   getChapterKatha,
   createChapterKatha,
   validateKatha,

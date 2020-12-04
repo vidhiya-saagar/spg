@@ -252,13 +252,15 @@ const EditChapterScreen = () => {
               <Grid column={true} sm={2} md={4} lg={4}>
                 <Circle
                   percent={kathaUploadProgress}
-                  strokeWidth='4'
-                  strokeColor='#D3D3D3'
+                  strokeWidth='5'
+                  strokeColor='#ff9cce'
+                  trailColor='#ff9cce6b'
                 />
               </Grid>
             </Grid>
 
             <KathaUploadForm />
+
             <Submit />
           </form>
         </Grid>

@@ -36,6 +36,7 @@ const {
 
 const {
   createKatha,
+  editKatha,
   getChapterKatha,
   createChapterKatha,
   validateKatha,
@@ -84,6 +85,7 @@ router.delete('/tuks/:id', validateTuk('deleteTuk'), deleteTuk);
 
 // kathas
 router.post('/kathas', validateKatha('createKatha'), createKatha);
+router.put('/kathas/:id', editKatha);
 router.get('/chapters/:id/kathas', getChapterKatha);
 router.post(
   '/chapters/:id/kathas',

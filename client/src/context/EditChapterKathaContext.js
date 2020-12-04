@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import createDataContext from './createDataContext';
-
+import { fetchPut } from '../helpers/fetchHelper';
 const chapterKathaFormReducer = (state, action) => {
   let index;
   switch (action.type) {
@@ -70,6 +70,14 @@ const updateKathaForm = (index, oldState, newState) => {
  */
 const updateKathaFormItem = (dispatch) => (formItem) => {
   dispatch({ type: 'UPDATE_KATHA_FORM_ITEM', payload: formItem });
+  autoSaveKathaForm(formItem);
+};
+
+const autoSaveKathaForm = async (formItem) => {
+  const res = await fetchPut(`/kathas/${formItem.id}`, {
+    ...formItem,
+  });
+  console.log(res);
 };
 
 const addKathaForm = (dispatch) => (katha) => {
@@ -108,13 +116,13 @@ export const { Provider, Context } = createDataContext(
   },
   {
     kathaForm: [
-      {
-        id: 1,
-        title: 'Sooraj Parkash Katha - Rut 06 Adhyai 31 - Anandpur Chorna',
-        gianiId: 3,
-        year: 1992,
-        publicUrl: 'https://shaheedi-spg.s3.amazonaws.com/',
-      },
+      // {
+      //   id: 1,
+      //   title: 'Sooraj Parkash Katha - Rut 06 Adhyai 31 - Anandpur Chorna',
+      //   gianiId: 3,
+      //   year: 1992,
+      //   publicUrl: 'https://shaheedi-spg.s3.amazonaws.com/',
+      // },
     ],
   }
 );
