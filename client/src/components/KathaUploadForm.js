@@ -8,7 +8,6 @@ import { fetchPut } from '../helpers/fetchHelper';
 import Styles from '../stylesheets/components/KathaUploadForm.module.css';
 
 const saveKatha = async (katha) => {
-  debugger;
   const res = await fetchPut(`/kathas/${katha.id}`, {
     ...katha,
   });
@@ -40,7 +39,6 @@ const KathaUploadForm = ({ key, title, publicUrl, giani }) => {
   ];
 
   const getGianiOption = (id) => {
-    debugger;
     if (!id) return null;
     return gianiOptions.filter((giani) => giani.value === id)[0];
   };

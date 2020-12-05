@@ -21,7 +21,6 @@ const chapterKathaFormReducer = (state, action) => {
 
     case 'UPDATE_KATHA_FORM_ITEM':
       index = findKathaIndex(state, action.payload.id);
-      debugger;
       return updateKathaForm(index, state, {
         ...state.kathaForm[index],
         gianiId: action.payload.gianiId || state.kathaForm[index].gianiId,
