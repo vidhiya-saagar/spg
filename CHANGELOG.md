@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.15](https://github.com/dsomel21/spg/tree/0.0.15) (2020-12-05)
+
+[Full Changelog](https://github.com/dsomel21/spg/compare/0.0.14...0.0.15)
+
+**Closed issues:**
+
+- Make sure that chapter summaries are being saved. [\#41](https://github.com/dsomel21/spg/issues/41)
+- Ability to "edit" the katha you just added \(editing the giani, title, etc\) [\#40](https://github.com/dsomel21/spg/issues/40)
+- Add katha mp3 to respecrtive chapter/adhyai \(tables for `chapter\_kathas`, `kathas`, `gianis` `table`\) [\#38](https://github.com/dsomel21/spg/issues/38)
+- Add a place to edit the chapter name [\#36](https://github.com/dsomel21/spg/issues/36)
+- Add a place to add/edit "summaries" to chapter [\#35](https://github.com/dsomel21/spg/issues/35)
+- Clicking the chapter name doesn't redirect [\#29](https://github.com/dsomel21/spg/issues/29)
+
 ## [0.0.14](https://github.com/dsomel21/spg/tree/0.0.14) (2020-11-29)
 
 [Full Changelog](https://github.com/dsomel21/spg/compare/0.0.13...0.0.14)
@@ -28,10 +41,6 @@
 
 - Create the NewChapter screen [\#25](https://github.com/dsomel21/spg/issues/25)
 - Backend for creating a new chapter [\#24](https://github.com/dsomel21/spg/issues/24)
-
-**Merged pull requests:**
-
-- Release 0.0.11 [\#22](https://github.com/dsomel21/spg/pull/22) ([dsomel21](https://github.com/dsomel21))
 
 ## [0.0.11](https://github.com/dsomel21/spg/tree/0.0.11) (2020-10-01)
 
@@ -114,6 +123,7 @@
 
 **Merged pull requests:**
 
+- Release 0.0.11 [\#22](https://github.com/dsomel21/spg/pull/22) ([dsomel21](https://github.com/dsomel21))
 - Bump apollo-server-core from 2.9.16 to 2.14.2 in /server [\#3](https://github.com/dsomel21/spg/pull/3) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump apollo-server-express from 2.9.16 to 2.14.2 in /server [\#2](https://github.com/dsomel21/spg/pull/2) ([dependabot[bot]](https://github.com/apps/dependabot))
 
