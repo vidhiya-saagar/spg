@@ -267,6 +267,7 @@ const EditChapterScreen = () => {
                   strokeWidth='5'
                   strokeColor='#ff9cce'
                   trailColor='#ff9cce6b'
+                  style={{ width: '60px' }}
                 />
               </Grid>
             </Grid>
