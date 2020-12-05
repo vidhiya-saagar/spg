@@ -1,0 +1,10 @@
+button.Submit {
+  background-color: #d1c4e9;
+  border: 2px solid #d1c4e9;
+  padding: 0.5rem 1.25rem;
+  color: #ede7f6;
+}
+
+button.Submit:hover {
+  background-color: #c4aeec;
+}

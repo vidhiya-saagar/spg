@@ -9,3 +9,5 @@ export const hasSpaceBeforePeriod = (str) => {
   if (s[s.length - 1] !== '।') return true;
   return s[s.length - 2] === ' ';
 };
+
+export const onlyNumbers = (str) => /^[0-9]+$/.test(str);

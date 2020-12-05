@@ -15,47 +15,50 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Provider as AddPauriFormContext } from './context/AddPauriFormContext';
 import { Provider as EditPauriFormContext } from './context/EditPauriFormContext';
 import { Provider as GranthContext } from './context/GranthContext';
+import { Provider as EditChapterKathaContext } from './context/EditChapterKathaContext';
 
 const App = () => {
   return (
     <GranthContext>
       <AddPauriFormContext>
         <EditPauriFormContext>
-          <Router>
-            <div className='App'>
-              <Header />
-              <Menu />
-            </div>
-            <Switch>
-              <Route exact path='/'>
-                <HomeScreen />
-              </Route>
-              <Route exact path='/granth'>
-                <GranthScreen />
-              </Route>
-              <Route exact path='/chapters'>
-                <ChaptersIndexScreen />
-              </Route>
-              <Route exact path='/chhand-types'>
-                <ChhandTypesIndexScreen />
-              </Route>
-              <Route exact path='/chhands'>
-                <ChhandsIndexScreen />
-              </Route>
-              <Route exact path='/chapters/new'>
-                <NewChapterScreen />
-              </Route>
-              <Route path='/chapters/:id/edit'>
-                <EditChapterScreen />
-              </Route>
-              <Route path='/chapters/:id'>
-                <ChapterScreen />
-              </Route>
-              <Route path='/pauris/:id/edit'>
-                <EditPauriScreen />
-              </Route>
-            </Switch>
-          </Router>
+          <EditChapterKathaContext>
+            <Router>
+              <div className='App'>
+                <Header />
+                <Menu />
+              </div>
+              <Switch>
+                <Route exact path='/'>
+                  <HomeScreen />
+                </Route>
+                <Route exact path='/granth'>
+                  <GranthScreen />
+                </Route>
+                <Route exact path='/chapters'>
+                  <ChaptersIndexScreen />
+                </Route>
+                <Route exact path='/chhand-types'>
+                  <ChhandTypesIndexScreen />
+                </Route>
+                <Route exact path='/chhands'>
+                  <ChhandsIndexScreen />
+                </Route>
+                <Route exact path='/chapters/new'>
+                  <NewChapterScreen />
+                </Route>
+                <Route path='/chapters/:id/edit'>
+                  <EditChapterScreen />
+                </Route>
+                <Route path='/chapters/:id'>
+                  <ChapterScreen />
+                </Route>
+                <Route path='/pauris/:id/edit'>
+                  <EditPauriScreen />
+                </Route>
+              </Switch>
+            </Router>
+          </EditChapterKathaContext>
         </EditPauriFormContext>
       </AddPauriFormContext>
     </GranthContext>

@@ -11,6 +11,7 @@ import { isGurmukhi } from '../helpers/validationHelper';
 import ImageUploader from 'react-images-upload';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 import KathaUploadForm from '../components/KathaUploadForm';
+import { Context as EditChapterKathaContext } from '../context/EditChapterKathaContext';
 import { Circle } from 'rc-progress';
 
 import {
@@ -25,6 +26,12 @@ const EditChapterScreen = () => {
   const { id } = useParams();
   const [formErrors, setFormErrors] = useState(null);
 
+  const {
+    state: kathaState,
+    addKathaForm,
+    initializeKathaFormState,
+  } = useContext(EditChapterKathaContext);
+
   const [chapter, setChapter] = useState(null);
   const [unicode, setUnicode] = useState('');
   const [gurmukhiScript, setGurmukhiScript] = useState('');
@@ -32,18 +39,27 @@ const EditChapterScreen = () => {
   const [englishSummary, setEnglishSummary] = useState('');
   const [pictures, setPictures] = useState([]);
   const [kathaUploadProgress, setKathaUploadProgress] = useState(null);
-  const [kathaFiles, setKathaFiles] = useState([]);
 
   useEffect(() => {
     const fetchChapter = async () => {
       const res = await fetchGet(`/chapters/${id}`);
       setChapter(res.chapter);
       setUnicode(res.chapter.title_unicode);
+      setEnglishSummary(res.chapter.description_english);
     };
     fetchChapter();
   }, []);
 
-  // When Unicode is udpated
+  // Get all Kathas
+  useEffect(() => {
+    const fetchChapterKathas = async (id) => {
+      const res = await fetchGet(`/chapters/${id}/kathas`);
+      initializeKathaFormState(res.kathas);
+    };
+    fetchChapterKathas(id);
+  }, []);
+
+  // When Unicode is updated
   useEffect(() => {
     setGurmukhiScript(anvaad.unicode(unicode, true));
     setEnglishTranslit(anvaad.translit(gurmukhiScript));
@@ -51,14 +67,14 @@ const EditChapterScreen = () => {
 
   const updateChapter = async (e) => {
     e.preventDefault();
-    debugger;
     if (!(await isValidInput())) return SweetInputWarning();
 
     const res = await fetchPut(`/chapters/${id}/edit`, {
       title_unicode: unicode,
       title_gs: gurmukhiScript,
       title_transliteration_english: englishTranslit,
-      english_summary: englishSummary,
+      description_english: englishSummary,
+      pictures,
     });
     handleUpdateChapterResponse(res);
   };
@@ -68,20 +84,24 @@ const EditChapterScreen = () => {
       SweetError({ text: JSON.stringify(res.errors, null, 2) });
     } else {
       SweetSuccess({
-        title: `Chhand Saved!`,
+        title: 'Chapter Saved!',
         text: JSON.stringify(res.chhand, null, 2),
       });
     }
   };
 
   const addKatha = async (katha) => {
-    debugger;
     const res = await fetchPost(`/chapters/${id}/kathas`, {
       ...katha,
       title: katha.file.name,
     });
-    debugger;
-    setKathaFiles([...kathaFiles, res]);
+    addKathaForm({
+      id: res.katha.id,
+      title: res.katha.title,
+      gianiId: res.katha.giani_id || null,
+      year: res.katha.year,
+      publicUrl: res.katha.public_url,
+    });
   };
 
   const isValidInput = () => {
@@ -131,6 +151,15 @@ const EditChapterScreen = () => {
 
   const dropImage = (picture) => {
     setPictures([picture]);
+  };
+
+  const dropStyles = {
+    width: '120px',
+    height: '120px',
+    border: '2px dashed #d1c4e9',
+    'border-radius': '1em',
+    cursor: 'pointer',
+    overflow: 'hidden',
   };
 
   return (
@@ -212,11 +241,10 @@ const EditChapterScreen = () => {
                 withPreview={true}
               />
             </div>
-
             <Grid alignItems='center' justify='space-between'>
               <Grid column={true} sm={2} md={4} lg={4}>
                 <div className='form-element'>
-                  <label>S3 File Upload Test</label>
+                  <label>Upload Katha to S3</label>
                   <DropzoneS3Uploader
                     s3Url='https://s3.console.aws.amazon.com/s3/buckets/shaheedi-spg'
                     upload={{
@@ -229,25 +257,22 @@ const EditChapterScreen = () => {
                       setKathaUploadProgress(progressInPercent);
                     }}
                     onFinish={addKatha}
+                    style={dropStyles}
                   />
                 </div>
               </Grid>
               <Grid column={true} sm={2} md={4} lg={4}>
                 <Circle
                   percent={kathaUploadProgress}
-                  strokeWidth='4'
-                  strokeColor='#D3D3D3'
+                  strokeWidth='5'
+                  strokeColor='#ff9cce'
+                  trailColor='#ff9cce6b'
+                  style={{ width: '60px' }}
                 />
               </Grid>
             </Grid>
 
-            {kathaFiles?.map((katha) => (
-              <KathaUploadForm
-                publicUrl={katha.publicUrl}
-                fileName={katha.filename}
-                fileKey={katha.fileKey}
-              />
-            ))}
+            <KathaUploadForm />
 
             <Submit />
           </form>

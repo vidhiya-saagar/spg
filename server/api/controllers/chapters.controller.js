@@ -155,13 +155,19 @@ const editChapter = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const { title_unicode, title_gs, title_transliteration_english } = req.body;
+  const {
+    title_unicode,
+    title_gs,
+    title_transliteration_english,
+    description_english,
+  } = req.body;
 
   const chapterId = await db('chapters')
     .update({
       title_unicode,
       title_gs,
       title_transliteration_english,
+      description_english,
     })
     .where('id', req.params.id);
 

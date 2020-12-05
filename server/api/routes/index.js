@@ -36,6 +36,8 @@ const {
 
 const {
   createKatha,
+  editKatha,
+  getChapterKatha,
   createChapterKatha,
   validateKatha,
 } = require('../controllers/kathas.controller');
@@ -83,11 +85,18 @@ router.delete('/tuks/:id', validateTuk('deleteTuk'), deleteTuk);
 
 // kathas
 router.post('/kathas', validateKatha('createKatha'), createKatha);
+router.put('/kathas/:id', editKatha);
+router.get('/chapters/:id/kathas', getChapterKatha);
 router.post(
   '/chapters/:id/kathas',
   validateKatha('createChapterKatha'),
   createChapterKatha
 );
+
+const gianis = require('../../db/giani');
+router.get('/gianis', (req, res) => {
+  res.json(gianis);
+});
 
 // APPLICATIONS
 router.get('/last', last);
