@@ -28,7 +28,12 @@ const editKatha = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const { title, year, giani_id } = req.body;
+  let title = req.body.title || '';
+  let year = req.body.year || null;
+  let giani_id = req.body.gianiId;
+
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+  console.log(req.body);
 
   const kathaId = await db('kathas')
     .update({

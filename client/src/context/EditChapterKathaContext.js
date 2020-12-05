@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import createDataContext from './createDataContext';
-import { fetchPut } from '../helpers/fetchHelper';
+
 const chapterKathaFormReducer = (state, action) => {
   let index;
   switch (action.type) {
@@ -10,8 +10,9 @@ const chapterKathaFormReducer = (state, action) => {
       const newState = {
         id: katha.id,
         title: katha.title,
-        gianiId: katha.giani?.id || null,
+        gianiId: katha.gianiId || null,
         year: katha.year,
+        fileUrl: katha.fileUrl,
         publicUrl: katha.publicUrl,
       };
       // Use `state.kathaForm.length` to update at a specific index
@@ -20,11 +21,12 @@ const chapterKathaFormReducer = (state, action) => {
 
     case 'UPDATE_KATHA_FORM_ITEM':
       index = findKathaIndex(state, action.payload.id);
+      debugger;
       return updateKathaForm(index, state, {
         ...state.kathaForm[index],
-        gianiId: action.payload.gianiId,
-        title: action.payload.title,
-        year: action.payload.year,
+        gianiId: action.payload.gianiId || state.kathaForm[index].gianiId,
+        title: action.payload.title || state.kathaForm[index].title,
+        year: action.payload.year || state.kathaForm[index].year,
       });
 
     case 'ADD_KATHA_FORM':
@@ -33,8 +35,9 @@ const chapterKathaFormReducer = (state, action) => {
       return updateKathaForm(index, state, {
         id: action.payload.id,
         title: action.payload.title,
-        gianiId: action.payload.giani?.id || null,
+        gianiId: action.payload.gianiId || null,
         year: action.payload.year,
+        fileUrl: action.payload.fileUrl,
         publicUrl: action.payload.publicUrl,
       });
 
@@ -70,14 +73,6 @@ const updateKathaForm = (index, oldState, newState) => {
  */
 const updateKathaFormItem = (dispatch) => (formItem) => {
   dispatch({ type: 'UPDATE_KATHA_FORM_ITEM', payload: formItem });
-  autoSaveKathaForm(formItem);
-};
-
-const autoSaveKathaForm = async (formItem) => {
-  const res = await fetchPut(`/kathas/${formItem.id}`, {
-    ...formItem,
-  });
-  console.log(res);
 };
 
 const addKathaForm = (dispatch) => (katha) => {
@@ -97,6 +92,7 @@ const initializeKathaFormState = (dispatch) => (kathaResponse) => {
         title: katha.title,
         gianiId: katha.giani_id || null,
         year: katha.year,
+        fileUrl: katha.file_url,
         publicUrl: katha.public_url,
       },
     });
@@ -121,6 +117,7 @@ export const { Provider, Context } = createDataContext(
       //   title: 'Sooraj Parkash Katha - Rut 06 Adhyai 31 - Anandpur Chorna',
       //   gianiId: 3,
       //   year: 1992,
+      //   fileUrl: 'https://shaheedi-spg.s3.amazonaws.com/Sooraj%20Parkash%20Katha%20-%20Rut%2006%20Adhyai%2031%20-%20Anandpur%20Chorna.mp3',
       //   publicUrl: 'https://shaheedi-spg.s3.amazonaws.com/',
       // },
     ],

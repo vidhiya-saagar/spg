@@ -45,6 +45,7 @@ const EditChapterScreen = () => {
       const res = await fetchGet(`/chapters/${id}`);
       setChapter(res.chapter);
       setUnicode(res.chapter.title_unicode);
+      setEnglishSummary(res.chapter.description_english);
     };
     fetchChapter();
   }, []);
@@ -73,6 +74,7 @@ const EditChapterScreen = () => {
       title_gs: gurmukhiScript,
       title_transliteration_english: englishTranslit,
       description_english: englishSummary,
+      pictures,
     });
     handleUpdateChapterResponse(res);
   };
@@ -82,7 +84,7 @@ const EditChapterScreen = () => {
       SweetError({ text: JSON.stringify(res.errors, null, 2) });
     } else {
       SweetSuccess({
-        title: `Chhand Saved!`,
+        title: 'Chapter Saved!',
         text: JSON.stringify(res.chhand, null, 2),
       });
     }
@@ -149,6 +151,15 @@ const EditChapterScreen = () => {
 
   const dropImage = (picture) => {
     setPictures([picture]);
+  };
+
+  const dropStyles = {
+    width: '120px',
+    height: '120px',
+    border: '2px dashed #d1c4e9',
+    'border-radius': '1em',
+    cursor: 'pointer',
+    overflow: 'hidden',
   };
 
   return (
@@ -233,7 +244,7 @@ const EditChapterScreen = () => {
             <Grid alignItems='center' justify='space-between'>
               <Grid column={true} sm={2} md={4} lg={4}>
                 <div className='form-element'>
-                  <label>S3 File Upload Test</label>
+                  <label>Upload Katha to S3</label>
                   <DropzoneS3Uploader
                     s3Url='https://s3.console.aws.amazon.com/s3/buckets/shaheedi-spg'
                     upload={{
@@ -246,6 +257,7 @@ const EditChapterScreen = () => {
                       setKathaUploadProgress(progressInPercent);
                     }}
                     onFinish={addKatha}
+                    style={dropStyles}
                   />
                 </div>
               </Grid>

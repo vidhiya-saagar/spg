@@ -2,7 +2,18 @@ import React, { useContext } from 'react';
 import Grid from './Grid';
 import ReactSelectStyles from '../stylesheets/components/ReactSelectStyles';
 import Select from 'react-select';
+import { onlyNumbers } from '../helpers/validationHelper';
 import { Context as EditChapterKathaContext } from '../context/EditChapterKathaContext';
+import { fetchPut } from '../helpers/fetchHelper';
+import Styles from '../stylesheets/components/KathaUploadForm.module.css';
+
+const saveKatha = async (katha) => {
+  debugger;
+  const res = await fetchPut(`/kathas/${katha.id}`, {
+    ...katha,
+  });
+  console.log('zzzzzzzzz', res);
+};
 
 const KathaUploadForm = ({ key, title, publicUrl, giani }) => {
   const { state: kathaState, updateKathaFormItem } = useContext(
@@ -30,19 +41,19 @@ const KathaUploadForm = ({ key, title, publicUrl, giani }) => {
   ];
 
   const getGianiOption = (id) => {
+    debugger;
     if (!id) return null;
     return gianiOptions.filter((giani) => giani.value === id)[0];
   };
 
   return (
-    <>
+    <div>
       {/* <Grid alignItems='center' justify='center'> */}
       {/* <Grid column={true} sm={4} md={} lg={8}> */}
       {kathaForm?.map((katha) => {
         return (
-          <>
-            ID: {katha.id}
-            <div className='form-element' key={katha.id}>
+          <form key={katha.id}>
+            <div className='form-element'>
               {/* Katha Title: String */}
               <label htmlFor='title'>Title: </label>
               <input
@@ -52,6 +63,7 @@ const KathaUploadForm = ({ key, title, publicUrl, giani }) => {
                 spellCheck='false'
                 value={katha.title}
                 onChange={(e) => {
+                  console.log('title', e.target.value);
                   updateKathaFormItem({
                     title: e.target.value,
                     id: katha.id,
@@ -81,14 +93,29 @@ const KathaUploadForm = ({ key, title, publicUrl, giani }) => {
               <input
                 id='year'
                 name='year'
-                type='number'
+                type='text'
                 value={katha.year}
                 onChange={(e) => {
-                  updateKathaFormItem({
-                    year: e.target.value,
-                    id: katha.id,
-                  });
+                  if (onlyNumbers(e.target.value) || e.target.value == '') {
+                    updateKathaFormItem({
+                      year: e.target.value,
+                      id: katha.id,
+                    });
+                  }
                 }}
+              />
+            </div>
+            {/* Katha File URL - READONLY*/}
+            <div className='form-element'>
+              {/* Katha Title: String */}
+              <label htmlFor='title'>File URL: </label>
+              <input
+                id='fileUrl'
+                name='fileUrl'
+                type='text'
+                readOnly
+                disabled
+                value={katha.fileUrl}
               />
             </div>
             {/* Katha S3 URL - READONLY*/}
@@ -103,12 +130,19 @@ const KathaUploadForm = ({ key, title, publicUrl, giani }) => {
                 value={katha.publicUrl}
               />
             </div>
-          </>
+            <button
+              type='submit'
+              className={Styles.Submit}
+              onClick={() => saveKatha(katha)}
+            >
+              Save Katha
+            </button>
+          </form>
         );
       })}
       {/* </Grid> */}
       {/* </Grid> */}
-    </>
+    </div>
   );
 };
 
