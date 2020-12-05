@@ -72,7 +72,7 @@ const EditChapterScreen = () => {
       title_unicode: unicode,
       title_gs: gurmukhiScript,
       title_transliteration_english: englishTranslit,
-      english_summary: englishSummary,
+      description_english: englishSummary,
     });
     handleUpdateChapterResponse(res);
   };
