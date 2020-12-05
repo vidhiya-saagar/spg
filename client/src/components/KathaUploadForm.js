@@ -12,7 +12,6 @@ const saveKatha = async (katha) => {
   const res = await fetchPut(`/kathas/${katha.id}`, {
     ...katha,
   });
-  console.log('zzzzzzzzz', res);
 };
 
 const KathaUploadForm = ({ key, title, publicUrl, giani }) => {
@@ -63,7 +62,6 @@ const KathaUploadForm = ({ key, title, publicUrl, giani }) => {
                 spellCheck='false'
                 value={katha.title}
                 onChange={(e) => {
-                  console.log('title', e.target.value);
                   updateKathaFormItem({
                     title: e.target.value,
                     id: katha.id,

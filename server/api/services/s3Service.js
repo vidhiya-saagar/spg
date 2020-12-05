@@ -21,7 +21,7 @@ const s3Service = new S3Router({
 
 (async () => {
   const log = await s3.listBuckets().promise();
-  console.log(log);
+  // console.log(log);
 })();
 
 module.exports = s3Service;

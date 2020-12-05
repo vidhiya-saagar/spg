@@ -32,9 +32,6 @@ const editKatha = async (req, res) => {
   let year = req.body.year || null;
   let giani_id = req.body.gianiId;
 
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-  console.log(req.body);
-
   const kathaId = await db('kathas')
     .update({
       title,
