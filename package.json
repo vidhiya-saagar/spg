@@ -23,7 +23,6 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "pg": "^8.3.0",
-    "react-copy-to-clipboard": "^5.0.2",
     "react-dropzone-s3-uploader": "^1.1.0"
   }
 }
