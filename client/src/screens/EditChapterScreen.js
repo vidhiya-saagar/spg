@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Grid from '../components/Grid';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import SideChars from '../components/SideChars';
 import { fetchGet, fetchPost, fetchPut } from '../helpers/fetchHelper';
@@ -8,7 +8,6 @@ import ChapterStyles from '../stylesheets/components/ChapterStyles.module.css';
 import Submit from '../components/Submit';
 import * as anvaad from 'anvaad-js';
 import { isGurmukhi } from '../helpers/validationHelper';
-import ImageUploader from 'react-images-upload';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 import KathaUploadForm from '../components/KathaUploadForm';
 import { Context as EditChapterKathaContext } from '../context/EditChapterKathaContext';
@@ -38,9 +37,7 @@ const EditChapterScreen = () => {
   const [englishTranslit, setEnglishTranslit] = useState('');
   const [translation, setTranslation] = useState('');
   const [englishSummary, setEnglishSummary] = useState('');
-  const [pictures, setPictures] = useState([]);
   const [kathaUploadProgress, setKathaUploadProgress] = useState(null);
-  const [artworkUploadProgress, setArtworkUploadProgress] = useState(null);
   const [uploadedArtworkUrl, setUploadedArtworkUrl] = useState('');
 
   useEffect(() => {
@@ -159,11 +156,6 @@ const EditChapterScreen = () => {
       .required('Required'),
   });
 
-  const dropImage = (picture) => {
-    console.log('picture', picture);
-    setPictures([picture]);
-  };
-
   const dropStyles = {
     width: '120px',
     height: '120px',
@@ -269,9 +261,6 @@ const EditChapterScreen = () => {
                       }}
                       accept='image/*'
                       onError={(e) => console.log(`Error: ${e}`)}
-                      onProgress={(progressInPercent, uploadStatusText) => {
-                        setArtworkUploadProgress(progressInPercent);
-                      }}
                       onFinish={(file) => {
                         const publicUrl = file.signedUrl.split('?')[0];
                         console.log(publicUrl);
@@ -294,16 +283,6 @@ const EditChapterScreen = () => {
                   />
                 </Grid>
               </Grid>
-              {/* <ImageUploader
-                  withIcon={true}
-                  withLabel={true}
-                  buttonText='Upload Artwork'
-                  onChange={dropImage}
-                  imgExtension={['.jpg', '.jpeg', '.png', '.gif']}
-                  maxFileSize={5242880}
-                  singleImage={true}
-                  withPreview={true}
-                /> */}
             </div>
             <Grid alignItems='center' justify='space-between'>
               <Grid column={true} sm={2} md={4} lg={4}>

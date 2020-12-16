@@ -193,10 +193,12 @@ const editChapter = async (req, res) => {
 // PUT `/chapters/:id/artworks`
 const updateChapterArtwork = async (req, res) => {
   const { artwork_url } = req.body;
+  const chapterId = await db('chapters')
+    .update({
+      artwork_url,
+    })
+    .where('id', req.params.id);
 
-  const chapterId = await db('chapters').update({
-    artwork_url,
-  });
   const chapter = await db('chapters').where('id', chapterId).first();
   res.status(200).json({ chapter });
 };
