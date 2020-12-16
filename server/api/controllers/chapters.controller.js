@@ -142,6 +142,19 @@ const chapterTuks = async (req, res) => {
   res.json({ chapter, chhands });
 };
 
+// GET `/chapters/:id/tuks`
+const chapterKathas = async (req, res) => {
+  const chapterId = req.params.id;
+
+  const kathaIds = await db
+    .select('katha_id')
+    .from('chapter_kathas')
+    .where('chapter_id', chapterId);
+
+  const kathas = await db.select('*').from('kathas').where(katha_id);
+  res.json({ chapter, chhands });
+};
+
 // GET `/chapters/:id/last-pauri`
 const lastPauri = async (req, res) => {
   res.json({ last_pauri: await getLastPauriInChapter(req.params.id) });
