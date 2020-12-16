@@ -36,6 +36,7 @@ const EditChapterScreen = () => {
   const [unicode, setUnicode] = useState('');
   const [gurmukhiScript, setGurmukhiScript] = useState('');
   const [englishTranslit, setEnglishTranslit] = useState('');
+  const [translation, setTranslation] = useState('');
   const [englishSummary, setEnglishSummary] = useState('');
   const [pictures, setPictures] = useState([]);
   const [kathaUploadProgress, setKathaUploadProgress] = useState(null);
@@ -45,6 +46,7 @@ const EditChapterScreen = () => {
       const res = await fetchGet(`/chapters/${id}`);
       setChapter(res.chapter);
       setUnicode(res.chapter.title_unicode);
+      setTranslation(res.chapter.title_translation);
       setEnglishSummary(res.chapter.description_english);
     };
     fetchChapter();
@@ -68,13 +70,12 @@ const EditChapterScreen = () => {
   const updateChapter = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-
     const res = await fetchPut(`/chapters/${id}/edit`, {
       title_unicode: unicode,
       title_gs: gurmukhiScript,
       title_transliteration_english: englishTranslit,
+      title_translation: translation,
       description_english: englishSummary,
-      pictures,
     });
     handleUpdateChapterResponse(res);
   };
@@ -215,6 +216,23 @@ const EditChapterScreen = () => {
               />
               <p>{formErrors?.englishTranslit && formErrors.EnglishTranslit}</p>
             </div>
+
+            {/* Translation */}
+            <div className='form-element'>
+              <label htmlFor='translation'>Translation</label>
+              <input
+                id='translation'
+                name='translation'
+                type='text'
+                placeholder='The Battle of Chamkaur Begins'
+                defaultValue={translation}
+                spellCheck={true}
+                onChange={(e) => {
+                  setTranslation(e.target.value);
+                }}
+              />
+            </div>
+
             {/* English Summary */}
             <div className='form-element'>
               <label htmlFor='englishSummary'>English Summary</label>

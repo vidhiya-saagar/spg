@@ -172,6 +172,7 @@ const editChapter = async (req, res) => {
     title_unicode,
     title_gs,
     title_transliteration_english,
+    title_translation,
     description_english,
   } = req.body;
 
@@ -180,6 +181,7 @@ const editChapter = async (req, res) => {
       title_unicode,
       title_gs,
       title_transliteration_english,
+      title_translation,
       description_english,
     })
     .where('id', req.params.id);

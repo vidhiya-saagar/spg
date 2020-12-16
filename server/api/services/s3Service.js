@@ -14,9 +14,8 @@ const s3 = new AWS.S3({
 const getS3 = () => s3;
 
 const s3Service = new S3Router({
-  bucket: process.env.BUCKET_MP3,
+  bucket: process.env.THE_ONE_BUCKET,
   ACL: 'public-read',
-  getS3,
 });
 
 (async () => {
