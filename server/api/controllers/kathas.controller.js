@@ -68,7 +68,7 @@ const createChapterKatha = async (req, res) => {
 
   const kathaId = await db('kathas').insert({
     title: req.body.title,
-    public_url: req.body.publicUrl,
+    public_url: req.body.signedUrl.split('?')[0],
     file_url: req.body.fileUrl,
   });
 

@@ -190,6 +190,17 @@ const editChapter = async (req, res) => {
   res.status(200).json({ chapter });
 };
 
+// PUT `/chapters/:id/artworks`
+const updateChapterArtwork = async (req, res) => {
+  const { artwork_url } = req.body;
+
+  const chapterId = await db('chapters').update({
+    artwork_url,
+  });
+  const chapter = await db('chapters').where('id', chapterId).first();
+  res.status(200).json({ chapter });
+};
+
 const validateChapter = (action) => {
   switch (action) {
     case 'createChapter':
@@ -245,4 +256,5 @@ module.exports = {
   lastPauri,
   validateChapter,
   editChapter,
+  updateChapterArtwork,
 };
