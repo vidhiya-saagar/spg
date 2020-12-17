@@ -46,7 +46,7 @@ const {
 
 const { deleteTuk, validateTuk } = require('../controllers/tuks.controller');
 
-const { last } = require('../controllers/application.controller');
+const { last, chamkaur } = require('../controllers/application.controller');
 
 // books
 router.get('/books', booksIndex);
@@ -101,5 +101,6 @@ router.get('/gianis', (req, res) => {
 
 // APPLICATIONS
 router.get('/last', last);
+router.get('/chamkaur', chamkaur);
 
 module.exports = router;
