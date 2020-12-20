@@ -17,7 +17,6 @@
     "react-diff-viewer": "^3.1.1",
     "react-dom": "^16.13.1",
     "react-dropzone-s3-uploader": "^1.1.0",
-    "react-images-upload": "^1.2.8",
     "react-jss": "^10.4.0",
     "react-navigation": "^4.4.3",
     "react-router-dom": "^5.2.0",

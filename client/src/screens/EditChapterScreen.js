@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Grid from '../components/Grid';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import '../stylesheets/screens/ChhandTypesIndexStyles.css';
 import SideChars from '../components/SideChars';
 import { fetchGet, fetchPost, fetchPut } from '../helpers/fetchHelper';
@@ -8,7 +8,6 @@ import ChapterStyles from '../stylesheets/components/ChapterStyles.module.css';
 import Submit from '../components/Submit';
 import * as anvaad from 'anvaad-js';
 import { isGurmukhi } from '../helpers/validationHelper';
-import ImageUploader from 'react-images-upload';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 import KathaUploadForm from '../components/KathaUploadForm';
 import { Context as EditChapterKathaContext } from '../context/EditChapterKathaContext';
@@ -36,16 +35,19 @@ const EditChapterScreen = () => {
   const [unicode, setUnicode] = useState('');
   const [gurmukhiScript, setGurmukhiScript] = useState('');
   const [englishTranslit, setEnglishTranslit] = useState('');
+  const [translation, setTranslation] = useState('');
   const [englishSummary, setEnglishSummary] = useState('');
-  const [pictures, setPictures] = useState([]);
   const [kathaUploadProgress, setKathaUploadProgress] = useState(null);
+  const [uploadedArtworkUrl, setUploadedArtworkUrl] = useState('');
 
   useEffect(() => {
     const fetchChapter = async () => {
       const res = await fetchGet(`/chapters/${id}`);
       setChapter(res.chapter);
       setUnicode(res.chapter.title_unicode);
+      setTranslation(res.chapter.title_translation);
       setEnglishSummary(res.chapter.description_english);
+      setUploadedArtworkUrl(res.chapter.artwork_url);
     };
     fetchChapter();
   }, []);
@@ -68,13 +70,12 @@ const EditChapterScreen = () => {
   const updateChapter = async (e) => {
     e.preventDefault();
     if (!(await isValidInput())) return SweetInputWarning();
-
     const res = await fetchPut(`/chapters/${id}/edit`, {
       title_unicode: unicode,
       title_gs: gurmukhiScript,
       title_transliteration_english: englishTranslit,
+      title_translation: translation,
       description_english: englishSummary,
-      pictures,
     });
     handleUpdateChapterResponse(res);
   };
@@ -88,6 +89,12 @@ const EditChapterScreen = () => {
         text: JSON.stringify(res.chhand, null, 2),
       });
     }
+  };
+
+  const addArtwork = async (artworkUrl) => {
+    fetchPut(`/chapters/${id}/artworks`, {
+      artwork_url: artworkUrl,
+    });
   };
 
   const addKatha = async (katha) => {
@@ -148,10 +155,6 @@ const EditChapterScreen = () => {
       .min(2, 'English transliteration is too short.')
       .required('Required'),
   });
-
-  const dropImage = (picture) => {
-    setPictures([picture]);
-  };
 
   const dropStyles = {
     width: '120px',
@@ -215,6 +218,23 @@ const EditChapterScreen = () => {
               />
               <p>{formErrors?.englishTranslit && formErrors.EnglishTranslit}</p>
             </div>
+
+            {/* Translation */}
+            <div className='form-element'>
+              <label htmlFor='translation'>Translation</label>
+              <input
+                id='translation'
+                name='translation'
+                type='text'
+                placeholder='The Battle of Chamkaur Begins'
+                defaultValue={translation}
+                spellCheck={true}
+                onChange={(e) => {
+                  setTranslation(e.target.value);
+                }}
+              />
+            </div>
+
             {/* English Summary */}
             <div className='form-element'>
               <label htmlFor='englishSummary'>English Summary</label>
@@ -229,17 +249,40 @@ const EditChapterScreen = () => {
                 }}
                 value={englishSummary}
               />
-
-              <ImageUploader
-                withIcon={true}
-                withLabel={true}
-                buttonText='Upload Artwork'
-                onChange={dropImage}
-                imgExtension={['.jpg', '.jpeg', '.png', '.gif']}
-                maxFileSize={5242880}
-                singleImage={true}
-                withPreview={true}
-              />
+              <Grid alignItems='center' justify='space-between'>
+                <Grid column={true} sm={2} md={4} lg={4}>
+                  <div className='form-element'>
+                    <label>Upload Artwork to S3</label>
+                    <DropzoneS3Uploader
+                      s3Url='https://s3.console.aws.amazon.com/s3/buckets/shaheedi-spg'
+                      upload={{
+                        server: 'http://localhost:1469',
+                        signingUrl: '/s3/sign',
+                      }}
+                      accept='image/*'
+                      onError={(e) => console.log(`Error: ${e}`)}
+                      onFinish={(file) => {
+                        const publicUrl = file.signedUrl.split('?')[0];
+                        console.log(publicUrl);
+                        addArtwork(publicUrl);
+                        setUploadedArtworkUrl(publicUrl);
+                      }}
+                      style={dropStyles}
+                    />
+                  </div>
+                </Grid>
+                <Grid column={true} sm={2} md={4} lg={4}>
+                  <img
+                    src={uploadedArtworkUrl}
+                    style={{
+                      objectFit: 'cover',
+                      width: '120px',
+                      height: '120px',
+                      align: 'center',
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </div>
             <Grid alignItems='center' justify='space-between'>
               <Grid column={true} sm={2} md={4} lg={4}>
@@ -251,7 +294,7 @@ const EditChapterScreen = () => {
                       server: 'http://localhost:1469',
                       signingUrl: '/s3/sign',
                     }}
-                    accept='.mp3,.m4a'
+                    accept='.mp3'
                     onError={(e) => console.log(`Error: ${e}`)}
                     onProgress={(progressInPercent, uploadStatusText) => {
                       setKathaUploadProgress(progressInPercent);

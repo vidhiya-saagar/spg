@@ -97,4 +97,14 @@ const last = async (req, res) => {
   });
 };
 
-module.exports = { last };
+// GET `/chamkaur`
+const chamkaur = async (req, res) => {
+  const chapterNumbers = [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41];
+  const chapters = await db('chapters')
+    .where('book_id', 2) // Rut 6
+    .whereIn('number', chapterNumbers);
+
+  return res.status(200).json({ chapters });
+};
+
+module.exports = { chamkaur, last };

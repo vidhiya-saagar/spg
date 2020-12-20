@@ -1,4 +1,5 @@
 const express = require('express');
+const router = express.Router();
 
 const { booksIndex, bookChapters } = require('../controllers/books.controller');
 
@@ -11,6 +12,7 @@ const {
   lastPauri,
   validateChapter,
   editChapter,
+  updateChapterArtwork,
 } = require('../controllers/chapters.controller');
 
 const {
@@ -44,9 +46,7 @@ const {
 
 const { deleteTuk, validateTuk } = require('../controllers/tuks.controller');
 
-const { last } = require('../controllers/application.controller');
-
-const router = express.Router();
+const { last, chamkaur } = require('../controllers/application.controller');
 
 // books
 router.get('/books', booksIndex);
@@ -60,6 +60,7 @@ router.get('/chapters/:id/chhands', chapterChhands);
 router.get('/chapters/:id/tuks', chapterTuks);
 router.get('/chapters/:id/last-pauri', lastPauri);
 router.put('/chapters/:id/edit', validateChapter('editChapter'), editChapter);
+router.put('/chapters/:id/artworks', updateChapterArtwork);
 
 // chhand_types
 router.get('/chhand-types', chhandTypeIndex);
@@ -100,5 +101,6 @@ router.get('/gianis', (req, res) => {
 
 // APPLICATIONS
 router.get('/last', last);
+router.get('/chamkaur', chamkaur);
 
 module.exports = router;
