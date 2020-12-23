@@ -52,7 +52,7 @@ const getChapterKatha = async (req, res) => {
     .where('chapter_id', req.params.id);
 
   kathaIds = kathaIds.map((row) => parseInt(row.katha_id));
-  const kathas = await db('kathas').whereIn('id', kathaIds);
+  const kathas = await db('kathas').whereIn('id', kathaIds).orderBy('giani_id');
 
   res.status(200).json({ kathas });
 };
