@@ -8,7 +8,13 @@ const routes = require('./routes/index');
 const s3Service = require('./services/s3Service');
 
 // CORS
-const whitelist = ['http://localhost:8080', 'http://localhost:3000'];
+const whitelist = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://spg.dev',
+  'https://3.93.172.82',
+  '3.93.172.82',
+];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin)) {
@@ -26,7 +32,7 @@ app.use(morgan('tiny'));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.json({
