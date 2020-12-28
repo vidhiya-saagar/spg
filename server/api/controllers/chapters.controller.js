@@ -142,7 +142,7 @@ const chapterTuks = async (req, res) => {
   res.json({ chapter, chhands });
 };
 
-// GET `/chapters/:id/tuks`
+// GET `/chapters/:id/kathas`
 const chapterKathas = async (req, res) => {
   const chapterId = req.params.id;
 
