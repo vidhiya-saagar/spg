@@ -28,7 +28,9 @@ const corsOptions = {
 const app = express();
 
 // Middleware
-app.use(morgan('tiny'));
+app.use(
+  morgan(':date :method :url :status :res[content-length] - :response-time ms')
+);
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
