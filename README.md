@@ -1,5 +1,5 @@
 # SPG App
-This project is an admin tool designed to digitize Suraj Prakash into a central database. 
+This project is an admin tool designed to digitize Suraj Prakash into a central database. You can find the [spg.dev](https://spg.dev/) front-end repo [over here](https://github.com/dsomel21/shaheedi-spg) 
 
 ## Running Locally
 As of right now, this repo is public however the the database is not. 
