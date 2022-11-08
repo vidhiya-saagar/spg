@@ -315,7 +315,7 @@ const EditChapterScreen = () => {
               </Grid>
             </Grid>
 
-            <KathaUploadForm />
+            <KathaUploadForm chapterId={id} />
 
             <Submit />
           </form>
