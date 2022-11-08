@@ -26,7 +26,7 @@ const ChaptersIndexScreen = () => {
 
       <Grid column={true} sm={8} customClass='text-align-center'>
         <Link to='/chapters/new'>
-          <button class='spg-btn'>New</button>
+          <button className='spg-btn'>New</button>
         </Link>
       </Grid>
     </Grid>

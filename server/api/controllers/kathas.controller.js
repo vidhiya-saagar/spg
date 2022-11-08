@@ -31,12 +31,16 @@ const editKatha = async (req, res) => {
   let title = req.body.title || '';
   let year = req.body.year || null;
   let giani_id = req.body.gianiId;
+  let file_url = req.body.fileUrl;
+  let public_url = req.body.publicUrl;
 
   const kathaId = await db('kathas')
     .update({
       title,
       year,
       giani_id,
+      file_url,
+      public_url,
     })
     .where('id', req.params.id);
 
@@ -68,8 +72,8 @@ const createChapterKatha = async (req, res) => {
 
   const kathaId = await db('kathas').insert({
     title: req.body.title,
-    public_url: req.body.signedUrl.split('?')[0],
-    file_url: req.body.fileUrl,
+    public_url: (req.body.signedUrl && req.body.signedUrl.split('?')[0]) || '',
+    file_url: req.body.fileUrl || '',
   });
 
   const chapterKathaId = await db('chapter_kathas').insert({

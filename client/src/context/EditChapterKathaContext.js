@@ -12,8 +12,8 @@ const chapterKathaFormReducer = (state, action) => {
         title: katha.title,
         gianiId: katha.gianiId || null,
         year: katha.year,
-        fileUrl: katha.fileUrl,
-        publicUrl: katha.publicUrl,
+        fileUrl: katha.fileUrl || '',
+        publicUrl: katha.publicUrl || '',
       };
       // Use `state.kathaForm.length` to update at a specific index
       return updateKathaForm(state.kathaForm.length, state, newState);
@@ -24,8 +24,11 @@ const chapterKathaFormReducer = (state, action) => {
       return updateKathaForm(index, state, {
         ...state.kathaForm[index],
         gianiId: action.payload.gianiId || state.kathaForm[index].gianiId,
-        title: action.payload.title || state.kathaForm[index].title,
+        title: action.payload.title || state.kathaForm[index].title || '',
         year: action.payload.year || state.kathaForm[index].year,
+        fileUrl: action.payload.fileUrl || state.kathaForm[index].fileUrl || '',
+        publicUrl:
+          action.payload.publicUrl || state.kathaForm[index].publicUrl || '',
       });
 
     case 'ADD_KATHA_FORM':
@@ -91,8 +94,8 @@ const initializeKathaFormState = (dispatch) => (kathaResponse) => {
         title: katha.title,
         gianiId: katha.giani_id || null,
         year: katha.year,
-        fileUrl: katha.file_url,
-        publicUrl: katha.public_url,
+        fileUrl: katha.file_url || '',
+        publicUrl: katha.public_url || '',
       },
     });
   });

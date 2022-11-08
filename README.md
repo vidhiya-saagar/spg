@@ -19,7 +19,7 @@ cd spg && yarn
 cd client && yarn
 ```
 
-3. **Create the Database** and create a `.ENV` file in the root directory of the repo and paste the following details: 
+3. **Create the Database** and create a `.env` file in the root directory of the repo and paste the following details: 
 
 ```
 DATABASE_HOST="localhost"
@@ -35,9 +35,11 @@ knex migrate:latest
 knex seed:run
 ```
 
+**NOTE**: We may have to run this with `npx`.  
+
 5. **Run Server**:
 
-Run `yarn start` in the root directroy and this will bootup the API in `localhost:1469/`. Then run `yarn start` in `client/` directory to run the admin section. You can now run the app in `localhost:3000/`
+Run `yarn start` in the root directory and this will boot-up the API in `localhost:1469/`. Then run `yarn start` in `client/` directory to run the admin section. You can now run the app in `localhost:3000/`
 
 
 
@@ -68,7 +70,7 @@ Kavi Santokh Singh Ji has contributed his life to poetically documenting the lif
 
 ## Recommended Links: 
 * [Suraj Podcast](https://www.surajpodcast.com/) - An amazing podcast in English that goes through chapters of *SPG* 
-* [Rara Sahib - ik13.com](https://www.ik13.com/bhai-daya-singh-ji-online-library/) - Amazing service of publishing volumentric documents on *SPG*
-* [Anvaad JS](https://github.com/KhalisFoundation/anvaad-js) - Very useful tool to for when dealing with transliteration/ASCII/unicode converting in the context of the Gurmukhi language.
+* [Rara Sahib (formerly on ik13.com)](https://rarasahib.com/online-library/) - Amazing service of publishing volumentric documents on *SPG*
 
+* [shabados/Gurmukhi-Utils](https://github.com/shabados/gurmukhi-utils) - Very useful tool to for when dealing with transliteration/ASCII/unicode converting in the context of the Gurmukhi language. This has COMPLETE code coverage.
 ## Images:
